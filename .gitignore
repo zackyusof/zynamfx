@@ -24,3 +24,8 @@ TONE3000-CERTS/
 notes/
 build-ui/
 build-ui-release/
+
+# Build/packaging outputs
+release/
+__pycache__/
+*.py[cod]
