@@ -5,6 +5,7 @@ All notable changes to zynamfx are recorded here. Dates are ISO (yyyy-mm-dd).
 ## [2.0.1] - 2026-10-14
 
 ### Added
+- The build **version** is shown discretely beside the ZY monogram in the header.
 - **Hosted-FX search.** A search field sits at the top of the Add AU/VST3
   Effect chooser: an empty query keeps the vendor -> effect browsing, and typing
   filters every installed AudioUnit and VST3 into one scrollable list

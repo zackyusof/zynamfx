@@ -15,6 +15,9 @@
 #ifndef T3K_BUILD_CHANNEL
 #define T3K_BUILD_CHANNEL "development"
 #endif
+#ifndef T3K_VERSION
+#define T3K_VERSION ""
+#endif
 
 namespace t3k::ui::build {
 
@@ -22,6 +25,9 @@ namespace t3k::ui::build {
 inline juce::String channel() { return T3K_BUILD_CHANNEL; }
 // The repository this build was produced from.
 inline juce::String repoUrl() { return T3K_REPO_URL; }
+// The product version (from the repo-root VERSION file); empty in a
+// source-only compile that does not define it.
+inline juce::String version() { return T3K_VERSION; }
 // One-line identity for the Settings footer, e.g.
 // "development build (git.zyusof.net/zack/zynamfx)".
 inline juce::String label() {

@@ -16,7 +16,7 @@ namespace {
 constexpr int kPadX = 24;
 constexpr int kGroupGap = 40;  // between header items
 constexpr int kPairGap = 16;   // tight pairs (undo/redo)
-constexpr int kLogoWidth = 160;
+constexpr int kLogoWidth = 176;  // wordmark + ZY monogram + the version string
 constexpr int kLogoHeight = 24;  // 160 * 32 / 210, rounded like the browser
 }  // namespace
 
@@ -37,6 +37,16 @@ public:
     const auto bounds = getLocalBounds().toFloat();
     Brand::drawLogo(g, bounds.withWidth(84.0f));
     Brand::drawZyMark(g, {90.0f, 2.0f, 36.0f, 20.0f});
+    // The build's version, discretely, beside the ZY monogram (see
+    // BuildIdentity.h). The ZY mark ends at x=126; nothing else sits here.
+    const auto version = build::version();
+    if (version.isNotEmpty()) {
+      g.setFont(Fonts::mono(9.0f));
+      g.setColour(theme::kMuted);
+      g.drawText("v" + version,
+                 juce::Rectangle<int>(128, 0, getWidth() - 128, getHeight()),
+                 juce::Justification::centredLeft, false);
+    }
   }
 };
 

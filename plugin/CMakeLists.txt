@@ -503,7 +503,8 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     "T3K_DISPLAY_NAME=\"${T3K_DISPLAY_NAME}\""
     "T3K_APP_DATA_DIR_NAME=\"${T3K_APP_DATA_DIR_NAME}\""
     "T3K_REPO_URL=\"${T3K_REPO_URL}\""
-    "T3K_BUILD_CHANNEL=\"${T3K_BUILD_CHANNEL}\"")
+    "T3K_BUILD_CHANNEL=\"${T3K_BUILD_CHANNEL}\""
+    "T3K_VERSION=\"${T3K_VERSION}\"")
 
 # JUCE modules used
 target_link_libraries(${PROJECT_NAME}
