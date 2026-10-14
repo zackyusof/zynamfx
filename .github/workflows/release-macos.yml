@@ -182,5 +182,13 @@ jobs:
             git tag "$tag"
             git push origin "$tag"
           fi
-          gh release create "$tag" release/* --title "zynamfx $tag (TONE3000 $UPSTREAM_TAG)" \
-            --notes "Free, open-source zynamfx Version 2 for macOS Apple Silicon, based on [TONE3000 plugin $UPSTREAM_TAG](https://github.com/tone-3000/tone3000-plugin/releases/tag/$UPSTREAM_TAG) at upstream commit [$UPSTREAM_SHA](https://github.com/tone-3000/tone3000-plugin/commit/$UPSTREAM_SHA). Includes Standalone, AU and VST3 builds, matching source, and an UPSTREAM.txt provenance file. Builds are ad-hoc signed and not notarized. See README for features, installation and TONE3000 integration terms."
+          notes="$RUNNER_TEMP/notes.md"
+          {
+            # This version's section from CHANGELOG.md, when present.
+            if [ -f CHANGELOG.md ]; then
+              awk -v v="$VERSION" 'BEGIN{p=0} /^## \[/{ if(index($0,"["v"]")>0){p=1} else if(p){exit} } p{print}' CHANGELOG.md
+              printf '\n---\n\n'
+            fi
+            printf '%s\n' "Free, open-source zynamfx Version 2 for macOS Apple Silicon, based on [TONE3000 plugin $UPSTREAM_TAG](https://github.com/tone-3000/tone3000-plugin/releases/tag/$UPSTREAM_TAG) at upstream commit [$UPSTREAM_SHA](https://github.com/tone-3000/tone3000-plugin/commit/$UPSTREAM_SHA). Includes Standalone, AU and VST3 builds, matching source, and an UPSTREAM.txt provenance file. Builds are ad-hoc signed and not notarized. See README for features, installation and TONE3000 integration terms."
+          } > "$notes"
+          gh release create "$tag" release/* --title "zynamfx $tag (TONE3000 $UPSTREAM_TAG)" --notes-file "$notes"
