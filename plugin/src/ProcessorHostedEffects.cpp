@@ -1,6 +1,7 @@
 #include "Processor.h"
 
 #include <algorithm>
+#include <atomic>
 #include <map>
 
 #if JUCE_MAC
@@ -34,11 +35,29 @@ std::shared_ptr<juce::AudioPluginInstance> instantiateEffect(
     juce::Logger::writeToLog("[Hosted effect] " + description.name + ": " + error);
     return {};
   }
-  if (instance->getTotalNumInputChannels() < 1 ||
-      instance->getTotalNumInputChannels() > 2 ||
-      instance->getTotalNumOutputChannels() < 1 ||
-      instance->getTotalNumOutputChannels() > 2) {
-    juce::Logger::writeToLog("[Hosted effect] Unsupported channel layout: " + description.name);
+
+  // A slot drives only the plug-in's MAIN bus. Several effects declare extra
+  // buses — Plugin Alliance's bx_aura and bx_pulsar expose a second input bus
+  // for side-chain — so the total channel count reads as 4 in and a stereo slot
+  // rejected the plug-in. Keep those buses ENABLED (disabling them made bx_aura
+  // crash in its render, which reads the side-chain bus) and feed the extras
+  // silence in the chain's process path; only the MAIN bus must be mono/stereo.
+  if (instance->getChannelCountOfBus(true, 0) < 1 || instance->getChannelCountOfBus(false, 0) < 1) {
+    // The main bus came up disabled: ask for stereo on it.
+    auto layout = instance->getBusesLayout();
+    if (!layout.inputBuses.isEmpty())
+      layout.inputBuses.getReference(0) = juce::AudioChannelSet::stereo();
+    if (!layout.outputBuses.isEmpty())
+      layout.outputBuses.getReference(0) = juce::AudioChannelSet::stereo();
+    instance->setBusesLayout(layout);
+  }
+
+  const int mainIn = instance->getChannelCountOfBus(true, 0);
+  const int mainOut = instance->getChannelCountOfBus(false, 0);
+  if (mainIn < 1 || mainIn > 2 || mainOut < 1 || mainOut > 2) {
+    juce::Logger::writeToLog(
+        "[Hosted effect] Unsupported main-bus channel layout: " + description.name + " (" +
+        juce::String(mainIn) + " in / " + juce::String(mainOut) + " out)");
     return {};
   }
   instance->setRateAndBufferSizeDetails(rate, blockSize);
@@ -285,4 +304,280 @@ std::shared_ptr<juce::AudioPluginInstance> TONE3000Processor::hostedEffectInstan
   auto* block = findBlockById(blockId);
   return block != nullptr && block->type == ChainBlockType::EFFECT
              ? block->effectInstance : std::shared_ptr<juce::AudioPluginInstance>{};
+}
+
+// #############################
+// FIRST-RUN HOSTED-EFFECT VALIDATION
+// #############################
+// A chain slot rejects a hosted AudioUnit for one of two reasons: the plug-in
+// cannot be loaded at all, or it reports a channel layout a stereo slot cannot
+// host (see instantiateEffect). Both are silent in normal use — the slot simply
+// stays empty — so the first standalone run on a machine writes a per-plugin
+// verdict to the app-data folder. See Processor.h for the contract.
+//
+// Validation is OUT OF PROCESS: each component is probed by running
+// /usr/bin/auval as a child process, which loads the AU in its own process. The
+// earlier in-process scan instantiated every AU with JUCE, and JUCE marshals AU
+// instantiation onto the main thread, so one broken AU (2026-10-14: IK
+// Multimedia's Lurssen Mastering Console segfaulted in APComponent::newInstance)
+// took the whole app down. Running auval can no longer crash the app, and a
+// per-component timeout bounds a hung probe. The report is written after every
+// component, so a run killed mid-check resumes.
+
+juce::File TONE3000Processor::hostedValidationReportFile() {
+  return getSettingsFile().getParentDirectory().getChildFile("hosted-effects-validation.txt");
+}
+
+#if JUCE_MAC
+namespace {
+
+// auval can take ~a second per component; this bound is generous headroom so a
+// merely slow load still passes, while a hung probe is killed rather than
+// stalling the scan forever.
+constexpr int kAuvalTimeoutMs = 60000;
+
+// True once the report carries its final "result:" line (a completed run).
+bool reportIsComplete(const juce::String& text) {
+  for (const auto& line : juce::StringArray::fromLines(text))
+    if (line.startsWith("result:"))
+      return true;
+  return false;
+}
+
+// The last non-empty, trimmed line of a child process's combined output — for
+// auval that is normally "AU VALIDATION SUCCEEDED." / "AU VALIDATION FAILED.".
+juce::String lastNonEmptyLine(const juce::String& text) {
+  juce::StringArray lines;
+  lines.addLines(text);
+  for (int i = lines.size(); --i >= 0;)
+    if (lines[i].trim().isNotEmpty())
+      return lines[i].trim();
+  return "(no output)";
+}
+
+// Converts a CFString to a juce String (same approach as bundleIdentifier).
+juce::String cfStringToJuce(CFStringRef string) {
+  if (string == nullptr || CFGetTypeID(string) != CFStringGetTypeID())
+    return {};
+  const CFRange range = CFRangeMake(0, CFStringGetLength(string));
+  CFIndex used = 0;
+  CFStringGetBytes(string, range, kCFStringEncodingUTF8, 0, false, nullptr, 0, &used);
+  juce::HeapBlock<UInt8> buffer(static_cast<size_t>(used) + 1);
+  CFStringGetBytes(string, range, kCFStringEncodingUTF8, 0, false,
+                   reinterpret_cast<UInt8*>(buffer.getData()), used, nullptr);
+  buffer[static_cast<size_t>(used)] = 0;
+  return juce::String::fromUTF8(reinterpret_cast<const char*>(buffer.getData()));
+}
+
+// A 4-character AU code (type/subtype/manufacturer). Anything that is not
+// exactly four characters is skipped, so auval never receives a malformed code.
+juce::String fourCharCode(CFStringRef string) {
+  const auto code = cfStringToJuce(string);
+  return code.length() == 4 ? code : juce::String();
+}
+
+// One AudioComponents entry from a bundle's Info.plist.
+struct AudioUnitComponent {
+  juce::String type, subtype, manufacturer, name, code;  // code = type/subtype/manufacturer
+};
+
+// Parses a bundle's Contents/Info.plist AudioComponents array with
+// CoreFoundation. CFBundleCreate only reads the plist; it never loads or
+// instantiates the plug-in.
+juce::Array<AudioUnitComponent> readAudioComponents(const juce::File& bundle) {
+  juce::Array<AudioUnitComponent> result;
+  const auto path = bundle.getFullPathName();
+  CFURLRef url = CFURLCreateFromFileSystemRepresentation(
+      kCFAllocatorDefault, reinterpret_cast<const UInt8*>(path.toRawUTF8()),
+      static_cast<CFIndex>(path.getNumBytesAsUTF8()), true);
+  if (url == nullptr)
+    return result;
+  CFBundleRef cfBundle = CFBundleCreate(kCFAllocatorDefault, url);
+  CFRelease(url);
+  if (cfBundle == nullptr)
+    return result;
+  CFTypeRef value = CFBundleGetValueForInfoDictionaryKey(cfBundle, CFSTR("AudioComponents"));
+  if (value != nullptr && CFGetTypeID(value) == CFArrayGetTypeID()) {
+    auto array = static_cast<CFArrayRef>(value);
+    const CFIndex count = CFArrayGetCount(array);
+    for (CFIndex i = 0; i < count; ++i) {
+      auto* entry = static_cast<CFDictionaryRef>(CFArrayGetValueAtIndex(array, i));
+      if (entry == nullptr || CFGetTypeID(entry) != CFDictionaryGetTypeID())
+        continue;
+      AudioUnitComponent component;
+      component.type = fourCharCode((CFStringRef) CFDictionaryGetValue(entry, CFSTR("type")));
+      component.subtype = fourCharCode((CFStringRef) CFDictionaryGetValue(entry, CFSTR("subtype")));
+      component.manufacturer =
+          fourCharCode((CFStringRef) CFDictionaryGetValue(entry, CFSTR("manufacturer")));
+      if (component.type.isEmpty() || component.subtype.isEmpty() ||
+          component.manufacturer.isEmpty())
+        continue;  // malformed entry: skip rather than hand auval a bad code
+      component.name = cfStringToJuce((CFStringRef) CFDictionaryGetValue(entry, CFSTR("name")));
+      if (component.name.isEmpty())
+        component.name = bundle.getFileNameWithoutExtension();
+      component.code = component.type + "/" + component.subtype + "/" + component.manufacturer;
+      result.add(component);
+    }
+  }
+  CFRelease(cfBundle);
+  return result;
+}
+
+}  // namespace
+#endif
+
+void TONE3000Processor::validateHostedEffects(bool restart) {
+#if JUCE_MAC
+  const juce::File report = hostedValidationReportFile();
+  if (restart)
+    report.deleteFile();  // explicit re-run: start from the top
+  // The report is the checkpoint. Without `restart`, a run that reached its
+  // "result:" line has nothing left to do.
+  if (report.existsAsFile() && reportIsComplete(report.loadFileAsString()))
+    return;
+
+  // One run at a time, process-wide (several windows share the app-data dir).
+  // The worker clears the guard however it exits.
+  static std::atomic<bool> running{false};
+  if (running.exchange(true))
+    return;
+
+  // Everything below runs on a background thread: enumerating thousands of
+  // bundles and spawning auval per component must never touch the message or
+  // audio thread. Nothing is ever instantiated in-process.
+  juce::Thread::launch([report] {
+    auto scan = [&] {
+      // Re-read on the worker: the resume set comes from what is already on
+      // disk, so a run killed mid-check continues where it stopped.
+      juce::StringArray lines;
+      if (report.existsAsFile())
+        lines.addLines(report.loadFileAsString());
+      for (const auto& line : lines)
+        if (line.startsWith("result:"))
+          return;  // completed by another instance meanwhile
+      // Drop a trailing TEST line (and anything after it) left by a run that
+      // died mid-check, so that component is retried instead of trusted.
+      for (int i = lines.size(); --i >= 0;)
+        if (lines[i].startsWith("TEST"))
+          lines.removeRange(i, lines.size());
+      // Codes already decided by earlier (resumed) runs: the first field after
+      // the "OK "/"FAIL" status.
+      juce::StringArray tested;
+      int ok = 0, fail = 0;
+      for (const auto& line : lines) {
+        auto fields = juce::StringArray::fromTokens(line, " \t", "");
+        fields.removeEmptyStrings();
+        if (fields.isEmpty())
+          continue;
+        if (fields[0] == "OK")
+          ++ok;
+        else if (fields[0] == "FAIL")
+          ++fail;
+        if (fields.size() >= 2 && (fields[0] == "OK" || fields[0] == "FAIL"))
+          tested.add(fields[1]);
+      }
+
+      report.getParentDirectory().createDirectory();
+      // Write after every line: a killed run still leaves the report naming the
+      // component it was on, and resumes from there.
+      auto flush = [&lines, &report] {
+        report.replaceWithText(lines.joinIntoString("\n") + "\n");
+      };
+      if (lines.isEmpty()) {
+        lines.add("zynamfx hosted Audio Unit validation");
+        lines.add("generated: " + juce::Time::getCurrentTime().toISO8601(true));
+        lines.add("out-of-process: each check runs /usr/bin/auval in its own process, so a");
+        lines.add("broken plug-in cannot crash the app. Delete this file to start over.");
+        lines.add("");
+        flush();
+      }
+
+      // auval ships with Apple's CoreAudio tools; without it there is nothing
+      // safe to run, so note it once and stop rather than guess.
+      if (!juce::File("/usr/bin/auval").existsAsFile()) {
+        const juce::String note =
+            "auval not found at /usr/bin/auval; install the Xcode command line tools to "
+            "validate hosted AudioUnits.";
+        if (!lines.contains(note)) {
+          lines.add(note);
+          flush();
+        }
+        return;
+      }
+
+      const juce::File componentsDir("/Library/Audio/Plug-Ins/Components");
+      if (componentsDir.isDirectory()) {
+        for (const auto& entry : juce::RangedDirectoryIterator(
+                 componentsDir, /*recursive*/ false, "*.component",
+                 juce::File::findDirectories)) {
+          const juce::File bundle = entry.getFile();
+          for (const auto& component : readAudioComponents(bundle)) {
+            if (tested.contains(component.code))
+              continue;
+            const juce::String label =
+                component.code + "  " + component.name + " - " + bundle.getFullPathName();
+            // "TEST" first, then rewritten: a worker killed between the two
+            // lines leaves the TEST line last, so the next run retries it.
+            lines.add("TEST  " + label);
+            flush();
+
+            const juce::StringArray arguments{"/usr/bin/auval", "-v", component.type,
+                                              component.subtype, component.manufacturer};
+            int exitCode = -1;
+            bool timedOut = false, started = false;
+            juce::String output;
+            {
+              juce::ChildProcess process;
+              started = process.start(arguments);
+              if (started) {
+                // Bounded wait: a hung component is killed, never allowed to
+                // stall the scan (auval's own output is tiny, so the pipe
+                // cannot fill while we wait).
+                if (process.waitForProcessToFinish(kAuvalTimeoutMs)) {
+                  exitCode = static_cast<int>(process.getExitCode());
+                } else {
+                  timedOut = true;
+                  process.kill();
+                }
+                output = process.readAllProcessOutput();
+              }
+            }
+
+            juce::String verdict;
+            if (!started) {
+              verdict = "FAIL  " + label + "\n        auval: could not start process";
+            } else if (timedOut) {
+              verdict = "FAIL  " + label + "\n        auval: timeout after " +
+                        juce::String(kAuvalTimeoutMs / 1000) + " s, process killed";
+            } else if (exitCode == 0) {
+              verdict = "OK    " + label;
+            } else {
+              verdict = "FAIL  " + label + "\n        auval exit " +
+                        juce::String(exitCode) + ": " + lastNonEmptyLine(output);
+            }
+            if (verdict.startsWith("OK"))
+              ++ok;
+            else
+              ++fail;
+            lines.set(lines.size() - 1, verdict);
+            flush();
+          }
+        }
+      }
+
+      lines.add("");
+      lines.add("result: " + juce::String(ok) + " ok, " + juce::String(fail) + " fail, " +
+                juce::String(ok + fail) + " total");
+      flush();
+      juce::Logger::writeToLog("[Hosted effect] Out-of-process AU validation wrote " +
+                               report.getFullPathName() + " (" + juce::String(ok) + " ok / " +
+                               juce::String(fail) + " fail)");
+    };
+    scan();
+    running.store(false);  // release the one-run guard, however scan() returned
+  });
+#else
+  // auval and AU component bundles are macOS-only, so there is nothing to run.
+  (void)0;
+#endif
 }

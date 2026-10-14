@@ -36,6 +36,8 @@ public:
                                       const std::string& targetInsertId) override;
   std::shared_ptr<juce::AudioPluginInstance> hostedEffectInstance(
       const std::string& blockId) override;
+  void validateInstalledAudioUnits() override;
+  juce::File hostedValidationReportPath() override;
   juce::var loadLocalTonePath(const juce::File& source, const std::string& targetInsertId) override;
   juce::var loadLocalToneUrls(const juce::Array<juce::URL>& sources,
                               const std::string& targetInsertId) override;

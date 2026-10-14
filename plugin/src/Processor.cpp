@@ -76,6 +76,11 @@ TONE3000Processor::TONE3000Processor()
   cleanLocalModelStash();
   cleanLeakedIrTempFiles();
 
+  // Hosted-AudioUnit validation is opt-in (Settings -> Diagnostics -> Validate
+  // installed Audio Units): it runs /usr/bin/auval out of process per component,
+  // which is a few seconds each across thousands of bundles, so it is not run
+  // automatically at launch. See validateHostedEffects and docs/hosted-effects.md.
+
   // Oversampling settings apply through a message-thread bounce (see
   // applyOversamplingSettings); the relays can fire from any thread.
   parameters.addParameterListener("osEnabled", this);
@@ -1396,18 +1401,37 @@ void TONE3000Processor::processChainOnBuffer(std::vector<std::unique_ptr<ChainBl
         continue;
       }
     } else if (block->type == ChainBlockType::EFFECT && block->effectInstance != nullptr) {
-      // Prepared scratch keeps the hosted processor's channel layout and
+      // Prepared scratch keeps the hosted processor's full channel layout and
       // avoids allocation on the audio callback.
       auto& scratch = block->effectScratch;
       const int effectChannels = scratch.getNumChannels();
       if (numSamples <= scratch.getNumSamples() && effectChannels > 0) {
-        for (int ch = 0; ch < effectChannels; ++ch)
-          scratch.copyFrom(ch, 0, buffer, juce::jmin(ch, numChannels - 1), 0, numSamples);
+        // The slot drives the MAIN bus only. A plug-in's extra buses (the
+        // side-chain on Plugin Alliance bx_aura/bx_pulsar, for example) stay
+        // ENABLED — disabling them made bx_aura crash in its render — so they
+        // are fed silence here. The main bus occupies the buffer's first
+        // channels (getBusBuffer maps buses in order).
+        auto* fx = block->effectInstance.get();
+        const int mainIns = juce::jmax(1, fx->getChannelCountOfBus(true, 0));
+        const int mainOuts = juce::jmax(1, fx->getChannelCountOfBus(false, 0));
+        const int copyIns = juce::jmin(numChannels, mainIns);
+        for (int ch = 0; ch < effectChannels; ++ch) {
+          if (ch < copyIns)
+            scratch.copyFrom(ch, 0, buffer, ch, 0, numSamples);
+          else
+            scratch.clear(ch, 0, numSamples);  // extra bus: silence, never the signal
+        }
         juce::AudioBuffer<float> view(scratch.getArrayOfWritePointers(), effectChannels, numSamples);
         juce::MidiBuffer emptyMidi;
-        block->effectInstance->processBlock(view, emptyMidi);
-        for (int ch = 0; ch < numChannels; ++ch)
-          buffer.copyFrom(ch, 0, scratch, juce::jmin(ch, effectChannels - 1), 0, numSamples);
+        fx->processBlock(view, emptyMidi);
+        if (mainOuts >= numChannels) {
+          for (int ch = 0; ch < numChannels; ++ch)
+            buffer.copyFrom(ch, 0, scratch, ch, 0, numSamples);
+        } else {
+          // Mono main output: feed it to every chain channel.
+          for (int ch = 0; ch < numChannels; ++ch)
+            buffer.copyFrom(ch, 0, scratch, 0, 0, numSamples);
+        }
       }
     } else if (block->type == ChainBlockType::IR && block->convolverMono != nullptr) {
       // IR Processing.

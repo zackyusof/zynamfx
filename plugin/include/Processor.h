@@ -109,6 +109,18 @@ public:
                                       const std::string& targetInsertId = {});
   std::shared_ptr<juce::AudioPluginInstance> hostedEffectInstance(
       const std::string& blockId);
+  // Validate installed AudioUnits OUT OF PROCESS: each component is probed by
+  // running /usr/bin/auval as a child process, so a broken AU cannot crash the
+  // app (the earlier in-process scan instantiated AUs with JUCE on the main
+  // thread and IK Multimedia's Lurssen Mastering Console segfaulted and killed
+  // it). Explicitly triggered from Settings, so there is no wrapper gate.
+  // `restart` deletes an existing report first; a run already in progress is
+  // ignored; the run is on a background thread and the report is written
+  // incrementally, so it resumes across launches (~a few seconds per component
+  // over thousands of bundles). Report: <app data dir>/hosted-effects-validation.txt;
+  // details: docs/hosted-effects.md.
+  static juce::File hostedValidationReportFile();
+  void validateHostedEffects(bool restart = false);
   // Load dropped local files (`files` = [{ name, data }], base64 bytes; one
   // entry for a single file, many for a folder) as one tone block, one model
   // per file. `targetInsertId` is either an insert slot (adds, consuming

@@ -53,6 +53,10 @@ public:
   virtual std::shared_ptr<juce::AudioPluginInstance> hostedEffectInstance(const std::string&) {
     return {};
   }
+  // Opt-in hosted-AudioUnit validation (see TONE3000Processor::validateHostedEffects).
+  // No-op in backends without a processor; the report path is empty then.
+  virtual void validateInstalledAudioUnits() {}
+  virtual juce::File hostedValidationReportPath() { return {}; }
   // { blockId } or a user-facing { error }.
   virtual juce::var loadLocalTonePath(const juce::File& source, const std::string& targetInsertId) = 0;
   virtual juce::var loadLocalToneUrls(const juce::Array<juce::URL>& sources,

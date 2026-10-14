@@ -1,6 +1,7 @@
 #include "PluginHeader.h"
 
 #include "core/Brand.h"
+#include "core/BuildIdentity.h"
 #include "core/Fonts.h"
 #include "core/CustomIcons.h"
 #include "core/Design.h"
@@ -19,13 +20,18 @@ constexpr int kLogoWidth = 160;
 constexpr int kLogoHeight = 24;  // 160 * 32 / 210, rounded like the browser
 }  // namespace
 
-// The wordmark links to the zynamfx project.
+// The wordmark links to the project repository for THIS build: a development
+// build opens Gitea, a public build opens GitHub (see core/BuildIdentity.h).
 class PluginHeader::LogoLink : public Clickable {
 public:
   LogoLink() : Clickable({}) {
     setTitle("zynamfx");
+    const auto channel = build::channel();
+    setHelpText((channel == "public" ? juce::String("zynamfx (public build) - open ")
+                                     : juce::String("zynamfx (development build) - open ")) +
+                build::repoUrl());
     setMouseCursor(juce::MouseCursor::PointingHandCursor);
-    onClick = [] { juce::URL("https://github.com/zackyusof/zynamfx").launchInDefaultBrowser(); };
+    onClick = [] { juce::URL(build::repoUrl()).launchInDefaultBrowser(); };
   }
   void paintButton(juce::Graphics& g, bool, bool) override {
     const auto bounds = getLocalBounds().toFloat();

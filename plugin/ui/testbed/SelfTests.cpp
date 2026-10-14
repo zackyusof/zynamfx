@@ -46,6 +46,8 @@
 #include "widgets/DbMeter.h"
 #include "widgets/DimGroup.h"
 #include "widgets/DragScroller.h"
+#include "widgets/EffectMenu.h"
+#include "widgets/EffectSearch.h"
 #include "widgets/EnergyGlow.h"
 #include "widgets/FormatBadge.h"
 #include "widgets/IconButton.h"
@@ -2651,6 +2653,286 @@ struct FaceplateDualMonoTests : juce::UnitTest {
   }
 };
 
+// EffectSearch: the hosted-FX search field's pure matcher (EffectSearch.h).
+// The query is trimmed and split on whitespace; every token must occur, case
+// insensitively, as a substring of a bundle's name + vendor + format. Matches
+// are indices sorted by name, then vendor, then format, then path, and the
+// bundle path is never searched.
+struct EffectSearchTests : juce::UnitTest {
+  EffectSearchTests() : juce::UnitTest("EffectSearch", "ui") {}
+
+  // The result indices joined for a readable assertion ("1,2" or "").
+  static juce::String indices(const std::vector<size_t>& matches) {
+    juce::StringArray parts;
+    for (auto i : matches) parts.add(juce::String(static_cast<int>(i)));
+    return parts.joinIntoString(",");
+  }
+
+  void runTest() override {
+    using Entry = EffectEntry;
+    const auto results = [](const std::vector<Entry>& entries, const char* query) {
+      return indices(searchEffectEntries(entries, query));
+    };
+
+    beginTest("an empty or whitespace-only query matches nothing");
+    const std::vector<Entry> any = {{"Acme", "Reverb", "VST3", "/x/reverb.vst3"}};
+    expectEquals(results(any, ""), juce::String());
+    expectEquals(results(any, "   \t "), juce::String());
+
+    beginTest("matching is case-insensitive and partial by substring");
+    const std::vector<Entry> fab = {
+        {"Waves", "FabFilter Pro-Q", "VST3", "/x/fab-proq.vst3"},
+        {"Waves", "FabFilter Pro-C", "AU", "/x/fab-proc.au"},
+    };
+    expectEquals(results(fab, "FAB"), juce::String("1,0"));  // upper-case needle; Pro-C before Pro-Q
+    expectEquals(results(fab, "fab"), juce::String("1,0"));  // lower-case needle
+    expectEquals(results(fab, "pro-q"), juce::String("0"));  // partial name
+    expectEquals(results(fab, "pro-c"), juce::String("1"));  // partial name
+
+    beginTest("a vendor token matches");
+    const std::vector<Entry> vendors = {
+        {"Acme Audio", "Reverb", "VST3", "/x/r.vst3"},
+        {"Other Co", "Reverb", "VST3", "/x/r2.vst3"},
+    };
+    expectEquals(results(vendors, "acme"), juce::String("0"));
+    expectEquals(results(vendors, "other co"), juce::String("1"));  // two tokens, both vendor
+
+    beginTest("a format token matches, and \"au\" stays a format");
+    const std::vector<Entry> formats = {
+        {"Soft", "Reverb", "AU", "/x/r.au"},
+        {"Soft", "Reverb", "VST3", "/x/r.vst3"},
+        {"Soft", "Echo", "VST3", "/x/e.vst3"},
+    };
+    expectEquals(results(formats, "au"), juce::String("0"));  // only the AU field, not "Soft"
+    expectEquals(results(formats, "vst3"), juce::String("2,1"));  // name order: Echo before Reverb
+
+    beginTest("multi-token queries require every token");
+    const std::vector<Entry> anded = {
+        {"Acme", "Reverb", "VST3", "/x/r.vst3"},
+        {"Acme", "Delay", "VST3", "/x/d.vst3"},
+    };
+    expectEquals(results(anded, "acme reverb"), juce::String("0"));
+    expectEquals(results(anded, "acme"), juce::String("1,0"));  // name order: Delay before Reverb
+    expectEquals(results(anded, "acme delay"), juce::String("1"));
+    expectEquals(results(anded, "acme chorus"), juce::String());  // one token matches nothing
+
+    beginTest("a query no entry contains matches nothing");
+    expectEquals(results(anded, "zzz"), juce::String());
+
+    beginTest("leading, trailing and repeated whitespace splits the same tokens");
+    expectEquals(results(anded, "  acme   reverb  "), results(anded, "acme reverb"));
+
+    beginTest("the bundle path is not searched");
+    const std::vector<Entry> pathed = {{"Acme", "Chorus", "VST3", "/secret/magicword.thing"}};
+    expectEquals(results(pathed, "magicword"), juce::String());  // path-only token
+    expectEquals(results(pathed, "chorus"), juce::String("0"));  // a real field still matches
+
+    beginTest("results sort by name, then vendor, format, path, deterministically");
+    const std::vector<Entry> ordered = {
+        {"Vendor B", "Alpha", "VST3", "/b/alpha.vst3"},   // 0
+        {"Vendor A", "Alpha", "AU", "/a/alpha.au"},       // 1
+        {"Vendor A", "Alpha", "VST3", "/a/alpha.vst3"},   // 2
+        {"Vendor A", "Alpha", "VST3", "/a/alpha2.vst3"},  // 3
+        {"Vendor A", "alpha", "VST3", "/a/alpha.vst3"},   // 4: same metadata as 2
+    };
+    // Name ties, so vendor A leads; AU before VST3; "/a/alpha.vst3" before
+    // "/a/alpha2.vst3"; 2 and 4 are identical and break ties by index.
+    const auto first = indices(searchEffectEntries(ordered, "alpha"));
+    expectEquals(first, juce::String("1,2,4,3,0"));
+    expectEquals(indices(searchEffectEntries(ordered, "alpha")), first);  // stable across runs
+  }
+};
+
+// EffectMenu's Hosted-FX search, driven through the real widget (EffectMenu.h):
+// an empty field shows the vendor column; typing switches to the one global
+// results list built purely from the entries passed in; clearing restores the
+// vendors; picking a row hands the exact path + name to onChoose; Escape
+// dismisses. The Root + overlay + real-window shape is the one PopoverFollowTests
+// and the focus tests use, so `isShowing()` is truthful (a row in the hidden
+// vendor column is not showing). The search field, results viewport and rows are
+// found by traversal — the widget grows no test-only accessors.
+struct EffectMenuSearchTests : juce::UnitTest {
+  EffectMenuSearchTests() : juce::UnitTest("EffectMenuSearch", "ui") {}
+
+  static void pump(int ms) { juce::MessageManager::getInstance()->runDispatchLoopUntil(ms); }
+
+  struct Root : juce::Component, OverlayHost {
+    Root() {
+      setSize(800, 600);
+      overlay.setBounds(getLocalBounds());
+      addAndMakeVisible(overlay);
+    }
+    juce::Component& overlayLayer() override { return overlay; }
+    juce::Component overlay;
+  };
+
+  // Every MenuRow under `c` (vendor rows, plugin rows, result rows alike).
+  static void collectRows(juce::Component& c, std::vector<MenuRow*>& out) {
+    if (auto* row = dynamic_cast<MenuRow*>(&c)) out.push_back(row);
+    for (auto* child : c.getChildren()) collectRows(*child, out);
+  }
+  // The MenuRows a user can actually see (a hidden vendor column's rows are not).
+  static std::vector<MenuRow*> showingRows(juce::Component& c) {
+    std::vector<MenuRow*> all, vis;
+    collectRows(c, all);
+    for (auto* row : all)
+      if (row->isShowing()) vis.push_back(row);
+    return vis;
+  }
+  // The one Viewport added directly to the EffectMenu is the results list (the
+  // left/right column viewports live inside their column components).
+  static juce::Viewport* resultsViewport(juce::Component& menu) {
+    for (auto* c : menu.getChildren())
+      if (auto* vp = dynamic_cast<juce::Viewport*>(c)) return vp;
+    return nullptr;
+  }
+  static juce::TextEditor* searchField(juce::Component& menu) {
+    for (auto* c : menu.getChildren())
+      if (auto* te = dynamic_cast<juce::TextEditor*>(c)) return te;
+    return nullptr;
+  }
+  static juce::Button* clearButton(juce::Component& menu) {
+    std::vector<juce::Component*> stack{&menu};
+    while (!stack.empty()) {
+      auto* c = stack.back();
+      stack.pop_back();
+      if (auto* b = dynamic_cast<juce::Button*>(c))
+        if (b->getHelpText().startsWith("Clear search")) return b;
+      for (auto* child : c->getChildren()) stack.push_back(child);
+    }
+    return nullptr;
+  }
+  static juce::Label* labelWithText(juce::Component& c, const juce::String& text) {
+    if (auto* l = dynamic_cast<juce::Label*>(&c))
+      if (l->getText() == text) return l;
+    for (auto* child : c.getChildren())
+      if (auto* hit = labelWithText(*child, text)) return hit;
+    return nullptr;
+  }
+
+  void runTest() override {
+    // Two vendors; "Pro-Q 3" is a duplicate name across vendors AND across
+    // AU/VST3, so every ambiguity the label must resolve is exercised.
+    const std::vector<EffectEntry> entries = {
+        {"FabFilter", "Pro-Q 3", "AU", "/au/fabfilter-proq3.au"},
+        {"FabFilter", "Pro-Q 3", "VST3", "/vst3/fabfilter-proq3.vst3"},
+        {"FabFilter", "Saturn 2", "VST3", "/vst3/fabfilter-saturn2.vst3"},
+        {"Valhalla", "Pro-Q 3", "AU", "/au/valhalla-proq3.au"},
+        {"Valhalla", "Supermassive", "VST3", "/vst3/valhalla-supermassive.vst3"},
+    };
+    juce::StringArray vendors;
+    for (const auto& e : entries)
+      if (!vendors.contains(e.vendor)) vendors.add(e.vendor);
+
+    Root root;
+    juce::Component anchor;
+    anchor.setBounds(40, 40, 120, 30);
+    root.addAndMakeVisible(anchor);
+    juce::DocumentWindow window("effect menu search", juce::Colours::black, 0);
+    window.setContentNonOwned(&root, true);
+    window.setSize(800, 600);
+    window.setVisible(true);
+    pump(200);
+
+    EffectMenu menu(entries);
+    menu.open(anchor, Popover::Align::left, 4);
+    pump(50);
+    auto* search = searchField(menu);
+    auto* results = resultsViewport(menu);
+    expect(search != nullptr && results != nullptr);
+    if (search == nullptr || results == nullptr) {
+      window.setVisible(false);
+      return;
+    }
+
+    beginTest("opening shows the vendor column and hides the results viewport");
+    expectEquals(static_cast<int>(showingRows(menu).size()), vendors.size());
+    expect(!results->isVisible());
+    expect(results->getViewedComponent() == nullptr || showingRows(*results).empty());
+
+    beginTest("typing a query switches to the global results list");
+    const juce::String qPro = "pro";
+    search->setText(qPro, true);
+    pump(30);
+    const auto proMatches = searchEffectEntries(entries, qPro);
+    expect(!proMatches.empty());
+    expect(results->isVisible());
+    auto proRows = showingRows(*results);
+    expectEquals(static_cast<int>(proRows.size()), static_cast<int>(proMatches.size()));
+    expectEquals(static_cast<int>(showingRows(menu).size()), static_cast<int>(proMatches.size()));  // vendors gone
+    for (size_t i = 0; i < proRows.size() && i < proMatches.size(); ++i) {
+      const auto& e = entries[proMatches[i]];
+      const auto text = proRows[i]->getButtonText();
+      expect(text.contains(e.name));
+      expect(text.contains(e.vendor));
+      expect(text.contains("(" + e.format + ")"));
+    }
+
+    beginTest("a query matching nothing shows the message and no rows");
+    search->setText("zzz-no-such-effect", true);
+    pump(30);
+    expect(searchEffectEntries(entries, "zzz-no-such-effect").empty());
+    expect(showingRows(*results).empty());
+    auto* empty = labelWithText(*results, "No matching effects");
+    expect(empty != nullptr && empty->isShowing());
+
+    beginTest("clearing the field restores the vendor column");
+    auto* clear = clearButton(menu);
+    expect(clear != nullptr);
+    if (clear != nullptr) {
+      clear->triggerClick();
+      pump(30);
+    }
+    expect(search->getText().isEmpty());
+    expect(!results->isVisible());
+    expectEquals(static_cast<int>(showingRows(menu).size()), vendors.size());
+
+    beginTest("choosing a result fires onChoose with the entry's path and name");
+    search->setText(qPro, true);
+    pump(30);
+    const auto matches = searchEffectEntries(entries, qPro);
+    auto rows = showingRows(*results);
+    expect(!matches.empty() && rows.size() == matches.size());
+    juce::String chosenPath, chosenName;
+    menu.onChoose = [&](const juce::String& path, const juce::String& name) {
+      chosenPath = path;
+      chosenName = name;
+    };
+    if (!rows.empty()) {
+      rows.front()->triggerClick();
+      pump(30);
+    }
+    expectEquals(chosenPath, entries[matches[0]].path);
+    expectEquals(chosenName, entries[matches[0]].name);
+    expect(!menu.isOpen());  // the row handler dismissed first
+
+    beginTest("Escape on the menu dismisses it from the overlay");
+    menu.open(anchor, Popover::Align::left, 4);
+    pump(30);
+    expect(menu.isOpen() && root.overlay.isParentOf(&menu));
+    menu.grabKeyboardFocus();
+    // keyPressed() on the two-arg KeyListener overload is private, so drive the
+    // Popover handler through a base reference; the OS focus a real key would
+    // need is not guaranteed under a terminal/CI run.
+    expect(static_cast<Popover&>(menu).keyPressed(juce::KeyPress(juce::KeyPress::escapeKey)));
+    expect(!menu.isOpen());
+    expect(!root.overlay.isParentOf(&menu));
+
+    beginTest("rows are built only from the entries passed in (no scanning)");
+    menu.open(anchor, Popover::Align::left, 4);
+    pump(30);
+    const juce::StringArray queries{"pro", "valhalla", "vst3", "saturn"};
+    for (const auto& query : queries) {
+      search->setText(query, true);
+      pump(20);
+      const auto hits = searchEffectEntries(entries, query);
+      expect(!hits.empty());
+      expectEquals(static_cast<int>(showingRows(*results).size()), static_cast<int>(hits.size()));
+    }
+    window.setVisible(false);
+  }
+};
+
 HtmlTests htmlTests;
 FontTests fontTests;
 RichFlowTests richFlowTests;
@@ -2681,6 +2963,8 @@ Tone3000ClientTests tone3000ClientTests;
 ToneModelTests toneModelTests;
 ToneQueryTests toneQueryTests;
 ReadoutTests readoutTests;
+EffectSearchTests effectSearchTests;
+EffectMenuSearchTests effectMenuSearchTests;
 
 }  // namespace
 

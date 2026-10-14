@@ -2,6 +2,7 @@
 
 #include "services/ForkKeyStore.h"  // fork-only: bring-your-own API key
 #include "InlineChrome.h"
+#include "core/BuildIdentity.h"
 #include "core/Fonts.h"
 #include "core/Paint.h"
 #include "core/Theme.h"
@@ -191,8 +192,13 @@ PluginSettingsPage::PluginSettingsPage(Services& services)
       diagnostics_("Diagnostics", "Copy recent diagnostic logs to the clipboard and paste them into a bug report."),
       copyLogs_("Copy Logs", FormButton::cta()),
       revealLogs_("Reveal log file on disk", FormButton::text(form::kBodyPx, false, theme::kLinkBlue)),
+      validateAus_("Validate installed Audio Units", FormButton::text(form::kBodyPx, false, theme::kLinkBlue)),
+      revealValidation_("Reveal validation report", FormButton::text(form::kBodyPx, false, theme::kLinkBlue)),
       copyLogsBox_(copyLogs_, static_cast<float>(copyLogs_.preferredHeight())),
       revealLogsBox_(revealLogs_, static_cast<float>(revealLogs_.preferredHeight())),
+      validateAusBox_(validateAus_, static_cast<float>(validateAus_.preferredHeight())),
+      revealValidationBox_(revealValidation_,
+                           static_cast<float>(revealValidation_.preferredHeight())),
       logStatus_(juce::String(), form::kSmallPx),
       update_({}, FormButton::cta()),
       updateBox_(update_, static_cast<float>(update_.preferredHeight())),
@@ -282,6 +288,8 @@ PluginSettingsPage::PluginSettingsPage(Services& services)
   diagnostics_.content().setGap(form::kControlGap);
   diagnostics_.content().add(copyLogsBox_);
   diagnostics_.content().add(revealLogsBox_);
+  diagnostics_.content().add(validateAusBox_);
+  diagnostics_.content().add(revealValidationBox_);
   diagnostics_.content().add(logStatus_);
   logStatus_.setVisible(false);
   copyLogs_.onClick = [this] {
@@ -289,6 +297,21 @@ PluginSettingsPage::PluginSettingsPage(Services& services)
   };
   revealLogs_.onClick = [this] {
     showLogStatus(services_.backend.revealLogs().isNotEmpty() ? "Revealed log file" : "No log file found yet");
+  };
+  // Opt-in hosted-AudioUnit validation, out of process (see the AU validator in
+  // the processor). It runs in the background; the report updates as it goes.
+  validateAus_.onClick = [this] {
+    services_.backend.validateInstalledAudioUnits();
+    showLogStatus("Validating installed Audio Units in the background (a few seconds each; the report updates as it goes)");
+  };
+  revealValidation_.onClick = [this] {
+    const auto report = services_.backend.hostedValidationReportPath();
+    if (report.existsAsFile()) {
+      report.revealToUser();
+      showLogStatus("Revealed validation report");
+    } else {
+      showLogStatus("No validation report yet - run Validate installed Audio Units first");
+    }
   };
   add(diagnostics_);
 
@@ -390,7 +413,7 @@ void PluginSettingsPage::syncFooter() {
   const auto& version = services_.updates.localVersion();
   if (update) update_.setLabel("Update to v" + update->version);
   footer_.setShown(updateBox_, update.has_value());
-  version_.setText("zynamfx v" + version);
+  version_.setText("zynamfx v" + version + "  -  " + build::label());
   footer_.setShown(version_, version.isNotEmpty());
   const bool footer = update.has_value() || version.isNotEmpty();
   setShown(footer_, footer);

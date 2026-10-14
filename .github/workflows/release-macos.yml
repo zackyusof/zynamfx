@@ -93,7 +93,7 @@ jobs:
       - name: Install build tools
         run: brew install cmake ninja
       - name: Build Standalone, AU and VST3
-        run: python3 script/build-stadium-prototype.py
+        run: python3 script/build-stadium-prototype.py --public
       - name: Validate Audio Unit
         run: |
           au="build/plugin/TONE3000_artefacts/Release/AU/zynamfx.component"

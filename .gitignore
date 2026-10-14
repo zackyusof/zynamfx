@@ -8,12 +8,9 @@ build-x86_64/
 build-ios/
 build-ios-device/
 release-build/
-release/
 vs-build/
 output/
 .DS_Store
-__pycache__/
-*.py[cod]
 xcode-build/
 .env
 .env.local

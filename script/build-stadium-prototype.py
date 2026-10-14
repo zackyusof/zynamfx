@@ -8,12 +8,33 @@ import shutil
 import subprocess
 
 
+def prune_old_backups(destination):
+    """Delete older `-backup-` copies of this bundle so repeated --install runs
+    leave only the newest one behind (the one about to be made)."""
+    for old in destination.parent.glob(destination.stem + "-backup-*" + destination.suffix):
+        if old.is_dir():
+            shutil.rmtree(old, ignore_errors=True)
+        else:
+            old.unlink(missing_ok=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--install", action="store_true", help="install app, AU, and VST3 to their standard user locations")
+    parser.add_argument("--public", action="store_true",
+                        help="public (GitHub) channel: the in-app logo and Settings footer point to "
+                             "github.com/zackyusof/zynamfx. Default is the development (Gitea) channel.")
     parser.add_argument("--jobs", type=int, default=min(8, os.cpu_count() or 4))
     args = parser.parse_args()
     source = Path(__file__).resolve().parent.parent
+    # Which repository this build belongs to. Development is built from Gitea and
+    # points there; the public build is cloned to GitHub and points there. The
+    # URL is baked in (logo link + Settings footer) so the two never mix.
+    if args.public:
+        repo_url, channel = "https://github.com/zackyusof/zynamfx", "public"
+    else:
+        repo_url, channel = "https://git.zyusof.net/zack/zynamfx", "development"
+    print(f"Building the {channel} channel from {repo_url}")
     # Keep the build underneath source: JUCE generated AppIcon.icns otherwise
     # falls outside plugin/CMakeLists.txt source_group(TREE ...) and configure fails.
     build = source / "build"
@@ -31,6 +52,8 @@ def main():
                     "-DT3K_FORK_PRODUCT_NAME=zynamfx",
                     "-DT3K_FORK_DISPLAY_NAME=zynamfx",
                     "-DT3K_FORK_DATA_DIR=zynamfx",
+                    f"-DT3K_FORK_REPO_URL={repo_url}",
+                    f"-DT3K_FORK_BUILD_CHANNEL={channel}",
                     "-DT3K_PUBLISHABLE_KEY=",
                     "-DT3K_API_DOMAIN=https://www.tone3000.com",
                     "-DT3K_UPDATE_NOTICE=false",
@@ -83,8 +106,15 @@ def main():
         subprocess.run(["codesign", "--force", "--deep", "--sign", "-", str(bundle)], check=True)
         subprocess.run(["codesign", "--verify", "--deep", "--strict", str(bundle)], check=True)
     if args.install:
-        destination = Path.home() / "Desktop" / app.name
+        # Install the app to /Applications (the standard macOS location), or to
+        # ~/Applications when that is not writable (no admin rights).
+        apps = Path("/Applications")
+        if not os.access(str(apps), os.W_OK):
+            apps = Path.home() / "Applications"
+        apps.mkdir(parents=True, exist_ok=True)
+        destination = apps / app.name
         if destination.exists():
+            prune_old_backups(destination)
             backup = destination.with_name(destination.stem + "-backup-" + datetime.now().strftime("%Y%m%d-%H%M%S") + ".app")
             shutil.copytree(destination, backup, symlinks=True)
             if sum(1 for p in backup.rglob("*") if p.is_file()) != sum(1 for p in destination.rglob("*") if p.is_file()):
@@ -96,6 +126,7 @@ def main():
         au_destination = Path.home() / "Library/Audio/Plug-Ins/Components" / au.name
         au_destination.parent.mkdir(parents=True, exist_ok=True)
         if au_destination.exists():
+            prune_old_backups(au_destination)
             backup = au_destination.with_name(au_destination.stem + "-backup-" + datetime.now().strftime("%Y%m%d-%H%M%S") + ".component")
             shutil.copytree(au_destination, backup, symlinks=True)
             if sum(1 for p in backup.rglob("*") if p.is_file()) != sum(1 for p in au_destination.rglob("*") if p.is_file()):
@@ -107,6 +138,7 @@ def main():
         vst3_destination = Path.home() / "Library/Audio/Plug-Ins/VST3" / vst3.name
         vst3_destination.parent.mkdir(parents=True, exist_ok=True)
         if vst3_destination.exists():
+            prune_old_backups(vst3_destination)
             backup = vst3_destination.with_name(vst3_destination.stem + "-backup-" + datetime.now().strftime("%Y%m%d-%H%M%S") + ".vst3")
             shutil.copytree(vst3_destination, backup, symlinks=True)
             if sum(1 for p in backup.rglob("*") if p.is_file()) != sum(1 for p in vst3_destination.rglob("*") if p.is_file()):

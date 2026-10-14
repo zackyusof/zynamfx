@@ -21,6 +21,13 @@ set(T3K_FORK_CLAP_ID "net.zyusof.zynamfx"
   CACHE STRING "Fork CLAP ID (permanent once released)")
 set(T3K_FORK_DATA_DIR "zynamfx"
   CACHE STRING "Fork app-data folder name (presets, settings, logs, models)")
+# Which repository this build came from, and its channel. Development builds
+# come from Gitea; public builds are cloned to GitHub. These drive the in-app
+# logo link and the Settings build-identity line, so the two never mix.
+set(T3K_FORK_REPO_URL "https://git.zyusof.net/zack/zynamfx"
+  CACHE STRING "Repository URL the in-app logo and build identity point to")
+set(T3K_FORK_BUILD_CHANNEL "development"
+  CACHE STRING "Build channel: development (Gitea) or public (GitHub)")
 
 if(T3K_FORK_NAMESPACED)
   set(T3K_DESKTOP_BUNDLE_ID "net.zyusof.zynamfx"
@@ -34,4 +41,6 @@ if(T3K_FORK_NAMESPACED)
   set(T3K_LV2_URI "${T3K_FORK_LV2_URI}")
   set(T3K_CLAP_ID "${T3K_FORK_CLAP_ID}")
   set(T3K_APP_DATA_DIR_NAME "${T3K_FORK_DATA_DIR}")
+  set(T3K_REPO_URL "${T3K_FORK_REPO_URL}")
+  set(T3K_BUILD_CHANNEL "${T3K_FORK_BUILD_CHANNEL}")
 endif()

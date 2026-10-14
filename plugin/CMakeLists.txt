@@ -49,6 +49,8 @@ set(T3K_MANUFACTURER_CODE "TFTF")
 set(T3K_LV2_URI "https://www.tone3000.com/plugin")
 set(T3K_CLAP_ID "com.tone3000.plugin")
 set(T3K_APP_DATA_DIR_NAME "TONE3000")
+set(T3K_REPO_URL "https://git.zyusof.net/zack/zynamfx")
+set(T3K_BUILD_CHANNEL "development")
 include("${CMAKE_CURRENT_SOURCE_DIR}/../cmake/ForkIdentity.cmake" OPTIONAL)
 
 option(HEADLESS "Disable GUI (headless/embedded build)" OFF)
@@ -495,9 +497,13 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE NAM_ENABLE_A2_FAST)
 # Fork-visible display + app-data names. The values default to the upstream
 # strings above, so default builds are byte-identical to upstream; a namespaced
 # build (-DT3K_FORK_NAMESPACED=ON) swaps them (see cmake/ForkIdentity.cmake).
+# T3K_REPO_URL / T3K_BUILD_CHANNEL carry the build's repository identity (Gitea
+# development vs GitHub public) into the in-app logo link and Settings footer.
 target_compile_definitions(${PROJECT_NAME} PRIVATE
     "T3K_DISPLAY_NAME=\"${T3K_DISPLAY_NAME}\""
-    "T3K_APP_DATA_DIR_NAME=\"${T3K_APP_DATA_DIR_NAME}\"")
+    "T3K_APP_DATA_DIR_NAME=\"${T3K_APP_DATA_DIR_NAME}\""
+    "T3K_REPO_URL=\"${T3K_REPO_URL}\""
+    "T3K_BUILD_CHANNEL=\"${T3K_BUILD_CHANNEL}\"")
 
 # JUCE modules used
 target_link_libraries(${PROJECT_NAME}
@@ -648,4 +654,4 @@ if (NOT HEADLESS AND BUILD_CLAP)
 endif()
 
 # Visual Studio Only
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/..)
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/..) 

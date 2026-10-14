@@ -65,6 +65,12 @@ std::shared_ptr<juce::AudioPluginInstance> ProcessorBackend::hostedEffectInstanc
     const std::string& blockId) {
   return processor_.hostedEffectInstance(blockId);
 }
+void ProcessorBackend::validateInstalledAudioUnits() {
+  processor_.validateHostedEffects(/*restart=*/true);
+}
+juce::File ProcessorBackend::hostedValidationReportPath() {
+  return TONE3000Processor::hostedValidationReportFile();
+}
 juce::var ProcessorBackend::loadLocalTonePath(const juce::File& source,
                                               const std::string& targetInsertId) {
   return processor_.loadLocalTonePath(source, targetInsertId);

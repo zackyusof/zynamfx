@@ -82,8 +82,8 @@ private:
   FormBox openPresetsBox_;
 
   FieldRow diagnostics_;
-  FormButton copyLogs_, revealLogs_;
-  FormBox copyLogsBox_, revealLogsBox_;
+  FormButton copyLogs_, revealLogs_, validateAus_, revealValidation_;
+  FormBox copyLogsBox_, revealLogsBox_, validateAusBox_, revealValidationBox_;
   Paragraph logStatus_;
   DelayedCall logStatusClear_;
 
