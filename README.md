@@ -10,6 +10,7 @@
   <img src="https://img.shields.io/badge/platform-macOS-lightgrey?style=flat-square" alt="Platform: macOS">
   <img src="https://img.shields.io/badge/plug--ins-AU%20%7C%20VST3-orange?style=flat-square" alt="Plug-in formats: AU and VST3">
   <a href="https://github.com/zackyusof/zynamfx/stargazers"><img src="https://img.shields.io/github/stars/zackyusof/zynamfx?style=flat-square&label=stars" alt="GitHub stars"></a>
+  <img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen?style=flat-square" alt="Actively maintained">
 </p>
 
 **zynamfx** is a free, open-source macOS guitar signal-chain application. It ships as a Standalone app and as Audio Unit (AU) and VST3 plug-ins. It loads Neural Amp Modeler (NAM) captures and impulse responses (IRs), and it hosts separately installed AU/VST3 effects — so the delays, reverbs, EQs, and drives you already own can sit right next to your neural captures instead of being locked out of the chain. Whether a boutique chorus sits before the neural preamp or a pristine stereo delay follows the cabinet, it is all one low-latency rig.
@@ -17,6 +18,8 @@
 > "I mainly built it for my own needs." — zackyusof
 
 **Free and open source, no catch.** Public builds are keyless and carry no paid tier or upsell: bring your own free TONE3000 publishable key for catalog browsing, or work entirely offline with local `.nam`/IR files and third-party effects. The combined app is AGPLv3 with matching source; the TONE3000 code it builds on stays MIT. zynamfx is an independent community project — not an official TONE3000 product, and not endorsed by TONE3000 or Line 6.
+
+**Actively maintained — this is not an abandoned fork.** zynamfx tracks the upstream [TONE3000 plugin](https://github.com/tone-3000/tone3000-plugin). A GitHub Action checks for a new stable TONE3000 release every day; when one lands it merges it, bumps the zynamfx patch version, rebuilds the Standalone, AU and VST3, validates the AU, packages the matching source, and publishes a fresh zynamfx release automatically. Every release names the exact TONE3000 tag and commit it is based on and ships an `UPSTREAM.txt` provenance file (also recorded in [UPSTREAM.md](UPSTREAM.md)). If an upstream change conflicts with a zynamfx-specific file, the workflow stops without publishing until the change is reviewed — so a release is never silently skipped or shipped from an unreviewed base.
 
 [Download](#install) · [Build from source](#build-from-source) · [Releases](https://github.com/zackyusof/zynamfx/releases) · [Documentation](#documentation) · [Version 2 compared with Version 1](#version-2-compared-with-version-1) · [License](#licensing-and-attribution)
 
@@ -99,6 +102,7 @@ The diagnostic log is `~/Library/Logs/zynamfx/zynamfx.log`. AU and VST3 chain st
 
 | Goal | Start here |
 | --- | --- |
+| See what changed in each release | [CHANGELOG.md](CHANGELOG.md) · [Latest release](https://github.com/zackyusof/zynamfx/releases/latest) |
 | Understand the TONE3000 integration | [Integration review](docs/tone3000-integration-2026-10-12.md) · [Hosted effects](docs/hosted-effects.md) |
 | See planned hardware effects send/return | [External effects research](docs/hardware-insert-research-2026-10-12.md) |
 | Check licensing and corresponding source | [LICENSE-SCOPE.md](LICENSE-SCOPE.md) · [SOURCE.md](SOURCE.md) · [UPSTREAM.md](UPSTREAM.md) |
@@ -115,7 +119,7 @@ cd zynamfx
 python3 script/build-stadium-prototype.py
 ```
 
-The build produces `zynamfx.app`, `zynamfx.component` (AU), and `zynamfx.vst3`. Add `--install` to install them to the Desktop and the standard user plug-in folders. The build is keyless by default; enter your own publishable key in the app if you want to use the TONE3000 integration.
+The build produces `zynamfx.app`, `zynamfx.component` (AU), and `zynamfx.vst3`. Add `--install` to place the app in `/Applications` (or `~/Applications` without admin rights) and the plug-ins in the standard user plug-in folders. The build is keyless by default; enter your own publishable key in the app if you want to use the TONE3000 integration.
 
 Future hardware send/return support is documented in the [external effects research note](docs/hardware-insert-research-2026-10-12.md). It is a proposed feature, not part of the current release.
 
