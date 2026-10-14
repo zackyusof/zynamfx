@@ -1,4 +1,20 @@
-# zynamfx — the free, open-source macOS guitar signal chain
+# zynamfx — the rig that eats NAM profiles for breakfast 🎸🔥
+
+> **Stop thinking "NAM loader."** zynamfx is a full-blown signal-chain studio that swallows Neural Amp Modeler captures whole — then lets you bolt **any AU or VST3 plug-in you own** into the same chain, in any order. Amp capture → your favourite boutique chorus → cabinet IR → studio-grade reverb → analogue console saturation… one rig, zero DAW required. **Nothing else free and open-source even comes close.**
+
+**zynamfx** is a free, open-source macOS guitar signal-chain application. It ships as a Standalone app and as Audio Unit (AU) and VST3 plug-ins. It loads Neural Amp Modeler (NAM) captures and impulse responses (IRs), and it hosts separately installed AU/VST3 effects — so the delays, reverbs, EQs, and drives you already own can sit right next to your neural captures instead of being locked out of the chain. Whether a boutique chorus sits before the neural preamp or a pristine stereo delay follows the cabinet, it is all one low-latency rig.
+
+## 🔥 Why there is nothing like it
+
+NAM players play captures. Plugin hosts host plugins. **zynamfx is the only free, open-source app that does both in one chain built for guitarists:**
+
+- **🧠 NAM captures, every flavour** — load local `.nam` amp and pedal profiles, or pull from the hundreds of thousands of captures on TONE3000 through the built-in catalog browser. Your tone library is effectively infinite — and free.
+- **🔌 Your plugins live INSIDE the rig** — drop any installed AU or VST3 into any chain slot: FabFilter-style surgical EQ, Valhalla-grade reverb, 1176-style compression, analogue console warmth… before the amp, after the cab, wherever your ears want them.
+- **🎸🎸🎹 Not just guitar** — bass rigs with crushing low-end control, synth chains through neural saturation and wild effects, vocals, drums, anything you feed it. If it makes sound, zynamfx can chain it.
+- **🚀 Standalone or in your DAW** — run the app on stage with its own audio device, or load the AU/VST3 version inside Logic, Ableton, Reaper, whatever you use. Same chains, same presets, everywhere.
+- **💸 Free forever, open source, no catch** — no tiers, no upsells, no locked features, no subscriptions. Download it, own it, build on it.
+
+Other tools make you choose: a capture player *or* a plugin host *or* a paid rig simulator. zynamfx says: **take all three.** 🤘
 
 <p align="center">
   <img src="docs/images/zynamfx-screenshot.png" alt="The zynamfx standalone interface" width="760">
@@ -12,8 +28,6 @@
   <a href="https://github.com/zackyusof/zynamfx/stargazers"><img src="https://img.shields.io/github/stars/zackyusof/zynamfx?style=flat-square&label=stars" alt="GitHub stars"></a>
   <img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen?style=flat-square" alt="Actively maintained">
 </p>
-
-**zynamfx** is a free, open-source macOS guitar signal-chain application. It ships as a Standalone app and as Audio Unit (AU) and VST3 plug-ins. It loads Neural Amp Modeler (NAM) captures and impulse responses (IRs), and it hosts separately installed AU/VST3 effects — so the delays, reverbs, EQs, and drives you already own can sit right next to your neural captures instead of being locked out of the chain. Whether a boutique chorus sits before the neural preamp or a pristine stereo delay follows the cabinet, it is all one low-latency rig.
 
 > "I mainly built it for my own needs." — zackyusof
 
