@@ -138,6 +138,7 @@ jobs:
           ditto -c -k --sequesterRsrc --keepParent build/plugin/TONE3000_artefacts/Release/AU/zynamfx.component "release/zynamfx-$version-macos-arm64-au.zip"
           ditto -c -k --sequesterRsrc --keepParent build/plugin/TONE3000_artefacts/Release/VST3/zynamfx.vst3 "release/zynamfx-$version-macos-arm64-vst3.zip"
           python3 script/package-local-source.py "release/zynamfx-$version-source.tar.gz"
+          cp script/install-macos-release.sh release/
           cat > release/INSTALL.txt <<EOF
           zynamfx macOS Apple Silicon release
 
@@ -145,11 +146,17 @@ jobs:
           (upstream commit ${UPSTREAM_SHA}). See UPSTREAM.txt for links.
 
           These builds are ad-hoc signed and not notarized. Download only from
-          the official zynamfx GitHub releases. If macOS blocks the Standalone
-          app with a developer-verification warning, try opening it once, then
-          go to System Settings > Privacy & Security > Security > Open Anyway
-          and confirm. This leaves Gatekeeper enabled. Stop if macOS reports
-          malware or a damaged app.
+          the official zynamfx GitHub releases. Easiest install: unzip the
+          release archives and install-macos-release.sh into one folder, then
+          run `bash install-macos-release.sh` (see --help for options). It
+          installs the app and plug-ins, clears quarantine from only those
+          zynamfx bundles, and refreshes the AU registration, leaving
+          Gatekeeper enabled. Stop if macOS reports malware or a damaged app.
+
+          Manual alternative: if macOS blocks the Standalone app with a
+          developer-verification warning, try opening it once, then go to
+          System Settings > Privacy & Security > Security > Open Anyway
+          and confirm. This leaves Gatekeeper enabled.
 
           If your audio host specifically refuses to load an installed AU/VST3
           because of quarantine, verify the bundle came from the official

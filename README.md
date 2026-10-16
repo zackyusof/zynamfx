@@ -41,6 +41,16 @@ Other tools make you choose: a capture player *or* a plugin host *or* a paid rig
 
 The [latest release](https://github.com/zackyusof/zynamfx/releases/latest) contains the macOS Apple Silicon Standalone app, AU/VST3 plug-ins, and the corresponding source archive. Builds are ad-hoc signed and are not notarized. See the release notes for installation instructions and supported formats.
 
+### One-command install (recommended)
+
+Unzip the release archives and `install-macos-release.sh` into one folder, then run:
+
+```sh
+bash install-macos-release.sh
+```
+
+The script copies the app to `/Applications` (`~/Applications` without admin rights) and the AU/VST3 bundles to the standard user plug-in folders (backing up any existing install first), clears the quarantine flag from only those zynamfx bundles, and refreshes the AU registration. Gatekeeper stays enabled. Only run it for bundles from the official releases; stop if macOS reports malware or a damaged bundle. `bash install-macos-release.sh --help` shows app-only and plug-ins-only options.
+
 ### Gatekeeper on first launch
 
 The release builds are ad-hoc signed but not notarized, so macOS may warn that it cannot verify the developer. Only use this exception for a copy downloaded from the [official zynamfx releases](https://github.com/zackyusof/zynamfx/releases), and stop if macOS reports that the app contains malware or is damaged.
