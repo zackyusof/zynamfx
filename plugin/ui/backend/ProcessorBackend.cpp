@@ -1,6 +1,7 @@
 #include "ProcessorBackend.h"
 
 #include "WindowKeyEvents.h"
+#include "core/BuildIdentity.h"
 
 namespace t3k::ui {
 
@@ -255,7 +256,12 @@ void ProcessorBackend::cancelAutoOffset() { processor_.cancelAutoOffset(); }
 juce::var ProcessorBackend::pollAutoOffset() { return processor_.pollAutoOffset(); }
 
 // Misc
-juce::String ProcessorBackend::pluginVersion() { return JucePlugin_VersionString; }
+juce::String ProcessorBackend::pluginVersion() {
+  // The display label carries the prerelease suffix when there is one: it is what support sees and
+  // what UpdateCheck treats as "this build is a beta, never prompt it to update".
+  const auto label = t3k::ui::build::displayVersion();
+  return label.isNotEmpty() ? label : juce::String(JucePlugin_VersionString);
+}
 juce::String ProcessorBackend::uniqueDeviceId() { return juce::SystemStats::getUniqueDeviceID(); }
 void ProcessorBackend::setAccessToken(const juce::String& token) {
   processor_.setAccessToken(token);

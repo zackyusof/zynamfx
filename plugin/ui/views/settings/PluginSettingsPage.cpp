@@ -100,6 +100,11 @@ public:
     field_.setName("TONE3000 API key");
     field_.onEnter = [this] { commit(); };
     field_.onBlur = [this] { commit(); };
+    error_.setFont(Fonts::sans(11.0f));
+    error_.setColour(juce::Label::textColourId, juce::Colour(0xffe5484d));
+    error_.setJustificationType(juce::Justification::centredLeft);
+    error_.setInterceptsMouseClicks(false, false);
+    addChildComponent(error_);
     addAndMakeVisible(field_);
     sync();
   }
@@ -110,20 +115,47 @@ public:
     field_.setText(fork::customPublishableKey(prefs_));
   }
 
-  float heightFor(float) const override { return static_cast<float>(form::fieldHeight()); }
+  float heightFor(float) const override {
+    // The inline error sits under the field; hidden it takes no space and the form re-flows.
+    return static_cast<float>(form::fieldHeight() + (error_.isVisible() ? kErrorHeight : 0));
+  }
 
-  void resized() override { field_.setBounds(getLocalBounds()); }
+  void resized() override {
+    auto area = getLocalBounds();
+    field_.setBounds(error_.isVisible() ? area.removeFromTop(form::fieldHeight()) : area);
+    if (error_.isVisible()) error_.setBounds(area.removeFromTop(kErrorHeight));
+  }
 
 private:
+  static constexpr int kErrorHeight = 18;
+
+  // A key is either usable or the user is told why. The setter silently drops t3k_cs_ (server)
+  // secrets, which reads as "the field rejects my key" — the report in issue #1.
   void commit() {
-    fork::setCustomPublishableKey(prefs_, field_.text());
+    const auto text = field_.text().trim();
+    juce::String error;
+    if (text.startsWithIgnoreCase("t3k_cs_"))
+      error = "That is a secret key (t3k_cs_). Use the publishable key (t3k_pub_).";
+    else if (text.isNotEmpty() && !text.startsWithIgnoreCase("t3k_pub_"))
+      error = "Publishable keys start with t3k_pub_.";
+    else
+      fork::setCustomPublishableKey(prefs_, text);
+
+    const bool wasVisible = error_.isVisible();
+    error_.setText(error, juce::dontSendNotification);
+    error_.setVisible(error.isNotEmpty());
+    if (wasVisible != error_.isVisible()) {
+      resized();
+      heightChanged();
+    }
     if (onCommit_) onCommit_();
-    sync();
+    if (error.isEmpty()) sync();  // keep the user's text on screen while they fix it
   }
 
   UiPrefs& prefs_;
   std::function<void()> onCommit_;
   TextField field_;
+  juce::Label error_;
 };
 
 // PluginSettingsPage

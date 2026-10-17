@@ -10,7 +10,9 @@ TextField::TextField() : border_(theme::kBorder) {
   editor_.setMultiLine(false);
   editor_.setReturnKeyStartsNewLine(false);
   editor_.setScrollbarsShown(false);
-  editor_.setPopupMenuEnabled(false);
+  // Right-click -> Paste must work: pasting the publishable key is the common path, and
+  // disabling the text menu made the field look like it rejected paste (only Cmd+V worked).
+  editor_.setPopupMenuEnabled(true);
   editor_.setBorder({});
   editor_.setIndents(0, 0);
   editor_.setJustification(juce::Justification::centredLeft);

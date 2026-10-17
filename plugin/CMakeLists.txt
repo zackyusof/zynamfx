@@ -499,12 +499,22 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE NAM_ENABLE_A2_FAST)
 # build (-DT3K_FORK_NAMESPACED=ON) swaps them (see cmake/ForkIdentity.cmake).
 # T3K_REPO_URL / T3K_BUILD_CHANNEL carry the build's repository identity (Gitea
 # development vs GitHub public) into the in-app logo link and Settings footer.
+# Pre-release label (e.g. "beta.1"), kept out of VERSION because CMake's
+# project(VERSION ...) accepts only numeric components. Absent file -> empty label, so a stable
+# build is unchanged.
+set(T3K_PRERELEASE "")
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../PRERELEASE")
+    file(READ "${CMAKE_CURRENT_SOURCE_DIR}/../PRERELEASE" T3K_PRERELEASE)
+    string(STRIP "${T3K_PRERELEASE}" T3K_PRERELEASE)
+endif()
+
 target_compile_definitions(${PROJECT_NAME} PRIVATE
     "T3K_DISPLAY_NAME=\"${T3K_DISPLAY_NAME}\""
     "T3K_APP_DATA_DIR_NAME=\"${T3K_APP_DATA_DIR_NAME}\""
     "T3K_REPO_URL=\"${T3K_REPO_URL}\""
     "T3K_BUILD_CHANNEL=\"${T3K_BUILD_CHANNEL}\""
-    "T3K_VERSION=\"${T3K_VERSION}\"")
+    "T3K_VERSION=\"${T3K_VERSION}\""
+    "T3K_PRERELEASE=\"${T3K_PRERELEASE}\"")
 
 # JUCE modules used
 target_link_libraries(${PROJECT_NAME}

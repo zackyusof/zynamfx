@@ -69,6 +69,8 @@ protected:
 
   bool dropArmed() const { return dropArmed_; }
   bool menuOpen() const { return menu_ != nullptr && menu_->isOpen(); }
+  // Show the tile's action sheet (the same sheet a right-click opens) from a primary click.
+  void showMenu(juce::Point<int> at) { openMenu(at); }
   Services& services() { return services_; }
 
 private:

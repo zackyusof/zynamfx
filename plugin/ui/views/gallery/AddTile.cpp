@@ -38,11 +38,17 @@ void AddTile::setRouting(Routing routing) {
 void AddTile::setCanPaste(bool canPaste) { canPaste_ = canPaste; }
 
 void AddTile::open() {
-  if (onAdd) onAdd(blockId());
+  // The plus is the discovery path: a plain click must reveal the same actions as a right-click.
+  // Hosted AU/VST3 insertion lives only in this sheet, and hiding it behind a right-click is why
+  // users concluded the feature did not exist.
+  showMenu(getLocalBounds().getCentre());
 }
 
 std::vector<ContextMenu::Item> AddTile::menuItems() {
   std::vector<ContextMenu::Item> items{
+      // The action the tile used to perform on a plain click, kept first so the sheet loses nothing.
+      {"Choose Tone...", Icon::File, help::Key::addTile,
+       [this] { if (onAdd) onAdd(blockId()); }},
       {"Add AU/VST3 Effect", Icon::File, help::Key::loadFileTile,
        [this] { chooseInstalledEffect(); }},
       {"Paste", Icon::ClipboardPaste, help::Key::pasteBlock,

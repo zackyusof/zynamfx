@@ -8,6 +8,14 @@ UpdateCheck::UpdateCheck(ToneSession& session, UiPrefs& prefs, const juce::Strin
     : session_(session), prefs_(prefs), localVersion_(localVersion), enabled_(enabled) {
   session_.addListener(this);
   if (!enabled_ || localVersion_.isEmpty()) return;
+  // A prerelease build never checks for updates. Testers must not be moved onto another channel by a
+  // published version, and a beta must never be told a stable release supersedes it mid-test.
+  if (localVersion_.containsIgnoreCase("-beta") || localVersion_.containsIgnoreCase("-rc") ||
+      localVersion_.containsIgnoreCase("-alpha")) {
+    juce::Logger::writeToLog("[update] disabled: prerelease build " + localVersion_);
+    enabled_ = false;
+    return;
+  }
   // Like the web's mount effect: after the editor has finished coming up.
   juce::MessageManager::callAsync(scope_.wrap([this] { check(); }));
   startTimer(kRecheckMs);

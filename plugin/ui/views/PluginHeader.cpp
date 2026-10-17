@@ -39,7 +39,7 @@ public:
     Brand::drawZyMark(g, {90.0f, 2.0f, 36.0f, 20.0f});
     // The build's version, discretely, beside the ZY monogram (see
     // BuildIdentity.h). The ZY mark ends at x=126; nothing else sits here.
-    const auto version = build::version();
+    const auto version = build::displayVersion();
     if (version.isNotEmpty()) {
       g.setFont(Fonts::mono(9.0f));
       g.setColour(theme::kMuted);

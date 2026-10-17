@@ -231,6 +231,7 @@ juce::String Tone3000Session::openBrowser(const juce::String& url) {
 
 void Tone3000Session::login(LoginIntent intent) {
   if (config_.publishableKey.isEmpty()) {
+    juce::Logger::writeToLog("[auth] login refused: no publishable key configured");
     setFlow(AuthFlow::Phase::error, kNoKeyMessage);
     return;
   }
@@ -239,11 +240,15 @@ void Tone3000Session::login(LoginIntent intent) {
   // The sign-in screen comes up at once; the browser takes a beat.
   setFlow(AuthFlow::Phase::leaving);
   if (!loopback_.start()) {
+    juce::Logger::writeToLog("[auth] login failed: no loopback port could be bound");
     setFlow(AuthFlow::Phase::error, kLoopbackFailed);
     return;
   }
   pkce_ = oauth::Pkce::generate();
   redirectUri_ = loopback_.redirectUri();
+  juce::Logger::writeToLog("[auth] login started: listener 127.0.0.1:" +
+                           juce::String(loopback_.port()) + " | redirect=" + redirectUri_ +
+                           " | prompt=select_tone (the catalogue page IS the consent screen)");
   juce::StringPairArray extra;
   extra.set("menubar", "true");
   extra.set("prompt", "select_tone");
@@ -276,6 +281,12 @@ void Tone3000Session::handleCallback(const juce::String& query) {
   stopDeviceFlow();  // the browser won the race
 
   const auto cb = oauth::Callback::parse(query, pkce.state);
+  juce::Logger::writeToLog(
+      juce::String("[auth] callback parsed: kind=") +
+      (cb.kind == oauth::Callback::Kind::code ? "code"
+                                             : cb.kind == oauth::Callback::Kind::canceled ? "canceled" : "error") +
+      (cb.error.isNotEmpty() ? " (" + cb.error + ")" : "") +
+      " | tone=" + juce::String(cb.toneId));
   switch (cb.kind) {
     case oauth::Callback::Kind::canceled:
       setFlow(AuthFlow::Phase::idle);
@@ -290,6 +301,7 @@ void Tone3000Session::handleCallback(const juce::String& query) {
   client_.exchangeCode(cb.code, pkce.verifier, redirectUri_, scope_.wrap([this, toneId = cb.toneId](Result<Tokens> tokens) {
     if (flow_.phase != AuthFlow::Phase::returning) return;  // cancelled meanwhile
     if (!tokens) {
+      juce::Logger::writeToLog("[auth] token exchange failed: " + tokens.error);
       setFlow(AuthFlow::Phase::error, tokens.error);
       return;
     }
@@ -303,6 +315,7 @@ void Tone3000Session::handleCallback(const juce::String& query) {
 }
 
 void Tone3000Session::finishSignIn(const Tokens& tokens) {
+  juce::Logger::writeToLog("[auth] signed in: tokens stored");
   const bool wantsBrowser = lastIntent_ == LoginIntent::browse;
   loopback_.stop();
   pkce_.reset();

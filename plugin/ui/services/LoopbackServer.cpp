@@ -111,6 +111,15 @@ void LoopbackServer::serve(juce::StreamingSocket& client) {
     return;
   }
   const auto query = target.fromFirstOccurrenceOf("?", false, false);
+  // The sign-in flow used to be silent end to end, so a browser that never came back left no trace.
+  // Parameter NAMES only: the values carry the code and state, which must never reach the log.
+  {
+    juce::StringArray present;
+    for (const auto& name : juce::URL("http://localhost/?" + query).getParameterNames())
+      if (name.isNotEmpty()) present.add(name);
+    juce::Logger::writeToLog("[auth] loopback callback on 127.0.0.1:" + juce::String(port_) +
+                             " | params=" + present.joinIntoString(","));
+  }
   // A code means success as far as the page can tell (the state check and
   // the exchange come after); the session judges the rest.
   const bool signedIn = juce::URL("http://localhost/?" + query).getParameterNames().contains("code");

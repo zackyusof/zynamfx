@@ -62,6 +62,14 @@ TONE3000Processor::TONE3000Processor()
       " | dataDir=" +
       (getSettingsFile().getParentDirectory().hasWriteAccess() ? "writable" : "NOT WRITABLE"));
 
+  // Build identity next: every support report needs the version, OS and architecture, and asking for
+  // them costs a round trip. Written at construction so it is the first line of any session.
+  juce::Logger::writeToLog(
+      juce::String("[Processor] zynamfx ") + JucePlugin_VersionString + " | " +
+      juce::SystemStats::getOperatingSystemName() + " | " +
+      juce::SystemStats::getCpuArchitecture() + " | " +
+      (juce::SystemStats::isOperatingSystem64Bit() ? "64-bit" : "32-bit"));
+
   resolveParamRefs();
 
   // Seed the Settings-page parameters (calibration, oversampling) from the
