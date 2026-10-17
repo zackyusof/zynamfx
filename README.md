@@ -37,6 +37,32 @@ Other tools make you choose: a capture player *or* a plugin host *or* a paid rig
 
 [Download](#install) · [Build from source](#build-from-source) · [Releases](https://github.com/zackyusof/zynamfx/releases) · [Documentation](#documentation) · [Version 2 compared with Version 1](#version-2-compared-with-version-1) · [License](#licensing-and-attribution)
 
+## What 2.0.2 beta 1 changes
+
+**This is a beta.** It is published as a GitHub *prerelease*: it is never offered as an update to anyone,
+and a beta build never checks for updates itself. Use it to test the fixes below and report back on the
+issue that matches your symptom.
+
+### Fixed
+- **Paste works in every text field.** The text menu had been disabled, so right-click -> Paste did
+  nothing in the TONE3000 API-key field (only Cmd+V worked).
+- **A rejected API key now says why.** A secret key (`t3k_cs_...`) or a value without the `t3k_pub_`
+  prefix used to be dropped silently. The field now explains the problem and keeps your text so you can
+  correct it.
+- **Hosted effects are discoverable.** A plain click on the **+** tile now opens the action sheet:
+  *Choose Tone...*, **Add AU/VST3 Effect**, Paste, Load File, Load Folder. The AU/VST3 chooser used to
+  be reachable only by right-click, which made the feature look missing. Right-click is unchanged.
+
+### Added
+- **Sign-in diagnostics in the log.** The listener port, the callback parameter names, the redirect URI,
+  the parsed callback result (`missing_code`, `state_mismatch`, ...) and the token-exchange outcome are
+  now written to the log. Parameter *values* are never logged.
+- **Build identity as the first log line:** version, OS, CPU and bit width — so a support report carries
+  them without a round trip.
+
+If sign-in still does not persist, the log now names the stage it stopped at. Add it to
+[issue #8](https://github.com/zackyusof/zynamfx/issues/8) with your macOS version and artefact.
+
 ## Install
 
 The [latest release](https://github.com/zackyusof/zynamfx/releases/latest) contains the macOS Apple Silicon Standalone app, AU/VST3 plug-ins, and the corresponding source archive. Builds are ad-hoc signed and are not notarized. See the release notes for installation instructions and supported formats.

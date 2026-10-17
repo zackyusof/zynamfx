@@ -67,7 +67,7 @@ TONE3000Processor::TONE3000Processor()
   juce::Logger::writeToLog(
       juce::String("[Processor] zynamfx ") + JucePlugin_VersionString + " | " +
       juce::SystemStats::getOperatingSystemName() + " | " +
-      juce::SystemStats::getCpuArchitecture() + " | " +
+      juce::SystemStats::getCpuModel() + " | " +
       (juce::SystemStats::isOperatingSystem64Bit() ? "64-bit" : "32-bit"));
 
   resolveParamRefs();
