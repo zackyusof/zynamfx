@@ -110,6 +110,58 @@ Public builds contain no API key, account token, or downloaded catalog model. Co
 
 The interface identifies the integration as **Powered by TONE3000** and links to [tone3000.com](https://www.tone3000.com). zynamfx uses its own wordmark and graphics. It does not use TONE3000's logo or claim affiliation, approval, or endorsement. Any creator content remains subject to its creator-selected license and attribution requirements.
 
+## Common questions
+
+Short, factual answers to the questions that come up most. Everything below describes the **current
+release** (v2.0.1); check the release notes for the build you are running.
+
+**How do I insert my own AU/VST3 effect into the chain?**
+**Right-click the effect list** and choose **Add AU/VST3 Effect**. The chooser lists the AudioUnits and
+VST3s already installed on the machine; in 2.0.1 the search field at the top of the chooser filters that
+list (empty query keeps the vendor → effect browsing). Searching only filters what is already listed — it
+does not scan or instantiate anything. There is no separate visible "+" button in 2.0.1, which is why
+this trips people up. Effects that declare extra buses (side-chains) load and render as of 2.0.1: the
+chain feeds extra buses silence instead of disabling them.
+
+**How does TONE3000 sign-in work, and should it stay signed in?**
+Set your own **publishable key** (client_id) in **Settings → Plugin → TONE3000 API key**, then restart
+and sign in. The sign-in opens TONE3000's hosted **Select** page; that page is the selection and consent
+surface, so there is no separate "Authorize" screen on this flow. Your selection is handed back to
+zynamfx and loaded locally. Sign-in is meant to **persist** — the app stores its token set in its
+preferences, so a fresh browser round trip for every tone is *not* the intended behaviour. If you see
+that, it is tracked in [issue #8](https://github.com/zackyusof/zynamfx/issues/8); please add your build
+version (the string beside the ZY monogram), the artefact you installed, macOS version, whether you run
+the Standalone or a DAW, and the log from `~/Library/Logs/zynamfx/zynamfx.log`.
+
+**Which builds exist, and where do I get them?**
+Everything ships from the [Releases page](https://github.com/zackyusof/zynamfx/releases/latest): a
+Standalone app, an Audio Unit, a VST3, and a matching source archive, plus `INSTALL.txt` and
+`UPSTREAM.txt`. Builds are **macOS Apple Silicon** only, ad-hoc signed and not notarized. No Windows
+binary is published.
+
+**Spread or Offset — which control does the plug-in have?**
+They are not two separate controls. **Spread is the feature; Offset is its single knob** — the stereo
+image slot holds one feature, keyed to one parameter.
+
+**Is there a Windows version?**
+No. A Windows build is **not planned by the maintainer**; others are welcome to build or port one, and
+the matching source is published for that reason. There is no ETA, because no work is scheduled. If you
+need the workflow on Windows today, run the official free TONE3000 plug-in inside a VST3 host and put
+your effects beside it — Reaper, Kushview Element, Cantabile, Gig Performer and Blue Cat PatchWork can
+all do that. No Windows NAM player hosts third-party VST3s itself, which is the gap zynamfx fills on macOS.
+
+**Why a separate fork instead of changes upstream?**
+zynamfx is an independent derivative of the open-source TONE3000 plug-in, not a patch series against it.
+It keeps the upstream NAM/IR processing and adds its own interface, a seven-slot chain, resizable
+editor, and hosted AU/VST3 effects. Upstream provenance for every release is in `UPSTREAM.txt`. It is
+not an official TONE3000 product and claims no endorsement.
+
+**Where should I report a problem?**
+[Open an issue](https://github.com/zackyusof/zynamfx/issues) with: the build version (shown beside the ZY
+monogram), the artefact you installed (`-standalone`, `-au`, `-vst3`, or a source build), your macOS
+version and Mac model, whether you are in the Standalone app or a DAW, the exact steps, what you expected
+and what happened, and the relevant part of `~/Library/Logs/zynamfx/zynamfx.log`.
+
 ## macOS configuration and data locations
 
 Per-user zynamfx files are stored under `~/Library/Application Support/zynamfx/`:
