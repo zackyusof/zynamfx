@@ -144,6 +144,32 @@ public:
   virtual void cancelAutoOffset() = 0;
   virtual juce::var pollAutoOffset() = 0;
 
+  // Metronome & Jam Track
+  virtual void setMetronomeEnabled(bool enabled) { (void)enabled; }
+  virtual bool isMetronomeEnabled() const { return false; }
+  virtual void setMetronomeBpm(float bpm) { (void)bpm; }
+  virtual float getMetronomeBpm() const { return 120.0f; }
+  virtual void setMetronomeGain(float gain) { (void)gain; }
+  virtual float getMetronomeGain() const { return 0.75f; }
+  virtual void setMetronomeBeatsPerBar(int beats) { (void)beats; }
+  virtual int getMetronomeBeatsPerBar() const { return 4; }
+  virtual int getMetronomeCurrentBeat() const { return 0; }
+
+  virtual bool loadJamTrackFile(const juce::File& file) { (void)file; return false; }
+  virtual void playJamTrack() {}
+  virtual void pauseJamTrack() {}
+  virtual void stopJamTrack() {}
+  virtual bool isJamTrackPlaying() const { return false; }
+  virtual bool isJamTrackLoaded() const { return false; }
+  virtual juce::String getJamTrackName() const { return {}; }
+  virtual double getJamTrackLengthSeconds() const { return 0.0; }
+  virtual double getJamTrackPositionSeconds() const { return 0.0; }
+  virtual void setJamTrackPositionSeconds(double seconds) { (void)seconds; }
+  virtual void setJamTrackLooping(bool loop) { (void)loop; }
+  virtual bool isJamTrackLooping() const { return true; }
+  virtual void setJamTrackGain(float gain) { (void)gain; }
+  virtual float getJamTrackGain() const { return 0.8f; }
+
   // Misc
   virtual juce::String pluginVersion() = 0;
   virtual juce::String uniqueDeviceId() = 0;

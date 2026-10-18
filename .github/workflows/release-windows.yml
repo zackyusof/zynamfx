@@ -1,0 +1,83 @@
+name: Windows x64 build and release
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_release:
+        description: Upload artifacts to existing GitHub release (tag matching VERSION)
+        required: false
+        default: false
+        type: boolean
+  push:
+    tags:
+      - "v2.*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: windows-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-windows:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Setup MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Set up Steinberg ASIO SDK
+        shell: pwsh
+        run: |
+          .\script\setup-asio-sdk.ps1
+
+      - name: Configure CMake
+        shell: pwsh
+        run: |
+          cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build Targets
+        shell: pwsh
+        run: |
+          cmake --build build --config Release --parallel
+
+      - name: Package Windows Artifacts
+        shell: pwsh
+        run: |
+          .\script\package-windows-release.ps1
+
+      - name: Upload Build Artifacts (CI artifact store)
+        uses: actions/upload-artifact@v4
+        with:
+          name: zynamfx-windows-x64
+          path: release/*
+
+      - name: Upload to GitHub Release
+        if: github.event_name == 'push' || inputs.publish_release == true
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $Version = (Get-Content VERSION).Trim()
+          $Tag = "v$Version"
+          Write-Host "Publishing Windows artifacts for $Tag..."
+
+          $files = (Get-ChildItem -Path release -File | ForEach-Object { $_.FullName })
+          $releaseExists = $false
+          $null = gh release view $Tag 2>&1
+          if ($LASTEXITCODE -eq 0) { $releaseExists = $true }
+
+          if ($releaseExists) {
+              Write-Host "Release $Tag exists, uploading Windows artifacts..."
+              gh release upload $Tag @files --clobber
+          } else {
+              Write-Host "Release $Tag does not exist yet. Creating release $Tag..."
+              gh release create $Tag @files --title "zynamfx $Tag (Windows x64)" --generate-notes
+          }

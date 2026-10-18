@@ -114,6 +114,32 @@ public:
   void cancelAutoOffset() override;
   juce::var pollAutoOffset() override;
 
+  // Metronome & Jam Track
+  void setMetronomeEnabled(bool enabled) override;
+  bool isMetronomeEnabled() const override;
+  void setMetronomeBpm(float bpm) override;
+  float getMetronomeBpm() const override;
+  void setMetronomeGain(float gain) override;
+  float getMetronomeGain() const override;
+  void setMetronomeBeatsPerBar(int beats) override;
+  int getMetronomeBeatsPerBar() const override;
+  int getMetronomeCurrentBeat() const override;
+
+  bool loadJamTrackFile(const juce::File& file) override;
+  void playJamTrack() override;
+  void pauseJamTrack() override;
+  void stopJamTrack() override;
+  bool isJamTrackPlaying() const override;
+  bool isJamTrackLoaded() const override;
+  juce::String getJamTrackName() const override;
+  double getJamTrackLengthSeconds() const override;
+  double getJamTrackPositionSeconds() const override;
+  void setJamTrackPositionSeconds(double seconds) override;
+  void setJamTrackLooping(bool loop) override;
+  bool isJamTrackLooping() const override;
+  void setJamTrackGain(float gain) override;
+  float getJamTrackGain() const override;
+
   juce::String pluginVersion() override;
   juce::String uniqueDeviceId() override;
   void setAccessToken(const juce::String& token) override;

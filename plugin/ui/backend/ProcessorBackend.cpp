@@ -339,4 +339,97 @@ bool ProcessorBackend::forwardKeyToHost(HostKey key) {
   return true;
 }
 
+// Metronome & Jam Track
+void ProcessorBackend::setMetronomeEnabled(bool enabled) {
+  processor_.getJamPlayer().setMetronomeEnabled(enabled);
+}
+
+bool ProcessorBackend::isMetronomeEnabled() const {
+  return processor_.getJamPlayer().isMetronomeEnabled();
+}
+
+void ProcessorBackend::setMetronomeBpm(float bpm) {
+  processor_.getJamPlayer().setMetronomeBpm(bpm);
+}
+
+float ProcessorBackend::getMetronomeBpm() const {
+  return processor_.getJamPlayer().getMetronomeBpm();
+}
+
+void ProcessorBackend::setMetronomeGain(float gain) {
+  processor_.getJamPlayer().setMetronomeGain(gain);
+}
+
+float ProcessorBackend::getMetronomeGain() const {
+  return processor_.getJamPlayer().getMetronomeGain();
+}
+
+void ProcessorBackend::setMetronomeBeatsPerBar(int beats) {
+  processor_.getJamPlayer().setBeatsPerBar(beats);
+}
+
+int ProcessorBackend::getMetronomeBeatsPerBar() const {
+  return processor_.getJamPlayer().getBeatsPerBar();
+}
+
+int ProcessorBackend::getMetronomeCurrentBeat() const {
+  return processor_.getJamPlayer().getCurrentBeat();
+}
+
+bool ProcessorBackend::loadJamTrackFile(const juce::File& file) {
+  return processor_.getJamPlayer().loadTrackFile(file);
+}
+
+void ProcessorBackend::playJamTrack() {
+  processor_.getJamPlayer().play();
+}
+
+void ProcessorBackend::pauseJamTrack() {
+  processor_.getJamPlayer().pause();
+}
+
+void ProcessorBackend::stopJamTrack() {
+  processor_.getJamPlayer().stop();
+}
+
+bool ProcessorBackend::isJamTrackPlaying() const {
+  return processor_.getJamPlayer().isPlaying();
+}
+
+bool ProcessorBackend::isJamTrackLoaded() const {
+  return processor_.getJamPlayer().isTrackLoaded();
+}
+
+juce::String ProcessorBackend::getJamTrackName() const {
+  return processor_.getJamPlayer().getTrackName();
+}
+
+double ProcessorBackend::getJamTrackLengthSeconds() const {
+  return processor_.getJamPlayer().getTrackLengthSeconds();
+}
+
+double ProcessorBackend::getJamTrackPositionSeconds() const {
+  return processor_.getJamPlayer().getPlaybackPositionSeconds();
+}
+
+void ProcessorBackend::setJamTrackPositionSeconds(double seconds) {
+  processor_.getJamPlayer().setPlaybackPositionSeconds(seconds);
+}
+
+void ProcessorBackend::setJamTrackLooping(bool loop) {
+  processor_.getJamPlayer().setLooping(loop);
+}
+
+bool ProcessorBackend::isJamTrackLooping() const {
+  return processor_.getJamPlayer().isLooping();
+}
+
+void ProcessorBackend::setJamTrackGain(float gain) {
+  processor_.getJamPlayer().setTrackGain(gain);
+}
+
+float ProcessorBackend::getJamTrackGain() const {
+  return processor_.getJamPlayer().getTrackGain();
+}
+
 }  // namespace t3k::ui

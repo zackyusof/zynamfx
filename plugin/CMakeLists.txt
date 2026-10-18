@@ -397,6 +397,8 @@ target_sources(${PROJECT_NAME}
         src/TunerDetector.cpp
         include/PitchShift.h
         src/PitchShift.cpp
+        include/JamPlayer.h
+        src/JamPlayer.cpp
 )
 
 # Include GUI for Desktop builds
@@ -522,6 +524,7 @@ target_link_libraries(${PROJECT_NAME}
         juce::juce_core
         juce::juce_dsp
         juce::juce_events
+        juce::juce_audio_formats
         juce::juce_audio_utils
         juce::juce_audio_devices
         juce::juce_audio_processors
@@ -561,9 +564,14 @@ add_dependencies(${PROJECT_NAME} NAM)
 # testbed keeps JUCE_WEB_BROWSER=0 and compiles the panel as a notice.
 # Likewise the vendored libwebp (JUCE 9.0.3+): nothing here reads or writes
 # WebP.
+if (APPLE)
+    set(_t3k_web_browser 1)
+else()
+    set(_t3k_web_browser 0)
+endif()
 target_compile_definitions(${PROJECT_NAME}
     PUBLIC
-        JUCE_WEB_BROWSER=1
+        JUCE_WEB_BROWSER=${_t3k_web_browser}
         JUCE_USE_WEBP=0
         JUCE_VST3_CAN_REPLACE_VST2=0
 )
@@ -634,6 +642,9 @@ if (WIN32)
         # -DASIO_SDK_PATH=<dir> (CI does this automatically). Without the SDK
         # the build still works, just without an ASIO option in the device list.
         set(ASIO_SDK_PATH "" CACHE PATH "Path to the Steinberg ASIO SDK (enables JUCE_ASIO)")
+        if (NOT ASIO_SDK_PATH AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../libs/asiosdk/ASIOSDK/common/iasiodrv.h")
+            set(ASIO_SDK_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../libs/asiosdk/ASIOSDK" CACHE PATH "Path to the Steinberg ASIO SDK (enables JUCE_ASIO)" FORCE)
+        endif()
         if (ASIO_SDK_PATH AND EXISTS "${ASIO_SDK_PATH}/common/iasiodrv.h")
             target_compile_definitions(${PROJECT_NAME} PUBLIC JUCE_ASIO=1)
             target_include_directories(${PROJECT_NAME} PUBLIC "${ASIO_SDK_PATH}/common")

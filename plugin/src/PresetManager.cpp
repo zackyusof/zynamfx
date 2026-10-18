@@ -67,10 +67,18 @@ juce::File PresetManager::defaultSystemFactoryDir() {
   return juce::File("/Library/Application Support/zynamfx/Presets/Factory");
 #elif JUCE_WINDOWS
   // ProgramData; matches the Inno Setup {commonappdata} destination.
-  return juce::File::getSpecialLocation(juce::File::commonApplicationDataDirectory)
-      .getChildFile("TONE3000")
+  const auto dir = juce::File::getSpecialLocation(juce::File::commonApplicationDataDirectory)
+      .getChildFile(T3K_APP_DATA_DIR_NAME)
       .getChildFile("Presets")
       .getChildFile("Factory");
+  if (!dir.isDirectory() && juce::String(T3K_APP_DATA_DIR_NAME) != "TONE3000") {
+    const auto upstream = juce::File::getSpecialLocation(juce::File::commonApplicationDataDirectory)
+        .getChildFile("TONE3000")
+        .getChildFile("Presets")
+        .getChildFile("Factory");
+    if (upstream.isDirectory()) return upstream;
+  }
+  return dir;
 #elif JUCE_LINUX
   // The tarball installs per-user (into factoryDir); this path is the hook
   // for system-wide/distro packaging.

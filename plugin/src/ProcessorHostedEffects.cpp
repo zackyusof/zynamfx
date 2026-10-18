@@ -156,21 +156,35 @@ juce::var TONE3000Processor::listHostedEffectBundles() const {
     if (!folder.isDirectory())
       return;
     for (const auto& entry : juce::RangedDirectoryIterator(
-             folder, /*recursive*/ false, wildcard, juce::File::findDirectories)) {
+             folder, /*recursive*/ true, wildcard, juce::File::findFilesAndDirectories)) {
       auto* item = new juce::DynamicObject();
       item->setProperty("name", entry.getFile().getFileNameWithoutExtension());
       item->setProperty("format", format);
       item->setProperty("path", entry.getFile().getFullPathName());
 #if JUCE_MAC
       item->setProperty("vendor", vendorFromBundleId(bundleIdentifier(entry.getFile())));
+#elif JUCE_WINDOWS
+      auto parentDir = entry.getFile().getParentDirectory();
+      auto parentName = parentDir.getFileName();
+      if (parentName.isNotEmpty() && parentName.compareIgnoreCase("VST3") != 0 && parentDir != folder)
+        item->setProperty("vendor", parentName);
+      else
+        item->setProperty("vendor", "Other");
 #else
       item->setProperty("vendor", "Other");
 #endif
       result.add(juce::var(item));
     }
   };
+#if JUCE_MAC
   addDir("/Library/Audio/Plug-Ins/Components", "*.component", "AudioUnit");
   addDir("/Library/Audio/Plug-Ins/VST3", "*.vst3", "VST3");
+#elif JUCE_WINDOWS
+  const auto commonFiles = juce::File::getSpecialLocation(juce::File::windowsProgramFilesCommon);
+  addDir(commonFiles.getChildFile("VST3").getFullPathName(), "*.vst3", "VST3");
+  const auto localAppData = juce::File::getSpecialLocation(juce::File::windowsLocalAppData);
+  addDir(localAppData.getChildFile("Programs/Common/VST3").getFullPathName(), "*.vst3", "VST3");
+#endif
   return result;
 }
 
@@ -181,13 +195,18 @@ juce::var TONE3000Processor::listHostedEffects() const {
     auto* format = formats->getFormat(i);
     if (format == nullptr || (format->getName() != "AudioUnit" && format->getName() != "VST3"))
       continue;
-    // Hardcoded standard macOS locations, one per format, instead of every default
-    // location JUCE would otherwise walk. Predictable and fast.
     juce::FileSearchPath searchPaths;
+#if JUCE_MAC
     if (format->getName() == "AudioUnit")
       searchPaths.add(juce::File("/Library/Audio/Plug-Ins/Components"));
     else if (format->getName() == "VST3")
       searchPaths.add(juce::File("/Library/Audio/Plug-Ins/VST3"));
+#elif JUCE_WINDOWS
+    if (format->getName() == "VST3") {
+      searchPaths.add(juce::File::getSpecialLocation(juce::File::windowsProgramFilesCommon).getChildFile("VST3"));
+      searchPaths.add(juce::File::getSpecialLocation(juce::File::windowsLocalAppData).getChildFile("Programs/Common/VST3"));
+    }
+#endif
     auto identifiers = format->searchPathsForPlugins(searchPaths, false, false);
     for (const auto& identifier : identifiers) {
       juce::OwnedArray<juce::PluginDescription> descriptions;

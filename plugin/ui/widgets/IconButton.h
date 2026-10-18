@@ -27,6 +27,7 @@ public:
   IconButton(const char* svg, int boxSize, int glyphSize);
 
   void setIcon(Icon icon);
+  void setSvg(const char* svg);
   // Lit (white) vs muted; defaults lit.
   void setActive(bool active);
   // Show the HIGHLIGHT fill behind the icon while active.

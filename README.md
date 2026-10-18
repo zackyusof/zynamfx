@@ -210,11 +210,13 @@ The diagnostic log is `~/Library/Logs/zynamfx/zynamfx.log`. AU and VST3 chain st
 | Understand the TONE3000 integration | [Integration review](docs/tone3000-integration-2026-10-12.md) · [Hosted effects](docs/hosted-effects.md) |
 | See planned hardware effects send/return | [External effects research](docs/hardware-insert-research-2026-10-12.md) |
 | Check licensing and corresponding source | [LICENSE-SCOPE.md](LICENSE-SCOPE.md) · [SOURCE.md](SOURCE.md) · [UPSTREAM.md](UPSTREAM.md) |
-| Build the app yourself | [Build from source](#build-from-source) |
+| Build the app yourself | [Build from source](#build-from-source) (macOS & Windows) |
+| Build on Windows (x64) | [Windows build guide](docs/windows-build.md) |
 | Report a bug or request a feature | [Issue chooser](https://github.com/zackyusof/zynamfx/issues/new/choose) |
 
 ## Build from source
 
+### macOS
 Requires macOS, Xcode Command Line Tools, CMake, Ninja, and Git.
 
 ```sh
@@ -224,6 +226,17 @@ python3 script/build-stadium-prototype.py
 ```
 
 The build produces `zynamfx.app`, `zynamfx.component` (AU), and `zynamfx.vst3`. Add `--install` to place the app in `/Applications` (or `~/Applications` without admin rights) and the plug-ins in the standard user plug-in folders. The build is keyless by default; enter your own publishable key in the app if you want to use the TONE3000 integration.
+
+### Windows (x64)
+Requires Windows 10/11, Visual Studio 2022 (MSVC v143), CMake, and Git. See the detailed [Windows build guide](docs/windows-build.md) for step-by-step instructions and ASIO setup.
+
+```powershell
+git clone --recurse-submodules https://github.com/zackyusof/zynamfx.git
+cd zynamfx
+powershell -ExecutionPolicy Bypass -File .\script\setup-asio-sdk.ps1
+cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release --parallel
+```
 
 Future hardware send/return support is documented in the [external effects research note](docs/hardware-insert-research-2026-10-12.md). It is a proposed feature, not part of the current release.
 

@@ -24,6 +24,12 @@ void IconButton::setIcon(Icon icon) {
   repaint();
 }
 
+void IconButton::setSvg(const char* svg) {
+  svg_ = svg;
+  icon_ = std::nullopt;
+  repaint();
+}
+
 void IconButton::setActive(bool active) {
   if (active_ == active) return;
   active_ = active;

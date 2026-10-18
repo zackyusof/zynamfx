@@ -78,7 +78,11 @@ void GalleryTile::openHostedEffectMenu() {
   const auto listed = svc.backend.listHostedEffectBundles();
   const auto* array = listed.getArray();
   if (array == nullptr || array->isEmpty()) {
+#if JUCE_MAC
     svc.toast.show("No AU/VST3 effects found in /Library/Audio/Plug-Ins");
+#else
+    svc.toast.show("No VST3 effects found in Common Files/VST3");
+#endif
     return;
   }
 

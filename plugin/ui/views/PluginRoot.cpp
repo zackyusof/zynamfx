@@ -25,6 +25,7 @@ PluginRoot::PluginRoot(Services& services)
   setFocusContainerType(FocusContainerType::keyboardFocusContainer);
 
   header_.onToggleTuner = [this](bool show) { setTunerShown(show); };
+  header_.onToggleJam = [this](bool show) { setJamShown(show); };
   header_.onStereoToggle = [this](bool stereo) {
     closeTunerThen([&] { services_.chain.setStereoMode(stereo); });
   };
@@ -328,7 +329,7 @@ SettingsScreen* PluginRoot::settingsInFront() const {
 DragScroller* PluginRoot::frontScroller() {
   if (updateNotice_ != nullptr || connectionModal_ != nullptr) return nullptr;  // behind a scrim: nothing moves
   if (settings_ != nullptr) return &settings_->scroller();
-  if (tunerShown() || signInShown()) return nullptr;  // neither screen scrolls
+  if (tunerShown() || jamShown() || signInShown()) return nullptr;  // neither screen scrolls
   if (browserShown()) return &browser_->scroller();
   return &main_.chainScreen().scroller();
 }
@@ -383,6 +384,7 @@ void PluginRoot::handleBannerAction(BannerAction action) {
 void PluginRoot::setTunerShown(bool shown) {
   if (shown == tunerShown()) return;
   if (shown) {
+    if (jamShown()) setJamShown(false);
     tuner_ = std::make_unique<TunerView>(services_);
     tuner_->onClose = [this] { setTunerShown(false); };
     addAndMakeVisible(*tuner_);
@@ -392,6 +394,22 @@ void PluginRoot::setTunerShown(bool shown) {
   }
   syncTakeovers();
   header_.setTunerShown(shown);
+  resized();
+}
+
+void PluginRoot::setJamShown(bool shown) {
+  if (shown == jamShown()) return;
+  if (shown) {
+    if (tunerShown()) setTunerShown(false);
+    jam_ = std::make_unique<JamView>(services_);
+    jam_->onClose = [this] { setJamShown(false); };
+    addAndMakeVisible(*jam_);
+    overlay_.toFront(false);
+  } else {
+    jam_.reset();
+  }
+  syncTakeovers();
+  header_.setJamShown(shown);
   resized();
 }
 
@@ -433,12 +451,12 @@ void PluginRoot::setBrowserShown(bool shown) {
 // tick at 30 Hz and would otherwise repaint for nothing.
 void PluginRoot::syncTakeovers() {
   if (authBrowser_ != nullptr) authBrowser_->setBounds(getLocalBounds());
-  const bool tuner = tunerShown(), browser = browserShown(), signIn = signInShown();
+  const bool tuner = tunerShown(), jam = jamShown(), browser = browserShown(), signIn = signInShown();
   const bool column = browser || signIn;  // something covers the whole column
-  main_.setVisible(!tuner && !column);
-  faceplate_.setVisible(tuner || !column);
-  if (browser_) browser_->setVisible(!tuner && !signIn);
-  if (signIn_) signIn_->setVisible(!tuner);
+  main_.setVisible(!tuner && !jam && !column);
+  faceplate_.setVisible(tuner || jam || !column);
+  if (browser_) browser_->setVisible(!tuner && !jam && !signIn);
+  if (signIn_) signIn_->setVisible(!tuner && !jam);
 }
 
 void PluginRoot::closeTunerThen(const std::function<void()>& fn) {
@@ -448,6 +466,7 @@ void PluginRoot::closeTunerThen(const std::function<void()>& fn) {
 
 void PluginRoot::showChainThen(const std::function<void()>& fn) {
   setTunerShown(false);
+  setJamShown(false);
   if (browserShown()) {
     services_.loadFlow.clearPendingTargets();
     setBrowserShown(false);
@@ -509,6 +528,7 @@ void PluginRoot::resized() {
   faceplate_.setBounds(column.removeFromBottom(Faceplate::kHeight));
   main_.setBounds(column);
   if (tuner_) tuner_->setBounds(column);
+  if (jam_) jam_->setBounds(column);
 
   // The toast floats above the faceplate, measured from the overlay's bottom.
   const int belowColumn = getHeight() - (slotH + design::kHeight + hintH);

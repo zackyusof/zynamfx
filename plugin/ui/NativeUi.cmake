@@ -63,9 +63,14 @@ else()
 endif()
 configure_file("${T3K_UI_DIR}/core/T3kConfig.h.in" "${CMAKE_BINARY_DIR}/t3k_ui/T3kConfig.h" @ONLY)
 
+set(_t3k_ui_mm "")
+if (APPLE)
+    file(GLOB_RECURSE _t3k_ui_mm CONFIGURE_DEPENDS "${T3K_UI_DIR}/core/*.mm")
+endif()
+
 file(GLOB_RECURSE T3K_UI_SOURCES CONFIGURE_DEPENDS
     "${T3K_UI_DIR}/core/*.cpp"    "${T3K_UI_DIR}/core/*.h"
-    "${T3K_UI_DIR}/core/*.mm"
+    ${_t3k_ui_mm}
     "${T3K_UI_DIR}/model/*.cpp"   "${T3K_UI_DIR}/model/*.h"
     "${T3K_UI_DIR}/backend/Backend.h"
     "${T3K_UI_DIR}/services/*.cpp" "${T3K_UI_DIR}/services/*.h"

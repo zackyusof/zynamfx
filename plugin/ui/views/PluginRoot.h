@@ -43,6 +43,7 @@
 #include "SignInScreen.h"
 #include "ToastView.h"
 #include "TunerView.h"
+#include "JamView.h"
 #include "auth/AuthBrowserPanel.h"
 #include "browser/ToneBrowser.h"
 #include "core/DelayedCall.h"
@@ -81,6 +82,8 @@ public:
   // detector runs only while it is up.
   void setTunerShown(bool shown);
   bool tunerShown() const { return tuner_ != nullptr; }
+  void setJamShown(bool shown);
+  bool jamShown() const { return jam_ != nullptr; }
   // The tone browser takeover covers everything under the header (meters,
   // chain and faceplate); mounted only while open. A tuner opened over it
   // hides it until the tuner closes.
@@ -156,6 +159,7 @@ private:
   std::unique_ptr<SignInScreen> signIn_;
   std::unique_ptr<AuthBrowserPanel> authBrowser_;
   std::unique_ptr<TunerView> tuner_;
+  std::unique_ptr<JamView> jam_;
   std::unique_ptr<SettingsScreen> settings_;
   Faceplate faceplate_;
   AppBanner banner_;

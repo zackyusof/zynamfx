@@ -53,6 +53,7 @@ PluginHeader::PluginHeader(Services& services)
     : services_(services),
       logo_(std::make_unique<LogoLink>()),
       presetBar_(services),
+      jam_(custom_icons::kMetronome, 28, 18),
       tuner_(custom_icons::kTuningFork, 28, 18) {
   addAndMakeVisible(*logo_);
   addAndMakeVisible(presetBar_);
@@ -61,6 +62,13 @@ PluginHeader::PluginHeader(Services& services)
     if (onStereoToggle) onStereoToggle(stereo);
   };
   addAndMakeVisible(stereo_);
+
+  jam_.setHelpText("Metronome & Jam Track Player");
+  jam_.setFillWhenActive(true);
+  jam_.onClick = [this] {
+    if (onToggleJam) onToggleJam(!jamShown_);
+  };
+  addAndMakeVisible(jam_);
 
   tuner_.setHelpText(help::text(help::Key::tuner));
   tuner_.setFillWhenActive(true);
@@ -96,6 +104,7 @@ PluginHeader::PluginHeader(Services& services)
   sessionChanged();
   chainChanged(services_.chain.state());
   setTunerShown(false);
+  setJamShown(false);
   setSize(design::kWidth, kHeight);
 }
 
@@ -120,6 +129,12 @@ void PluginHeader::setTunerShown(bool shown) {
   // Lit + HIGHLIGHT fill while the tuner is up; the icon itself stays white.
   tuner_.setActive(true);
   tuner_.setFillWhenActive(shown);
+}
+
+void PluginHeader::setJamShown(bool shown) {
+  jamShown_ = shown;
+  jam_.setActive(true);
+  jam_.setFillWhenActive(shown);
 }
 
 void PluginHeader::chainChanged(const ChainState& state) {
@@ -162,6 +177,7 @@ void PluginHeader::resized() {
   x = place(redo_, x) - kPairGap;
   x = place(undo_, x) - kGroupGap;
   x = place(tuner_, x) - kGroupGap;
+  x = place(jam_, x) - kGroupGap;
   x = place(stereo_, x) - kGroupGap;
   place(presetBar_, x);
 }

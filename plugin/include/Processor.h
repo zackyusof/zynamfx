@@ -38,6 +38,7 @@
 #include "StereoOffset.h"
 #include "PresetManager.h"
 #include "TunerDetector.h"
+#include "JamPlayer.h"
 
 class TONE3000Processor;
 
@@ -537,6 +538,7 @@ public:
   // (pre-gain, pre-gate) input so gating never starves the pitch detector.
   void setTunerEnabled(bool enabled) { tuner.setEnabled(enabled); }
   juce::var getTunerReading() { return tuner.getReading(); }
+  t3k::JamPlayer& getJamPlayer() { return jamPlayer; }
 
   // Auto balance: one-shot chain energy match.
   // startAutoBalance() arms a "listening" measurement: the audio thread
@@ -1385,6 +1387,9 @@ private:
 
   // Tuner pitch detection (fed from processBlock when enabled)
   TunerDetector tuner;
+
+  // Jam Track Player & Metronome
+  t3k::JamPlayer jamPlayer;
 
   // Auto balance measurement state.
   // Lock-free audio↔message thread handshake. The audio thread only touches

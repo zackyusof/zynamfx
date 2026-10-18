@@ -22,8 +22,10 @@ public:
   PresetBar& presetBar() { return presetBar_; }
 
   void setTunerShown(bool shown);
+  void setJamShown(bool shown);
 
   std::function<void(bool show)> onToggleTuner;
+  std::function<void(bool show)> onToggleJam;
   std::function<void(bool stereo)> onStereoToggle;
   std::function<void()> onUndo, onRedo, onOpenSettings, onLogin, onLogout;
 
@@ -43,11 +45,13 @@ private:
   std::unique_ptr<LogoLink> logo_;
   PresetBar presetBar_;
   StereoModeToggle stereo_;
+  IconButton jam_;
   IconButton tuner_;
   IconButton undo_{Icon::Undo2, 28};
   IconButton redo_{Icon::Redo2, 28};
   AccountMenu account_;
   bool tunerShown_ = false;
+  bool jamShown_ = false;
 };
 
 }  // namespace t3k::ui

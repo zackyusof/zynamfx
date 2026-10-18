@@ -906,6 +906,7 @@ void TONE3000Processor::prepareToPlay(double sampleRate, int samplesPerBlock) {
   maxBlockSize = samplesPerBlock;
 
   tuner.prepare(sampleRate);
+  jamPlayer.prepareToPlay(sampleRate, samplesPerBlock);
 
   // CPU readout: proportion of the callback budget spent in processBlock.
   loadMeasurer.reset(sampleRate, samplesPerBlock);
@@ -1100,6 +1101,7 @@ void TONE3000Processor::releaseResources() {
   trebleFilter.reset();
   dcBlocker.reset();
   inputGate.reset();
+  jamPlayer.releaseResources();
 }
 
 bool TONE3000Processor::isBusesLayoutSupported(const BusesLayout& layouts) const {
@@ -2238,6 +2240,9 @@ void TONE3000Processor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
     outputMeterLevelL.store(peakToDb(peakL));
     outputMeterLevelR.store(peakToDb(peakR));
   }
+
+  // Jam Track Player & Metronome (mixed clean into master bus post-effects)
+  jamPlayer.process(buffer);
 }
 
 // ##################
