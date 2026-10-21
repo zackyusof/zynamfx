@@ -748,7 +748,8 @@ static float balanceChainGain(float balance, int chain) {
 struct ImageGains { float lToL, lToR, rToL, rToR; };
 static ImageGains imageMatrixGains(bool panActive, bool foldToMono, float balance,
                                    float panLeft, float panRight, bool soloLeft,
-                                   bool soloRight, bool invertLeft, bool invertRight) {
+                                   bool soloRight, bool invertLeft, bool invertRight,
+                                   float tailPan) {
   float balL = soloRight && !soloLeft ? 0.0f : balanceChainGain(balance, 0);
   float balR = soloLeft && !soloRight ? 0.0f : balanceChainGain(balance, 1);
   if (invertLeft)
@@ -762,7 +763,20 @@ static ImageGains imageMatrixGains(bool panActive, bool foldToMono, float balanc
     std::tie(pLtoL, pLtoR) = constantPowerPanGains(panLeft);
     std::tie(pRtoL, pRtoR) = constantPowerPanGains(panRight);
   }
-  return {balL * pLtoL, balL * pLtoR, balR * pRtoL, balR * pRtoR};
+  // A placement on a shared-rejoin-tail block pans the *already-merged* image:
+  // it composes with (scales) the two lanes' own placements instead of
+  // replacing them, so the merged left output row is scaled by tL and the
+  // right row by tR:
+  //   chL = tL*(balL*cos(pL)*chainL + balR*cos(pR)*chainR)
+  //   chR = tR*(balL*sin(pL)*chainL + balR*sin(pR)*chainR)
+  // Constant-power trims both rows by -3 dB when the tail sits at centre
+  // (tL = tR = cos(pi/4)) — the same consequence as a placement anywhere else
+  // in the app, documented in docs, not a defect. `tailPan < 0` = no tail
+  // placement (identity scale).
+  float tL = 1.0f, tR = 1.0f;
+  if (tailPan >= 0.0f)
+    std::tie(tL, tR) = constantPowerPanGains(tailPan);
+  return {balL * pLtoL * tL, balL * pLtoR * tR, balR * pRtoL * tL, balR * pRtoR * tR};
 }
 
 float TONE3000Processor::resolveLanePan(ChainSide side) const {
@@ -781,17 +795,49 @@ float TONE3000Processor::resolveLanePan(ChainSide side) const {
     return pan;
   }
 
+  // Branched: resolve each lane's OWN placement only. The shared rejoin tail
+  // (trunk at/after the merge anchor) is excluded from the trunk scan so a
+  // placement there doesn't override the two lanes; it is a separate balance
+  // of the merged image (resolveTailPan), composed on top. Without a rejoin
+  // anchor the branch runs to the output on its own, so the trunk's whole path
+  // is its own and the tail region is empty.
   const ChainSide trunkSide = branchSourceSide;
   const ChainSide branchSide = trunkSide == ChainSide::Left ? ChainSide::Right : ChainSide::Left;
   const int trunkEnd = static_cast<int>(lane(trunkSide).size());
+  const bool hasRejoin = rtBranchMergeIndex > rtBranchTapIndex;
   if (side == trunkSide) {
-    scan(lane(trunkSide), 0, trunkEnd);
+    scan(lane(trunkSide), 0, hasRejoin ? rtBranchMergeIndex : trunkEnd);
   } else {
     scan(lane(branchSide), 0, static_cast<int>(lane(branchSide).size()));
-    if (rtBranchMergeIndex > rtBranchTapIndex)
-      scan(lane(trunkSide), rtBranchMergeIndex, trunkEnd);
   }
   return pan;
+}
+
+float TONE3000Processor::resolveTailPan() const {
+  // The shared rejoin tail exists only on a branched rig with a valid merge
+  // anchor (the branch tap resolved and the merge landing after it).
+  if (!rtStereoChains || rtBranchTapIndex < 0 || rtBranchMergeIndex <= rtBranchTapIndex)
+    return -1.0f;
+  const ChainSide trunkSide = branchSourceSide;
+  const Lane& trunk = lane(trunkSide);
+  const int trunkEnd = static_cast<int>(trunk.size());
+  float pan = -1.0f;
+  for (int i = rtBranchMergeIndex; i < trunkEnd; ++i) {
+    const auto& b = *trunk[static_cast<size_t>(i)];
+    if (b.type == ChainBlockType::INSERT || !b.enabled || !b.panSet) continue;
+    pan = b.panNormalized;
+  }
+  return pan;
+}
+
+bool TONE3000Processor::isSharedTailBlock(ChainSide side, int index) const {
+  if (!rtStereoChains || rtBranchTapIndex < 0 || rtBranchMergeIndex <= rtBranchTapIndex)
+    return false;
+  const ChainSide trunkSide = branchSourceSide;
+  if (side != trunkSide)
+    return false;
+  const int trunkEnd = static_cast<int>(lane(trunkSide).size());
+  return index >= rtBranchMergeIndex && index < trunkEnd;
 }
 
 // Stereo input = stereo main bus, minus the standalone case where it isn't
@@ -1035,7 +1081,11 @@ void TONE3000Processor::prepareToPlay(double sampleRate, int samplesPerBlock) {
                                     isStereo && cacheChainSoloLeft,
                                     isStereo && cacheChainSoloRight,
                                     isStereo && cacheChainInvertLeft,
-                                    isStereo && cacheChainInvertRight);
+                                    isStereo && cacheChainInvertRight,
+                                    // Rail-only seed: no tail placement yet, so
+                                    // the matrix starts at the lanes' rails and
+                                    // is corrected on the first image stage.
+                                    -1.0f);
     for (auto* smoother : {&imageGainLtoL, &imageGainLtoR, &imageGainRtoL, &imageGainRtoR})
       smoother->reset(sampleRate, 0.02);
     imageGainLtoL.setCurrentAndTargetValue(g.lToL);
@@ -1878,7 +1928,8 @@ void TONE3000Processor::processImageStage(float* chL, float* chR, int numFrames,
                                     rtStereoChains && cacheChainSoloLeft,
                                     rtStereoChains && cacheChainSoloRight,
                                     rtStereoChains && cacheChainInvertLeft,
-                                    rtStereoChains && cacheChainInvertRight);
+                                    rtStereoChains && cacheChainInvertRight,
+                                    resolveTailPan());
     imageGainLtoL.setTargetValue(g.lToL);
     imageGainLtoR.setTargetValue(g.lToR);
     imageGainRtoL.setTargetValue(g.rToL);

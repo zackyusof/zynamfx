@@ -789,11 +789,28 @@ private:
   // slice loop).
   void processImageStage(float* chL, float* chR, int numFrames, bool stereoRig);
 
-  // The lane's effective placement: the last enabled block with a pan set
-  // along that lane's signal path (a block in the shared rejoin tail places
-  // both lanes), else the rail fallback chainPanLeft/Right. Caller holds
-  // chainMutex. See ChainBlock::panNormalized.
+  // The lane's own effective placement: the last enabled block with a pan set
+  // along that lane's *lane-local* signal path, else the rail fallback
+  // chainPanLeft/Right. On a branched rig the shared rejoin tail (the trunk
+  // region at/after the merge anchor, where the two lanes have already been
+  // summed) is deliberately EXCLUDED: a placement there is a balance of the
+  // merged image, resolved separately by resolveTailPan and composed on top
+  // rather than replacing the lanes' own placements. Caller holds chainMutex.
+  // See ChainBlock::panNormalized.
   float resolveLanePan(ChainSide side) const;
+
+  // The placement of the shared rejoin tail: the last enabled non-insert block
+  // with a pan set in lane(trunk)[rtBranchMergeIndex, trunkEnd). Returns
+  // -1.0f when the rig is not branched, has no rejoin, or the tail carries no
+  // placement. Composed as a row-scaled (constant-power) balance of the merged
+  // image on top of the two lanes' own placements. Caller holds chainMutex.
+  float resolveTailPan() const;
+
+  // True when `index` is a block on the shared rejoin tail of `side`'s lane
+  // (branched rig only): lane(trunk)[rtBranchMergeIndex, trunkEnd). Such a
+  // block processes the already-merged stereo image, so a placement on it
+  // applies to both lanes (see resolveTailPan). Caller holds chainMutex.
+  bool isSharedTailBlock(ChainSide side, int index) const;
 
   // Prepare every engine in a chain for the current chain rate (see
   // chainSampleRate) and chain-domain block size. Holds no lock.

@@ -251,7 +251,8 @@ void GalleryLane::setSlotPan(bool show) {
     if (item.isInsert) continue;
     const bool set = item.params.pan >= 0.0;
     const float v = static_cast<float>(set ? item.params.pan : lanePan);
-    if (auto* tile = tileFor(item.blockId)) tile->showSlotPan(item.blockId, side_, v, set);
+    if (auto* tile = tileFor(item.blockId))
+      tile->showSlotPan(item.blockId, side_, v, set, item.placesBothLanes);
   }
 }
 

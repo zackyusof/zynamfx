@@ -19,19 +19,35 @@ SlotPan::SlotPan(Services& services, std::string blockId, ChainSide side)
     : services_(services), blockId_(std::move(blockId)), side_(side) {
   value_ = laneDefault();
   inherited_ = laneDefault();
-  setTitle("Slot pan");  // screen-reader name
-  setDescription("0 = hard left, 0.5 = centre, 1 = hard right; double-click to inherit the lane");
+  updateAccessibility();  // screen-reader name + description
   setWantsKeyboardFocus(true);
   setMouseCursor(juce::MouseCursor::LeftRightResizeCursor);
 }
 
 SlotPan::~SlotPan() = default;
 
-void SlotPan::setValue(float value, bool set) {
+void SlotPan::setValue(float value, bool set, bool placesBothLanes) {
   value_ = juce::jlimit(0.0f, 1.0f, value);
   set_ = set;
   if (!set) inherited_ = value_;
+  if (placesBothLanes != placesBothLanes_) {
+    placesBothLanes_ = placesBothLanes;
+    updateAccessibility();
+  }
   repaint();
+}
+
+void SlotPan::updateAccessibility() {
+  if (placesBothLanes_) {
+    // A shared-tail placement is a balance of the already-merged image: name
+    // it distinctly so it is never read as a single-lane placement.
+    setTitle("Slot pan (both lanes)");
+    setDescription("Applies to both lanes after the merge: 0 = hard left, 0.5 = centre, "
+                   "1 = hard right of the merged signal; double-click to inherit");
+  } else {
+    setTitle("Slot pan");
+    setDescription("0 = hard left, 0.5 = centre, 1 = hard right; double-click to inherit the lane");
+  }
 }
 
 void SlotPan::paint(juce::Graphics& g) {
@@ -41,9 +57,12 @@ void SlotPan::paint(juce::Graphics& g) {
   const float x0 = r.getX() + kInset, x1 = r.getRight() - kInset;
   const float inner = juce::jmax(1.0f, x1 - x0);
 
-  // End letters, then the track between them.
+  // End letters, then the track between them. A shared-tail placement reaches
+  // both lanes, so the L/R ends stay bright (never dimmed) and take the app
+  // accent: both ends are live, not just the played lane.
+  const float lettersAlpha = placesBothLanes_ ? 1.0f : a;
   g.setFont(Fonts::mono(8.0f));
-  g.setColour(theme::kMuted.withMultipliedAlpha(a));
+  g.setColour((placesBothLanes_ ? theme::kAccent : theme::kMuted).withMultipliedAlpha(lettersAlpha));
   g.drawText("L", r.withWidth(static_cast<float>(kInset)).withTrimmedLeft(1.0f).toNearestInt(),
              juce::Justification::centredLeft, false);
   g.drawText("R", r.withTrimmedLeft(r.getWidth() - static_cast<float>(kInset)).toNearestInt(),
@@ -71,6 +90,29 @@ void SlotPan::paint(juce::Graphics& g) {
   g.fillRoundedRectangle(juce::Rectangle<float>(thumbX - kThumbW / 2.0f, cy - 6.0f,
                                                 static_cast<float>(kThumbW), 12.0f),
                          3.0f);
+
+  // Shared-tail marker: a compact two-headed arrow along the track ("this
+  // placement reaches both ends/lanes"). Drawn last, so the heads stay visible
+  // wherever the grip sits (a hard-panned grip would otherwise hide one).
+  // No asset: a juce::Path in the accent.
+  if (placesBothLanes_) {
+    const float y = cy;
+    const float lx = x0 + 1.5f, rx = x1 - 1.5f;
+    const float head = 3.5f, flare = 3.0f;
+    juce::Path arrow;
+    arrow.startNewSubPath(lx, y);
+    arrow.lineTo(rx, y);
+    arrow.startNewSubPath(lx, y);
+    arrow.lineTo(lx + head, y - flare);
+    arrow.startNewSubPath(lx, y);
+    arrow.lineTo(lx + head, y + flare);
+    arrow.startNewSubPath(rx, y);
+    arrow.lineTo(rx - head, y - flare);
+    arrow.startNewSubPath(rx, y);
+    arrow.lineTo(rx - head, y + flare);
+    g.setColour(theme::kAccent.withAlpha(a));
+    g.strokePath(arrow, juce::PathStrokeType(1.2f));
+  }
 }
 
 void SlotPan::mouseDown(const juce::MouseEvent& e) {

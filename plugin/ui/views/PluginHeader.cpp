@@ -20,7 +20,8 @@ constexpr int kLogoWidth = 176;  // wordmark + ZY monogram + the version string
 constexpr int kLogoHeight = 24;  // 160 * 32 / 210, rounded like the browser
 }  // namespace
 
-// The wordmark links to the public project repository (see core/BuildIdentity.h).
+// The wordmark links to the project repository for THIS build: a development
+// build opens Gitea, a public build opens GitHub (see core/BuildIdentity.h).
 class PluginHeader::LogoLink : public Clickable {
 public:
   LogoLink() : Clickable({}) {
@@ -154,7 +155,21 @@ void PluginHeader::resized() {
     return c.getX();
   };
 
-  logo_->setBounds(area.getX(), 14, kLogoWidth, kLogoHeight);
+  // The version label is drawn after the ZY monogram (starting at x = 128) into
+  // whatever width the logo box has. A prerelease label is wider than a stable
+  // one ("v2.2.1-beta.3" measures 52px at mono 9px, "v2.2.0" only 24px), and
+  // drawText does not elide, so a fixed 176px box clipped the suffix
+  // mid-glyph. Size the box from the measured label; kLogoWidth stays the floor
+  // so stable builds keep their exact layout.
+  constexpr int kVersionX = 128;
+  constexpr int kVersionPadding = 10;
+  const auto versionLabel = build::displayVersion();
+  const int versionWidth =
+      versionLabel.isEmpty()
+          ? 0
+          : juce::roundToInt(Fonts::width(Fonts::mono(9.0f), "v" + versionLabel));
+  const int logoWidth = juce::jmax(kLogoWidth, kVersionX + versionWidth + kVersionPadding);
+  logo_->setBounds(area.getX(), 14, logoWidth, kLogoHeight);
 
   // Right group, laid out from the right edge: account · undo/redo · tuner ·
   // stereo · presets, 40px apart (16px inside the undo/redo pair).

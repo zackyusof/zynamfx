@@ -144,6 +144,13 @@ ChainItem parseItem(const juce::var& v) {
   item.inputLevelDbu = optNum(v, "inputLevelDbu");
   item.outputLevelDbu = optNum(v, "outputLevelDbu");
   item.params = parseParams(v["params"]);
+  // A shared-rejoin-tail placement reaches both lanes after the merge: the
+  // engine flags it per block. Read at the block level, tolerating the nested
+  // params spelling (the frozen spec names it per block without pinning the
+  // nesting, and the engine lane ships it separately); absent -> false, so a
+  // payload without the key renders exactly as before.
+  item.placesBothLanes =
+      boolean(v, "placesBothLanes", boolean(v["params"], "placesBothLanes", false));
   return item;
 }
 

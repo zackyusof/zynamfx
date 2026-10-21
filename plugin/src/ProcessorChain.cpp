@@ -1005,6 +1005,10 @@ juce::var TONE3000Processor::getChainState(int knownRevision) const {
     double slimSize = 0.0;
     float inputGain = 0.5f, outputGain = 0.5f, mix = 1.0f;
     float pan = -1.0f;  // -1 = unset (the slot inherits the lane's placement)
+    // True when this block sits on the shared rejoin tail (branched rig) and
+    // has a placement: the placement then applies to BOTH lanes after the
+    // merge, so the UI marks it. Emitted only when true (see serializeChain).
+    bool placesBothLanes = false;
     juce::var eq;
     bool rtFailed = false;
   };
@@ -1032,9 +1036,11 @@ juce::var TONE3000Processor::getChainState(int knownRevision) const {
       return unchanged.get();
     }
 
-    auto copyLane = [](const Lane& l, std::vector<BlockRow>& out) {
+    auto copyLane = [this](ChainSide side, const Lane& l, std::vector<BlockRow>& out) {
       out.reserve(l.size());
-      for (const auto& block : l) {
+      const int count = static_cast<int>(l.size());
+      for (int index = 0; index < count; ++index) {
+        const auto& block = l[static_cast<size_t>(index)];
         BlockRow row;
         row.id = juce::String(block->id);
         // Drain the audio thread's failure flag; the RT path can't build
@@ -1083,19 +1089,25 @@ juce::var TONE3000Processor::getChainState(int knownRevision) const {
         row.outputGain = block->outputGainNormalized;
         row.mix = block->mixNormalized;
         row.pan = block->panSet ? block->panNormalized : -1.0f;
+        // A placement on the shared rejoin tail pans the already-merged image,
+        // i.e. both lanes: flag it so the UI can mark the slot. Lane-local
+        // placements (and everything on an unbranched rig) stay false.
+        row.placesBothLanes = block->panSet && isSharedTailBlock(side, index);
         row.eq = block->eq.toVar();
         out.push_back(std::move(row));
       }
     };
 
-    copyLane(lane(ChainSide::Left), left);
+    copyLane(ChainSide::Left, lane(ChainSide::Left), left);
     stereo = stereoEnabled.load();
     if (stereo)
-      copyLane(lane(ChainSide::Right), right);
+      copyLane(ChainSide::Right, lane(ChainSide::Right), right);
 
-    // The lane's resolved placement (last placed block along the lane's path,
-    // else the rail): the UI's inherited display for unset slots. Read here
-    // because resolveLanePan requires chainMutex; the payload is built below.
+    // The lane's resolved own placement (last placed block along the lane's
+    // local path, else the rail; the shared rejoin tail is excluded and
+    // reported per block as placesBothLanes): the UI's inherited display for
+    // unset slots. Read here because resolveLanePan requires chainMutex; the
+    // payload is built below.
     panLeft = resolveLanePan(ChainSide::Left);
     panRight = resolveLanePan(ChainSide::Right);
 
@@ -1161,6 +1173,11 @@ juce::var TONE3000Processor::getChainState(int knownRevision) const {
       item->setProperty("loaded", row.loaded);
       item->setProperty("loadFailed", row.loadFailed);
       item->setProperty("modelLoading", row.modelLoading);
+      // Present only when this slot's placement applies to BOTH lanes after the
+      // merge (a block on the shared rejoin tail with a pan set); absent
+      // otherwise so the UI's default (false) keeps the old rendering.
+      if (row.placesBothLanes)
+        item->setProperty("placesBothLanes", true);
       // Long (reverb-like) IR: drives the UI's Mix knob default/Alt-click
       // reset and the Out knob help (long IRs carry no -18 dB pad).
       item->setProperty("irLong", row.irLong);

@@ -2,6 +2,32 @@
 
 All notable changes to zynamfx are recorded here. Dates are ISO (yyyy-mm-dd).
 
+## [2.2.1] - 2026-10-21
+
+Stable release on the 2.2.0 line: pan corrections, two gallery fixes and a packaging fix.
+
+### Fixed
+- **A pan placement after the branch merge no longer folds the rig.** A pan set on a shared-rejoin-tail
+  block is now a balance of the *merged* image that **composes with** the two lanes' own placements
+  instead of replacing them. Before, both lanes resolved to that one value, the image matrix became
+  rank-1 and the two chains were summed - an authored cab split (e.g. JCM900 left / Mesa right)
+  collapsed into a single signal with a small L/R tilt.
+- **Hosted-effect tiles react to audio again.** The tile's inset energy glow (the blue->yellow->red
+  picture driven by the block's output meter) is composited only into `ToneImage`, which
+  `ToneTile::syncState` hid for effect blocks; the captured plugin screenshot is now injected into
+  `ToneImage`, so it composites the same glow as tone/NAM art and falls back to the effect glyph
+  until a screenshot exists.
+- **The header shows the full version label.** The version was drawn into a fixed 48 px slot, so a
+  prerelease label was clipped mid-glyph (`v2.2.1-beta` instead of `v2.2.1-beta.3`). The logo box is
+  now sized from the measured label, so any suffix fits; stable builds keep their exact layout.
+- **The shipped AU/VST3 identity code is restored (`Zyfx`)**, so sessions saved by 2.2.0 load.
+
+### Changed
+- **The pan strip marks a placement that applies to both lanes**: accent `L`/`R` letters, a two-headed
+  marker on the track and an accessibility description, so a shared-tail placement is no longer
+  indistinguishable from a lane-local one.
+- `VERSION` records the release number (it read `0.0.14` at every 2.x tag before the beta cuts).
+
 ## [2.2.0] - 2026-10-18
 
 First stable release since 2.0.1. Everything below ships together.

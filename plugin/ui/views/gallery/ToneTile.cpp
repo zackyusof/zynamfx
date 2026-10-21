@@ -65,7 +65,24 @@ ToneTile::~ToneTile() {
   removeMouseListener(&hover_);
 }
 
-void ToneTile::changeListenerCallback(juce::ChangeBroadcaster*) { repaint(); }
+void ToneTile::changeListenerCallback(juce::ChangeBroadcaster*) {
+  // A hosted effect's screenshot just arrived (or was replaced): put it on the
+  // glow path, then repaint the tile chrome around it.
+  syncEffectGraphic();
+  repaint();
+}
+
+void ToneTile::syncEffectGraphic() {
+  if (!block_.isEffect) {
+    image_.clearInjectedImage();
+    return;
+  }
+  const auto graphic = hostedEffectGraphic(blockId());
+  if (graphic.isValid())
+    image_.setInjectedImage(graphic);
+  else
+    image_.clearInjectedImage();
+}
 
 void ToneTile::setBlock(const ChainItem& block) {
   block_ = block;
@@ -73,6 +90,7 @@ void ToneTile::setBlock(const ChainItem& block) {
   setHelpText(help::toneTile(block.tone.title));
   setTitle(block.tone.title);
   image_.setTone(block.tone.image, block.tone.gear, block.tone.local, kGlyphSize);
+  syncEffectGraphic();
   swap_.setVisible(!block.isEffect);
   syncState();
 }
@@ -83,7 +101,11 @@ void ToneTile::setBlock(const ChainItem& block) {
 void ToneTile::syncState() {
   const bool busy = block_.modelLoading || (!block_.loaded && !block_.loadFailed);
   const bool armed = dropArmed();
-  image_.setVisible(!armed && !block_.isEffect && !block_.tone.local);
+  // Hosted-effect art rides the same ToneImage as tone art so it composites
+  // the energy glow; until a screenshot has been captured the tile paints the
+  // gear/effect glyph itself.
+  image_.setVisible(!armed && !block_.tone.local &&
+                    (!block_.isEffect || image_.hasInjectedImage()));
   imageFade_.animateTo(enabled_ && !busy && !block_.loadFailed ? 1.0f : kDimmedImage, kImageFadeMs);
   dots_.setVisible(!armed && busy && !block_.loadFailed);
   retry_.setVisible(!armed && block_.loadFailed);
@@ -161,7 +183,9 @@ void ToneTile::paint(juce::Graphics& g) {
  {
   juce::Graphics::ScopedSaveState save(g);
   g.setOpacity(enabled_ ? 1.0f : 0.35f);
-  const auto effectGraphic = block_.isEffect ? hostedEffectGraphic(blockId()) : juce::Image();
+  const auto effectGraphic = (block_.isEffect && !image_.hasInjectedImage())
+                                 ? hostedEffectGraphic(blockId())
+                                 : juce::Image();
   if (effectGraphic.isValid())
     g.drawImageWithin(effectGraphic, 8, 22, getWidth()-16, getHeight()-60, juce::RectanglePlacement::centred);
   else if (block_.isEffect || block_.tone.local)

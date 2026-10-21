@@ -69,6 +69,9 @@ private:
   void setHovered(bool hovered);
   void pointerChanged() override { setHovered(hovered_); }
   void syncState();
+  // The hosted-effect screenshot the tile shows as its artwork (empty until
+  // the plugin's editor has been captured).
+  void syncEffectGraphic();
   void togglePower();
 
   ChainItem block_;

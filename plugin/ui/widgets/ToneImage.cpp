@@ -37,6 +37,22 @@ void ToneImage::setTone(const juce::String& imageUrl, const juce::String& gear, 
   repaint();
 }
 
+void ToneImage::setInjectedImage(const juce::Image& image) {
+  if (!image.isValid() || image == injected_) return;
+  injected_ = image;
+  base_ = {};
+  composited_ = {};
+  repaint();
+}
+
+void ToneImage::clearInjectedImage() {
+  if (!injected_.isValid()) return;
+  injected_ = {};
+  base_ = {};
+  composited_ = {};
+  repaint();
+}
+
 void ToneImage::setCornerRadius(float radius) {
   corner_ = radius;
   setOpaque(radius <= 0.0f);
@@ -74,6 +90,10 @@ void ToneImage::rebuildBase(float scale) {
   if (w <= 0 || h <= 0) return;
   baseScale_ = scale;
   composited_ = {};
+  if (injected_.isValid()) {
+    base_ = bitmap::cover(injected_, w, h, scale);
+    return;
+  }
   if (!local_ && image_.isValid()) {
     base_ = bitmap::cover(image_, w, h, scale);
     return;

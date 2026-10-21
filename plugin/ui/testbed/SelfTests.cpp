@@ -955,6 +955,35 @@ struct ChainStateParseTests : juce::UnitTest {
     expect(empty.branch.has_value());
     if (empty.branch.has_value())
       expect(empty.branch->mergeAfterBlockId.empty());
+
+    beginTest("a shared-tail placement carries the both-lanes flag per block");
+    const auto tail = ChainState::parse(juce::JSON::parse(
+        R"({"chain":[)"
+        R"({"blockId":"blk-1","kind":"tone","placesBothLanes":true,"params":{"pan":0.53}},)"
+        R"({"blockId":"blk-2","kind":"tone","params":{"pan":0.25}},)"
+        R"({"blockId":"blk-3","kind":"insert"}]})"));
+    expectEquals(static_cast<int>(tail.chain.size()), 3);
+    if (tail.chain.size() == 3) {
+      // The flagged block reaches both lanes; its pan still parses as before.
+      expect(tail.chain[0].placesBothLanes);
+      expect(tail.chain[0].params.pan > 0.5);
+      // An absent key is false: the slot places only its own lane.
+      expect(!tail.chain[1].placesBothLanes);
+      // Inserts never carry a placement.
+      expect(!tail.chain[2].placesBothLanes);
+    }
+
+    beginTest("the both-lanes flag is defaulted and tolerates the nested spelling");
+    // Absent -> false (a payload from before the key renders exactly as today).
+    const auto plain = ChainState::parse(juce::JSON::parse(
+        R"({"chain":[{"blockId":"blk-1","kind":"tone","params":{"pan":0.7}}]})"));
+    expectEquals(static_cast<int>(plain.chain.size()), 1);
+    if (plain.chain.size() == 1) expect(!plain.chain[0].placesBothLanes);
+    // Nested in params also parses (the engine may ship either nesting).
+    const auto nested = ChainState::parse(juce::JSON::parse(
+        R"({"chain":[{"blockId":"blk-1","kind":"tone","params":{"pan":0.7,"placesBothLanes":true}}]})"));
+    expectEquals(static_cast<int>(nested.chain.size()), 1);
+    if (nested.chain.size() == 1) expect(nested.chain[0].placesBothLanes);
   }
 };
 
@@ -2077,6 +2106,52 @@ struct GlowCornerTests : juce::UnitTest {
   }
 };
 
+// Hosted-effect art (the captured plugin-editor screenshot) rides ToneImage
+// so the tile's energy glow composites over it like tone art: the injected
+// image is the base, the glow tints its border band and leaves the interior
+// alone, and clearing it falls back to the glyph base.
+struct HostedEffectArtTests : juce::UnitTest {
+  HostedEffectArtTests() : juce::UnitTest("Hosted effect art", "ui") {}
+
+  static int red(const juce::Image& image, int x, int y) { return image.getPixelAt(x, y).getRed(); }
+
+  void runTest() override {
+    ImageLoader loader;
+    ToneImage art(loader);
+    art.setSize(64, 64);
+    art.setCornerRadius(0.0f);  // straight edges: the distance maths is simple
+
+    juce::Image shot(juce::Image::ARGB, 64, 64, true);
+    shot.clear(shot.getBounds(), juce::Colour(0xff404040));
+
+    auto render = [&](const Glow& glow) {
+      art.setGlow(glow);
+      juce::Image out(juce::Image::ARGB, 64, 64, true);
+      juce::Graphics g(out);
+      art.paint(g);
+      return out;
+    };
+
+    beginTest("the injected screenshot becomes the base");
+    art.setInjectedImage(shot);
+    expect(art.hasInjectedImage(), "injected art is held");
+    const auto plain = render({});
+    expectEquals(red(plain, 32, 32), 0x40);  // the screenshot, not the glyph fill
+    expectEquals(red(plain, 2, 32), 0x40);
+
+    beginTest("the glow reaches the injected art");
+    const auto hot = render({juce::Colours::red, 8.0f, 0.75f});
+    expect(red(hot, 2, 32) > red(plain, 2, 32), "the border band lights up");
+    expectEquals(red(hot, 32, 32), red(plain, 32, 32));  // the interior is untouched
+
+    beginTest("clearing falls back to the glyph base");
+    art.clearInjectedImage();
+    expect(!art.hasInjectedImage(), "injected art is released");
+    const auto glyph = render({});
+    expect(glyph.getPixelAt(32, 32) != plain.getPixelAt(32, 32), "the glyph base replaces it");
+  }
+};
+
 // Drag-reordering a preset in the browser, through the peer. The drop
 // rebuilds the row list (destroying the dragged Row) and then asks the store
 // to move the preset: the move must carry the real id, not whatever is left
@@ -3091,6 +3166,7 @@ TouchScrollTests touchScrollTests;
 PopoverFollowTests popoverFollowTests;
 PointerTests pointerTests;
 GlowCornerTests glowCornerTests;
+HostedEffectArtTests hostedEffectArtTests;
 PresetReorderTests presetReorderTests;
 ChainCrossLaneDragTests chainCrossLaneDragTests;
 BlockSizeToggleTests blockSizeToggleTests;

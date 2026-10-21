@@ -127,6 +127,11 @@ struct ChainItem {
   std::optional<double> inputLevelDbu;
   std::optional<double> outputLevelDbu;
   BlockParams params;
+  // True when this block's placement lands in the shared rejoin tail, so its
+  // pan is a balance of the already-merged image and applies to BOTH lanes
+  // after the merge (the engine's per-block `placesBothLanes` flag). Absent or
+  // false = the block places only its own lane. Drives SlotPan's affordance.
+  bool placesBothLanes = false;
 
   bool isTone() const { return !isInsert && !isEffect; }
 };

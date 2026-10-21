@@ -27,6 +27,14 @@ public:
   // Inset energy glow composited over the art (screen blend).
   void setGlow(const Glow& glow);
 
+  // Hosted-effect art (the captured plugin-editor screenshot) drawn as the
+  // base so it composites the same inset energy glow as tone art, instead of
+  // being painted straight onto the tile where no glow can reach it.
+  // Bypasses the URL loader; clearing it falls back to the glyph.
+  void setInjectedImage(const juce::Image& image);
+  void clearInjectedImage();
+  bool hasInjectedImage() const { return injected_.isValid(); }
+
   void paint(juce::Graphics& g) override;
   void resized() override { base_ = {}; }
 
@@ -42,6 +50,7 @@ private:
   int glyphSize_ = 0;
   float corner_ = 0.0f;
   juce::Image image_;
+  juce::Image injected_;
   juce::Image base_, composited_;
   float baseScale_ = 0.0f;
   Glow glow_, compositedGlow_;

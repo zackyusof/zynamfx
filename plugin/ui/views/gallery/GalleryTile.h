@@ -59,7 +59,10 @@ public:
   // (stereo mode): 0 = hard left, 0.5 = centre, 1 = hard right. Bound to the
   // slot's own block, so each slot places independently; `set` false means
   // the slot inherits (and displays dimmed) the lane's resolved placement.
-  void showSlotPan(const std::string& blockId, ChainSide side, float value, bool set);
+  // `placesBothLanes` marks a shared-rejoin-tail placement: it applies to
+  // both lanes after the merge and gets its own affordance in the strip.
+  void showSlotPan(const std::string& blockId, ChainSide side, float value, bool set,
+                   bool placesBothLanes = false);
   void hideSlotPan();
   bool hasSlotPan() const { return slotPan_ != nullptr; }
 

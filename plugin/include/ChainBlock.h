@@ -270,10 +270,13 @@ struct ChainBlock {
   // Per-block stereo placement: 0 = hard left, 0.5 = centre, 1 = hard right.
   // `panSet` marks a slot that actually places something; an unset slot leaves
   // the lane's placement alone. A serial lane holds one placement, so the last
-  // placed (enabled) block in a lane's path wins; a block in the shared rejoin
-  // tail places both lanes. Split across parallel paths (branch vs trunk) is
-  // what makes two of these independent. Resolved in
-  // Processor::resolveLanePan and applied by the post-chain image matrix.
+  // placed (enabled) block in a lane's LANE-LOCAL path wins. A block in the
+  // shared rejoin tail (after the merge anchor, where the two lanes are already
+  // summed) is excluded from that scan: its placement is a balance of the
+  // merged image, resolved by Processor::resolveTailPan, composed on top of the
+  // two lanes' placements, and reported to the UI as `placesBothLanes`.
+  // Split across parallel paths (branch vs trunk) is what makes two of these
+  // independent. Applied by the post-chain image matrix.
   float panNormalized{0.5f};
   bool panSet{false};
 

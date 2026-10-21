@@ -120,7 +120,8 @@ void GalleryTile::openHostedEffectMenu() {
   effectMenu_->focusSearch();    // the search field takes the keyboard on open
 }
 
-void GalleryTile::showSlotPan(const std::string& blockId, ChainSide side, float value, bool set) {
+void GalleryTile::showSlotPan(const std::string& blockId, ChainSide side, float value, bool set,
+                              bool placesBothLanes) {
   // A tile can change lanes (tap / re-point a branch) and is reused across
   // resyncs, so a strip bound to another slot or lane is rebuilt. Otherwise
   // the strip is only re-valued (no allocation).
@@ -132,7 +133,7 @@ void GalleryTile::showSlotPan(const std::string& blockId, ChainSide side, float 
     slotPanSide_ = side;
     addAndMakeVisible(*slotPan_);
   }
-  slotPan_->setValue(value, set);
+  slotPan_->setValue(value, set, placesBothLanes);
   // Bottom strip of the slot, inside the artwork's padding.
   const int pad = 6;
   slotPan_->setBounds(pad, size_ - SlotPan::kHeight - pad, size_ - 2 * pad, SlotPan::kHeight);
