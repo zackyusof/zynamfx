@@ -2,6 +2,39 @@
 
 All notable changes to zynamfx are recorded here. Dates are ISO (yyyy-mm-dd).
 
+## [2.2.2-beta.1] - 2026-10-24
+
+Fixes only, plus the mono-in/stereo-out bus layout (a host-contract addition: no new engine, GUI
+surface or file-format change).
+
+### Added
+- **A mono track can insert zynamfx as mono → stereo.** `isBusesLayoutSupported` only accepted
+  `mono/mono` and `stereo/stereo`, so DAWs never offered the mono-in/stereo-out insert on a guitar
+  track. The new layout is the mono source mirrored into both lanes before the input fold, so it
+  renders exactly like the same take on a stereo bus (both chain modes). `stereo → mono` stays
+  unavailable on purpose.
+
+### Fixed
+- **Reinstalling no longer leaves the previous AU/VST3 shadowing the new one.** The build script
+  wrote its `-backup-` copies next to the live bundle inside `Plug-Ins/{Components,VST3}`, where
+  CoreAudio registers them under the same component identity; the stale copy could win the lookup
+  (measured: a fresh AU still refused `mono → stereo` because the backup answered the probe). Backups
+  now go to `Plug-Ins/Components-backups` and `Plug-Ins/VST3-backups`, and any strays already in the
+  scanned folder are moved there on install.
+- **The sign-in screen offers a way out of the browser wait.** While the system browser is out, the
+  page only offered "Copy Link"; `SignInScreen` now also shows "Sign in on a different device" (the
+  phone/device-code flow was already built and wired but never placed on the page). Reported in issue
+  #8 as having no escape when the browser never came back.
+- **The README's build instructions clone the right repository.** The `git clone` line named an
+  unrelated account, so anyone following "Build and verify" fetched someone else's fork.
+
+### Changed
+- **The Offset knob's help names its feature.** It reads "Spread — double-track lag…", because
+  upstream calls the feature Spread and the knob Offset, and users arriving from either build asked
+  which control zynamfx has (issue #4).
+- **`docs/PORTING.md` records what a port must satisfy** — toolchain, JUCE version and patches, the
+  identity values host sessions are keyed on, and what is untested on Windows/Linux (issue #7).
+
 ## [2.2.1] - 2026-10-21
 
 Stable release on the 2.2.0 line: pan corrections, two gallery fixes and a packaging fix.

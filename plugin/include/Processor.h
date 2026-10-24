@@ -990,6 +990,16 @@ private:
   // would play its Left chain alone instead of the mono sum.
   std::atomic<bool> standaloneMonoOutput{false};
 
+  // True when the host gave us a one-channel main *input* bus — the
+  // mono-in/stereo-out insert (a guitar on a mono track, stereo out; see
+  // isBusesLayoutSupported). The host fills channel 0 only, so processBlock
+  // mirrors it into channel 1 exactly like standaloneMonoInput, before the
+  // input fold; without the mirror the right lane would play the host's
+  // untouched channel: silence in stereo chains, and a -6 dB mono sum in
+  // mono chains. Resolved in prepareToPlay from the bus layout, which the
+  // host fixes before processing and does not change mid-stream.
+  std::atomic<bool> hostMonoInputBus{false};
+
   // The two chains: lanes[0] = Left/primary (the only lane in mono mode),
   // lanes[1] = Right (stereo mode). Kept as one array so per-lane logic
   // (find, meters, serialization, reconciliation) is written once.

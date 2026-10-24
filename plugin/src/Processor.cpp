@@ -981,6 +981,12 @@ void TONE3000Processor::prepareToPlay(double sampleRate, int samplesPerBlock) {
   }
 #endif
 
+  // Mono-in/stereo-out insert (see isBusesLayoutSupported): the host bus
+  // layout is settled before prepareToPlay and stable afterwards, so cache
+  // the fact here rather than querying the buses in the callback.
+  hostMonoInputBus.store(getMainBusNumInputChannels() == 1 &&
+                         getMainBusNumOutputChannels() > 1);
+
   updateStereoIoDetection();
 
   // Chain-domain resampling boundary.
@@ -1153,12 +1159,24 @@ void TONE3000Processor::releaseResources() {
 }
 
 bool TONE3000Processor::isBusesLayoutSupported(const BusesLayout& layouts) const {
-  if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono() &&
-      layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+  const auto& in = layouts.getMainInputChannelSet();
+  const auto& out = layouts.getMainOutputChannelSet();
+
+  if (out != juce::AudioChannelSet::mono() && out != juce::AudioChannelSet::stereo())
+    return false;
+  if (in != juce::AudioChannelSet::mono() && in != juce::AudioChannelSet::stereo())
     return false;
 
 #if !JucePlugin_IsSynth
-  if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
+  // Equal buses (mono/mono, stereo/stereo) plus the mono-in/stereo-out insert
+  // DAWs offer on a mono track: a guitar arrives on one channel and the image
+  // stage places the chain in two (see hostMonoInputBus, which mirrors the
+  // single input channel so both lanes see it). A stereo-in/mono-out bus
+  // stays unsupported on purpose: the second input channel would be
+  // discarded silently, which is worse than not offering it.
+  const bool monoToStereo = in == juce::AudioChannelSet::mono() &&
+                            out == juce::AudioChannelSet::stereo();
+  if (!monoToStereo && out != in)
     return false;
 #endif
 
@@ -1986,8 +2004,10 @@ void TONE3000Processor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
 
   // Input fold-down, up front so everything downstream (meters, tuner,
   // chains) sees the effective source:
-  // - Mono input device (standalone): signal only arrives on channel 0,
-  //   so mirror it.
+  // - Mono input (a mono input device in the standalone, or a mono-in/
+  //   stereo-out host insert): signal only arrives on channel 0, so mirror
+  //   it. The mirror must run before the fold below: the fold's ½(L+R) is
+  //   only identity when both channels already carry the source.
   // - Input mode L/R on a stereo source: duplicate the chosen channel onto
   //   both, exactly like a host feeding a mono source to a stereo bus.
   // - Stereo on a mono chain: sum to mono, ½(L+R), the host's own fold law
@@ -2002,7 +2022,7 @@ void TONE3000Processor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
   // reads could otherwise fold the input and then run two voices on it).
   rtDualMono = numChannels > 1 && dualMonoEngaged();
   if (numChannels > 1) {
-    if (standaloneMonoInput.load()) {
+    if (standaloneMonoInput.load() || hostMonoInputBus.load()) {
       buffer.copyFrom(1, 0, buffer, 0, 0, numSamples);
     } else {
       const auto mode = static_cast<InputMode>(inputMode.load());

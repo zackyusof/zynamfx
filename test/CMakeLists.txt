@@ -19,6 +19,7 @@ target_sources(DspTests PRIVATE
     src/app_data_paths_tests.cpp
     src/auto_offset_tests.cpp
     src/branch_tests.cpp
+    src/bus_layout_tests.cpp
     src/clipboard_tests.cpp
     src/dsp_tests.cpp
     src/dual_mono_tests.cpp

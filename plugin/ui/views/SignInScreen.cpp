@@ -256,6 +256,11 @@ void SignInScreen::rebuild() {
     addText(RichText{TextRun::strong(kBrowserTitle)}, kTitlePx, theme::kWhite, kWideMaxWidth, kGap);
     addText(copy, kCopyPx, theme::kWhite, kWideMaxWidth, kGap);
     addButtons({&copyLink_}, kGap);
+    // The escape hatch while the browser is out: if the system browser never
+    // opens (or the redirect cannot come back to this Mac), the phone flow is a
+    // working sign-in and must be reachable without cancelling first. Reported
+    // in issue #8 as "no way out" once the window stayed on this state.
+    addComponent(otherDevice_, kGap);
     // Use TONE3000's hosted OAuth Select flow on this Mac.
   }
 

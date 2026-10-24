@@ -8,14 +8,51 @@ import shutil
 import subprocess
 
 
-def prune_old_backups(destination):
+def prune_old_backups(destination, backup_parent=None):
     """Delete older `-backup-` copies of this bundle so repeated --install runs
     leave only the newest one behind (the one about to be made)."""
-    for old in destination.parent.glob(destination.stem + "-backup-*" + destination.suffix):
+    parent = backup_parent or destination.parent
+    if not parent.exists():
+        return
+    for old in parent.glob(destination.stem + "-backup-*" + destination.suffix):
         if old.is_dir():
             shutil.rmtree(old, ignore_errors=True)
         else:
             old.unlink(missing_ok=True)
+
+
+def relocate_legacy_backups(destination, backup_parent):
+    """Older installs wrote plug-in backups next to the live bundle. CoreAudio
+    registers every .component/.vst3 it finds under the plug-in's own identity,
+    so a backup sitting beside the real bundle shadowed the fresh install (the
+    stale copy was picked instead). Move any strays into the backup folder."""
+    if not destination.parent.is_dir():
+        return
+    stray = list(destination.parent.glob(destination.stem + "-backup-*" + destination.suffix))
+    if not stray:
+        return
+    backup_parent.mkdir(parents=True, exist_ok=True)
+    for old in stray:
+        target = backup_parent / old.name
+        if target.is_dir():
+            shutil.rmtree(target, ignore_errors=True)
+        elif target.exists():
+            target.unlink(missing_ok=True)
+        shutil.move(str(old), str(target))
+
+
+def make_backup(destination, backup_parent=None):
+    """Copy the installed bundle into its backup folder and verify the copy
+    holds every file, so a failed backup cannot destroy the previous install."""
+    parent = backup_parent or destination.parent
+    parent.mkdir(parents=True, exist_ok=True)
+    prune_old_backups(destination, parent)
+    backup = parent / (destination.stem + "-backup-" +
+                       datetime.now().strftime("%Y%m%d-%H%M%S") + destination.suffix)
+    shutil.copytree(destination, backup, symlinks=True)
+    if sum(1 for p in backup.rglob("*") if p.is_file()) != sum(1 for p in destination.rglob("*") if p.is_file()):
+        raise RuntimeError(f"{destination.suffix} backup file count mismatch")
+    return backup
 
 
 def main():
@@ -117,24 +154,23 @@ def main():
         subprocess.run(["codesign", "--verify", "--deep", "--strict", str(destination)], check=True)
         au_destination = Path.home() / "Library/Audio/Plug-Ins/Components" / au.name
         au_destination.parent.mkdir(parents=True, exist_ok=True)
+        # Backups live OUTSIDE the folder CoreAudio scans: a .component beside
+        # the real bundle registers the same AU identity and can win the lookup
+        # (measured 2026-10-24: a stale backup shadowed a fresh install).
+        au_backups = au_destination.parent.parent / "Components-backups"
+        relocate_legacy_backups(au_destination, au_backups)
         if au_destination.exists():
-            prune_old_backups(au_destination)
-            backup = au_destination.with_name(au_destination.stem + "-backup-" + datetime.now().strftime("%Y%m%d-%H%M%S") + ".component")
-            shutil.copytree(au_destination, backup, symlinks=True)
-            if sum(1 for p in backup.rglob("*") if p.is_file()) != sum(1 for p in au_destination.rglob("*") if p.is_file()):
-                raise RuntimeError("AU backup file count mismatch")
+            make_backup(au_destination, au_backups)
             shutil.rmtree(au_destination)
         shutil.copytree(au, au_destination, symlinks=True)
         subprocess.run(["xattr", "-dr", "com.apple.quarantine", str(au_destination)], check=True)
         subprocess.run(["codesign", "--verify", "--deep", "--strict", str(au_destination)], check=True)
         vst3_destination = Path.home() / "Library/Audio/Plug-Ins/VST3" / vst3.name
         vst3_destination.parent.mkdir(parents=True, exist_ok=True)
+        vst3_backups = vst3_destination.parent.parent / "VST3-backups"
+        relocate_legacy_backups(vst3_destination, vst3_backups)
         if vst3_destination.exists():
-            prune_old_backups(vst3_destination)
-            backup = vst3_destination.with_name(vst3_destination.stem + "-backup-" + datetime.now().strftime("%Y%m%d-%H%M%S") + ".vst3")
-            shutil.copytree(vst3_destination, backup, symlinks=True)
-            if sum(1 for p in backup.rglob("*") if p.is_file()) != sum(1 for p in vst3_destination.rglob("*") if p.is_file()):
-                raise RuntimeError("VST3 backup file count mismatch")
+            make_backup(vst3_destination, vst3_backups)
             shutil.rmtree(vst3_destination)
         shutil.copytree(vst3, vst3_destination, symlinks=True)
         subprocess.run(["xattr", "-dr", "com.apple.quarantine", str(vst3_destination)], check=True)

@@ -91,8 +91,11 @@ std::map<Key, String> buildTable() {
   t[Key::toneMiddle] = knobDesktop("Middle", "tone stack mids, 0-10: ±15 dB bell at 425 Hz.");
   t[Key::toneTreble] = knobDesktop("Treble", "tone stack highs, 0-10: ±10 dB shelf at 1.8 kHz.");
   t[Key::tonePower] = U("Tone Stack Power: Bass/Middle/Treble on/off.");
-  t[Key::spreadOffset] =
-      knobDesktop("Offset", "double-track lag, ≤24 ms toward L or R. Center: off. Right-click: advanced.");
+  // Names both terms: upstream calls the feature "Spread" (on the plate) and the
+  // knob "Offset"; users arriving from either build ask which one zynamfx has
+  // (support issue #4). Keep the pair in one line.
+  t[Key::spreadOffset] = knobDesktop(
+      "Offset", "Spread — double-track lag, ≤24 ms toward L or R. Center: off. Right-click: advanced.");
   t[Key::spreadWobble] = knobDesktop("Wobble", "humanizing delay drift, up to ±1.2 ms.");
   t[Key::spreadWobblePower] =
       U("Wobble Power: delay drift on/off. Off: a static, more comb-like double.");
