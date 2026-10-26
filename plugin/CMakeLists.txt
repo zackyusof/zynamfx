@@ -54,10 +54,6 @@ set(T3K_BUILD_CHANNEL "public")
 include("${CMAKE_CURRENT_SOURCE_DIR}/../cmake/ForkIdentity.cmake" OPTIONAL)
 
 option(HEADLESS "Disable GUI (headless/embedded build)" OFF)
-# The UI's testbed app (plugin/ui/testbed: scenario captures, pixel compare,
-# --selftest, --bench) as part of this build; registers its self-tests with
-# ctest. Also configurable on its own: cmake -S plugin/ui/testbed -B build-ui.
-option(T3K_BUILD_UI_TESTBED "Build the UI testbed (UiTestbed) and register its self-tests" OFF)
 option(BUILD_AAX "Build AAX (Avid) format" ON)
 option(BUILD_LV2 "Build LV2 format (native Linux plugin standard)" ON)
 option(BUILD_CLAP "Build CLAP format (via clap-juce-extensions)" ON)
@@ -420,9 +416,6 @@ if (NOT HEADLESS)
             ui/NativeEditor.h
             ui/NativeEditor.cpp
     )
-    if (T3K_BUILD_UI_TESTBED AND NOT T3K_IOS)
-        add_subdirectory(ui/testbed)
-    endif()
     # OS microphone-permission shim: AVFoundation (ObjC++) on macOS, a
     # best-effort stub elsewhere (see AudioPermissions.h).
     target_sources(${PROJECT_NAME} PRIVATE include/AudioPermissions.h)
@@ -559,8 +552,8 @@ add_dependencies(${PROJECT_NAME} NAM)
 # The UI is drawn by JUCE, except the in-editor TONE3000 browser
 # (AuthBrowserPanel): the hosted OAuth Select flow runs in a
 # WebBrowserComponent so sign-in and catalog browsing never leave the
-# window. macOS uses the system WKWebView; no engine is bundled. The UI
-# testbed keeps JUCE_WEB_BROWSER=0 and compiles the panel as a notice.
+# window. macOS uses the system WKWebView; no engine is bundled, and the
+# panel compiles as a notice when the browser is unavailable.
 # Likewise the vendored libwebp (JUCE 9.0.3+): nothing here reads or writes
 # WebP.
 target_compile_definitions(${PROJECT_NAME}

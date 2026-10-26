@@ -906,20 +906,4 @@ void AccessibilityHandler::postAnnouncement (const String& announcementString, A
     endif()
 endif()
 
-# Download GoogleTest Framework using CPM
-if(EXISTS "${LIB_DIR}/googletest/CMakeLists.txt" AND NOT EXISTS "${CMAKE_SOURCE_DIR}/.git")
-    set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
-    add_subdirectory("${LIB_DIR}/googletest" "${CMAKE_BINARY_DIR}/vendored-googletest" EXCLUDE_FROM_ALL)
-else()
-CPMAddPackage(
-    NAME GOOGLETEST
-    GITHUB_REPOSITORY google/googletest
-    GIT_TAG v1.15.2
-    VERSION 1.15.2
-    SOURCE_DIR ${LIB_DIR}/googletest
-    OPTIONS
-        "INSTALL_GTEST OFF"
-)
-endif()
-
 add_subdirectory(plugin) # Add plugin project
