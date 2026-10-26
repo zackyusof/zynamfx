@@ -32,6 +32,7 @@
 #include "ChainOversampler.h"
 #include "RtWorkerPool.h"
 #include "MidiMapper.h"
+#include "MidiClockTempo.h"
 #include "NoiseGate.h"
 #include "PitchShift.h"
 #include "Spread.h"
@@ -40,6 +41,38 @@
 #include "TunerDetector.h"
 
 class TONE3000Processor;
+
+// Playhead handed to every hosted EFFECT slot. A tempo-synced hosted plug-in
+// asks its host for BPM/PPQ through AudioPlayHead, not for MIDI clock bytes,
+// so zynamfx must act as the host for its own slots.
+//
+// Source precedence, per block:
+//  1. An outer DAW playhead (AU/VST3 in Logic, Live, ...) is passed through
+//     untouched, so a slot keeps following the project tempo/position.
+//  2. When an external MIDI clock is active its BPM overrides the source BPM.
+//     In the standalone JUCE's holder playhead carries no BPM/PPQ/signature,
+//     so the remaining transport contract is synthesised from the clock.
+//
+// update() runs once per processBlock on the audio thread before the chain is
+// dispatched; getPosition() may be called from a hosted plug-in running on a
+// worker thread (multi-core lanes), so every field is published atomically.
+class HostedClockPlayHead final : public juce::AudioPlayHead {
+public:
+  void update(juce::AudioPlayHead* source, float midiBpm, bool midiClockActive,
+              double sampleRate, int numSamples) noexcept;
+  juce::Optional<PositionInfo> getPosition() const override;
+
+private:
+  std::atomic<bool> valid_{false};
+  std::atomic<double> bpm_{0.0};
+  std::atomic<double> ppq_{0.0};
+  std::atomic<double> ppqBarStart_{0.0};
+  std::atomic<std::int64_t> timeSamples_{0};
+  std::atomic<bool> playing_{false};
+  std::atomic<int> signatureNumerator_{4};
+  std::atomic<int> signatureDenominator_{4};
+  std::atomic<double> sampleRate_{48000.0};
+};
 
 class TONE3000Processor : public juce::AudioProcessor,
                           private juce::AudioProcessorValueTreeState::Listener,
@@ -85,6 +118,9 @@ public:
   // processBlock; serializes with plugin state so maps travel with DAW
   // sessions and the standalone's saved session alike.
   MidiMapper midiMapper{parameters};
+  MidiClockTempo midiClockTempo;
+  HostedClockPlayHead hostedClockPlayHead;
+  juce::var getMidiClockState() const;
 
   // Chain management methods
   // Load a tone into an insert slot. `targetInsertId` is the insert block the
@@ -826,6 +862,10 @@ private:
   // freq × factor (issue #212). Resets the filters' state and the analyzer's
   // history. Caller holds chainMutex.
   void prepareBlockForChainRate(ChainBlock& block);
+  // Prepare one hosted EFFECT slot: playhead first, then prepareToPlay, MIDI
+  // scratch and tempo-parameter discovery. Shared by prepareChain and every
+  // runtime load/restore path (a slot loaded while running used to skip it).
+  void prepareHostedEffectBlock(ChainBlock& block);
 
   // Recompute the longest loaded IR across both lanes into irTailBaseSamples
   // (base-rate samples; IRs always convolve at the base rate, see
@@ -1157,6 +1197,11 @@ private:
   // is two real channels) and Balance trims the two voices against each
   // other.
   bool rtDualMono = false;
+  // MIDI stream of the callback currently in flight. Hosted EFFECT slots get a
+  // private copy (ChainBlock::effectMidi) so external clock/notes reach them
+  // without one plug-in consuming another's events. Valid only for the duration
+  // of processBlock; cleared before returning.
+  const juce::MidiBuffer* rtMidiBuffer = nullptr;
   // True when this callback's chain stage should fork the two lanes across
   // cores (see RtWorkerPool.h): multi-core enabled, workers healthy, stereo
   // chains active, and both sides of the parallel section actually carry

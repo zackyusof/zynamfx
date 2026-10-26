@@ -103,6 +103,7 @@ public:
   void cancelMidiLearn() override;
   bool removeMidiMapping(const juce::String& targetId) override;
   bool setMidiCcMapping(const juce::String& targetId, int cc) override;
+  juce::var getMidiClockState() override;
 
   juce::var getMeterLevels() override;
   void setTunerEnabled(bool enabled) override;

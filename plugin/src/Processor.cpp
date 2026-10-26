@@ -606,6 +606,162 @@ double TONE3000Processor::getTailLengthSeconds() const {
 // which is the only route MIDI program changes can take in VST3 hosts.
 
 // #############################
+// HOSTED SLOT PLAYHEAD
+// #############################
+void HostedClockPlayHead::update(juce::AudioPlayHead* source, float midiBpm,
+                                 bool midiClockActive, double sampleRate,
+                                 int numSamples) noexcept {
+  const double sr = sampleRate > 0.0 ? sampleRate : 48000.0;
+  sampleRate_.store(sr, std::memory_order_relaxed);
+
+  juce::Optional<PositionInfo> sourcePosition;
+  if (source != nullptr)
+    sourcePosition = source->getPosition();
+  const bool haveSource = sourcePosition.hasValue();
+  // The standalone holder's player publishes a position with time only (no
+  // BPM), so "has a source" is not the same as "has a transport". Treating
+  // them as one left hosted slots with isPlaying=false and a frozen PPQ
+  // whenever the clock came from a MIDI device in the standalone, which is
+  // exactly the case a tempo-synced delay gates on.
+  const bool sourceHasTempo = haveSource && sourcePosition->getBpm().hasValue();
+  const bool synthesiseTransport =
+      midiClockActive && midiBpm > 0.0f && !sourceHasTempo;
+
+  PositionInfo position = haveSource ? *sourcePosition : PositionInfo{};
+  bool valid = haveSource;
+  bool playing = haveSource ? position.getIsPlaying() : false;
+
+  if (midiClockActive && midiBpm > 0.0f) {
+    position.setBpm(static_cast<double>(midiBpm));
+    valid = true;
+    if (synthesiseTransport) {
+      // The standalone holder publishes time only (no BPM, PPQ or time
+      // signature), so synthesise the rest of the contract that hosted
+      // effects gate their sync on.
+      const auto samples = timeSamples_.load(std::memory_order_relaxed);
+      position.setTimeInSamples(samples);
+      position.setTimeInSeconds(static_cast<double>(samples) / sr);
+      position.setPpqPosition(ppq_.load(std::memory_order_relaxed));
+      position.setPpqPositionOfLastBarStart(
+          ppqBarStart_.load(std::memory_order_relaxed));
+      position.setTimeSignature(
+          TimeSignature{signatureNumerator_.load(std::memory_order_relaxed),
+                        signatureDenominator_.load(std::memory_order_relaxed)});
+      // A running external clock is the only transport truth the standalone
+      // has; delay sync and generators both key off "playing".
+      playing = true;
+    } else if (!position.getPpqPosition().hasValue()) {
+      position.setPpqPosition(ppq_.load(std::memory_order_relaxed));
+    }
+  }
+
+  position.setIsPlaying(playing);
+
+  const auto bpm = position.getBpm();
+  const auto ppq = position.getPpqPosition();
+  const auto ppqBarStart = position.getPpqPositionOfLastBarStart();
+  const auto timeSamples = position.getTimeInSamples();
+  const auto signature = position.getTimeSignature();
+
+  const double currentPpq = ppq.hasValue() ? *ppq : ppq_.load(std::memory_order_relaxed);
+  const std::int64_t currentSamples =
+      timeSamples.hasValue() ? *timeSamples : timeSamples_.load(std::memory_order_relaxed);
+  const double currentBpm = bpm.hasValue() ? *bpm : 0.0;
+
+  if (synthesiseTransport && midiClockActive && currentBpm > 0.0) {
+    // The standalone has no other clock: advance the published position so a
+    // hosted modulation/delay keeps a coherent PPQ.
+    const double nextPpq =
+        currentPpq + static_cast<double>(juce::jmax(0, numSamples)) * currentBpm /
+                         (sr * 60.0);
+    ppq_.store(nextPpq, std::memory_order_relaxed);
+    ppqBarStart_.store(std::floor(nextPpq / 4.0) * 4.0, std::memory_order_relaxed);
+    timeSamples_.store(currentSamples + juce::jmax(0, numSamples),
+                       std::memory_order_relaxed);
+  } else {
+    ppq_.store(currentPpq, std::memory_order_relaxed);
+    ppqBarStart_.store(ppqBarStart.hasValue() ? *ppqBarStart : currentPpq,
+                       std::memory_order_relaxed);
+    timeSamples_.store(currentSamples, std::memory_order_relaxed);
+  }
+
+  if (signature.hasValue()) {
+    signatureNumerator_.store(signature->numerator, std::memory_order_relaxed);
+    signatureDenominator_.store(signature->denominator, std::memory_order_relaxed);
+  }
+  bpm_.store(currentBpm, std::memory_order_relaxed);
+  playing_.store(playing, std::memory_order_relaxed);
+  valid_.store(valid, std::memory_order_release);
+}
+
+juce::Optional<HostedClockPlayHead::PositionInfo> HostedClockPlayHead::getPosition()
+    const {
+  if (!valid_.load(std::memory_order_acquire))
+    return {};
+
+  const auto samples = timeSamples_.load(std::memory_order_relaxed);
+  const auto sr = sampleRate_.load(std::memory_order_relaxed);
+
+  PositionInfo position;
+  position.setBpm(bpm_.load(std::memory_order_relaxed));
+  position.setPpqPosition(ppq_.load(std::memory_order_relaxed));
+  position.setPpqPositionOfLastBarStart(ppqBarStart_.load(std::memory_order_relaxed));
+  position.setTimeInSamples(samples);
+  position.setTimeInSeconds(sr > 0.0 ? static_cast<double>(samples) / sr : 0.0);
+  position.setIsPlaying(playing_.load(std::memory_order_relaxed));
+  position.setTimeSignature(
+      TimeSignature{signatureNumerator_.load(std::memory_order_relaxed),
+                    signatureDenominator_.load(std::memory_order_relaxed)});
+  return position;
+}
+
+// One place that prepares a hosted effect slot. The playhead must be installed
+// before prepareToPlay (several hosted effects cache the transport interface
+// there), and the tempo-parameter discovery belongs to the same moment. Every
+// runtime path that puts a new instance in a slot goes through here — a slot
+// loaded while the app runs used to skip all of it, so a freshly loaded effect
+// had no transport and never synced to the clock until a restart.
+void TONE3000Processor::prepareHostedEffectBlock(ChainBlock& block) {
+  if (block.type != ChainBlockType::EFFECT || block.effectInstance == nullptr) return;
+  const double chainRate = chainSampleRate();
+  const int domainBlockSize = chainDomainBlockSize();
+  auto& fx = *block.effectInstance;
+
+  fx.releaseResources();
+  fx.setRateAndBufferSizeDetails(chainRate, domainBlockSize);
+  fx.setPlayHead(&hostedClockPlayHead);
+  fx.prepareToPlay(chainRate, domainBlockSize);
+  block.effectMidi.ensureSize(2048);
+  block.lastHostedTempoBpm = -1.0f;
+  block.tempoParameterIndices.clear();
+
+  // Generic discovery of a DAW-sync tempo parameter (name + musical range).
+  // Vendor-agnostic: the archetype and any other tempo-aware hosted effect
+  // match the same rule. Bounded to four candidates so a stray "Tempo" label
+  // elsewhere cannot fight the real one.
+  const auto& effectParameters = fx.getParameters();
+  for (int i = 0; i < effectParameters.size(); ++i) {
+    const auto* ranged =
+        dynamic_cast<const juce::RangedAudioParameter*>(effectParameters[i]);
+    if (ranged == nullptr)
+      continue;
+    const auto name = (ranged->getName(48) + " " + ranged->paramID).toLowerCase();
+    if (!name.contains("tempo") && !name.contains("bpm"))
+      continue;
+    const auto range = ranged->getNormalisableRange();
+    if (range.start > 20.0f || range.end < 200.0f)
+      continue;
+    if (static_cast<int>(block.tempoParameterIndices.size()) >= 4)
+      break;
+    block.tempoParameterIndices.push_back(i);
+  }
+
+  block.effectScratch.setSize(
+      juce::jmax(fx.getTotalNumInputChannels(), fx.getTotalNumOutputChannels()),
+      domainBlockSize, false, false, true);
+}
+
+// #############################
 // PREPARE A SINGLE CHAIN
 // #############################
 // Everything in a chain lives in the chain domain: chainSampleRate(), block
@@ -618,12 +774,7 @@ void TONE3000Processor::prepareChain(std::vector<std::unique_ptr<ChainBlock>>& b
 
   for (auto& block : blocks) {
     if (block->type == ChainBlockType::EFFECT && block->effectInstance != nullptr) {
-      block->effectInstance->releaseResources();
-      block->effectInstance->setRateAndBufferSizeDetails(chainRate, domainBlockSize);
-      block->effectInstance->prepareToPlay(chainRate, domainBlockSize);
-      block->effectScratch.setSize(juce::jmax(block->effectInstance->getTotalNumInputChannels(),
-                                             block->effectInstance->getTotalNumOutputChannels()),
-                                   domainBlockSize, false, false, true);
+      prepareHostedEffectBlock(*block);
     } else if (block->type == ChainBlockType::NAM) {
       if (block->namEngine != nullptr) {
         block->namEngine->prepare(domainBlockSize);
@@ -950,6 +1101,7 @@ static float clampBelowNyquist(double sampleRate, float frequency) {
 void TONE3000Processor::prepareToPlay(double sampleRate, int samplesPerBlock) {
   hostSampleRate = sampleRate;
   maxBlockSize = samplesPerBlock;
+  midiClockTempo.prepare(sampleRate);
 
   tuner.prepare(sampleRate);
 
@@ -1541,8 +1693,35 @@ void TONE3000Processor::processChainOnBuffer(std::vector<std::unique_ptr<ChainBl
             scratch.clear(ch, 0, numSamples);  // extra bus: silence, never the signal
         }
         juce::AudioBuffer<float> view(scratch.getArrayOfWritePointers(), effectChannels, numSamples);
-        juce::MidiBuffer emptyMidi;
-        fx->processBlock(view, emptyMidi);
+        // Give the slot the chain's MIDI stream (external clock, notes, CC)
+        // and the tempo the playhead reports. Most tempo-synced effects read
+        // the playhead; some only expose a "Tempo" parameter, so both are fed.
+        auto& effectMidi = block->effectMidi;
+        effectMidi.clear();
+        if (rtMidiBuffer != nullptr)
+          effectMidi.addEvents(*rtMidiBuffer, 0, numSamples, 0);
+
+        const auto hostedClock = midiClockTempo.snapshot();
+        const bool hostedClockActive =
+            hostedClock.bpm > 0.0f && !hostedClock.stale &&
+            hostedClock.state != MidiClockTempo::LockState::noSignal;
+        if (hostedClockActive && !block->tempoParameterIndices.empty() &&
+            std::abs(block->lastHostedTempoBpm - hostedClock.bpm) > 0.05f) {
+          auto& parameters = fx->getParameters();
+          for (const auto index : block->tempoParameterIndices) {
+            if (index < 0 || index >= parameters.size())
+              continue;
+            auto* parameter = parameters.getUnchecked(index);
+            if (auto* ranged = dynamic_cast<juce::RangedAudioParameter*>(parameter))
+              parameter->setValue(ranged->convertTo0to1(hostedClock.bpm));
+            else
+              parameter->setValue(parameter->getValueForText(
+                  juce::String(hostedClock.bpm, 2)));
+          }
+          block->lastHostedTempoBpm = hostedClock.bpm;
+        }
+
+        fx->processBlock(view, effectMidi);
         if (mainOuts >= numChannels) {
           for (int ch = 0; ch < numChannels; ++ch)
             buffer.copyFrom(ch, 0, scratch, ch, 0, numSamples);
@@ -1981,6 +2160,22 @@ void TONE3000Processor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
   // Times this whole callback against its real-time budget (the CPU readout).
   juce::AudioProcessLoadMeasurer::ScopedTimer loadTimer(loadMeasurer, buffer.getNumSamples());
 
+  // Clock first: MidiMapper intentionally drops a whole buffer while its map
+  // lock is contended, but tempo/activity must not disappear during an edit.
+  midiClockTempo.processBlock(midi, buffer.getNumSamples());
+
+  // The callback's MIDI stream is what hosted EFFECT slots receive. Capture it
+  // before the mapper can consume anything and publish the tempo the slots'
+  // playhead will report for this block.
+  rtMidiBuffer = &midi;
+  {
+    const auto clock = midiClockTempo.snapshot();
+    const bool clockActive = clock.bpm > 0.0f && !clock.stale &&
+                             clock.state != MidiClockTempo::LockState::noSignal;
+    hostedClockPlayHead.update(getPlayHead(), clock.bpm, clockActive, getSampleRate(),
+                               buffer.getNumSamples());
+  }
+
   // Mapped MIDI first, so parameter moves (bypass stomps, expression sweeps)
   // land before this block's cached-parameter refresh below.
   midiMapper.processMidi(midi);
@@ -1990,6 +2185,7 @@ void TONE3000Processor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
 
   if (numSamples <= 0 || numChannels <= 0) {
     DBG("Invalid buffer: samples=" << numSamples << ", channels=" << numChannels);
+    rtMidiBuffer = nullptr;
     buffer.clear();
     outputMeterLevelL.store(-60.0f);
     outputMeterLevelR.store(-60.0f);
@@ -2309,6 +2505,22 @@ void TONE3000Processor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
     outputMeterLevelL.store(peakToDb(peakL));
     outputMeterLevelR.store(peakToDb(peakR));
   }
+
+  // Hosted slots have finished this callback; never retain a pointer into the
+  // host-owned MIDI buffer between callbacks.
+  rtMidiBuffer = nullptr;
+}
+
+juce::var TONE3000Processor::getMidiClockState() const {
+  const auto snapshot = midiClockTempo.snapshot();
+  auto* object = new juce::DynamicObject();
+  object->setProperty("bpm", snapshot.bpm);
+  object->setProperty("state", static_cast<int>(snapshot.state));
+  object->setProperty("transport", static_cast<int>(snapshot.transport));
+  object->setProperty("stale", snapshot.stale);
+  object->setProperty("activity", snapshot.activity);
+  object->setProperty("songPosition", static_cast<int>(snapshot.songPosition));
+  return juce::var(object);
 }
 
 // ##################

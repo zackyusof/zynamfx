@@ -34,6 +34,7 @@ target_sources(DspTests PRIVATE
     src/ir_temp_file_tests.cpp
     src/local_load_tests.cpp
     src/midi_map_tests.cpp
+    src/midi_clock_tempo_tests.cpp
     src/multicore_tests.cpp
     src/outgain_tests.cpp
     src/padless_wav_tests.cpp
@@ -55,6 +56,7 @@ target_sources(DspTests PRIVATE
     ../plugin/src/BlockSpectrum.cpp
     ../plugin/src/LegacyParamIds.cpp
     ../plugin/src/MidiMapper.cpp
+    ../plugin/src/MidiClockTempo.cpp
     ../plugin/src/NamEngine.cpp
     ../plugin/src/PresetFile.cpp
     ../plugin/src/PresetManager.cpp

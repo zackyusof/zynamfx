@@ -248,6 +248,8 @@ bool ProcessorBackend::setMidiCcMapping(const juce::String& targetId, int cc) {
   return processor_.midiMapper.setCcMapping(targetId, cc);
 }
 
+juce::var ProcessorBackend::getMidiClockState() { return processor_.getMidiClockState(); }
+
 // Meters / tuner / auto-measure
 juce::var ProcessorBackend::getMeterLevels() { return processor_.getMeterLevels(); }
 void ProcessorBackend::setTunerEnabled(bool enabled) { processor_.setTunerEnabled(enabled); }

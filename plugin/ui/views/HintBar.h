@@ -32,10 +32,22 @@ private:
     MeterStore& meters_;
   };
 
+  class TempoReadout : public juce::Component, private TempoStore::Listener {
+  public:
+    explicit TempoReadout(TempoStore& tempo);
+    ~TempoReadout() override;
+    void paint(juce::Graphics& g) override;
+
+  private:
+    void tempoChanged() override { repaint(); }
+    TempoStore& tempo_;
+  };
+
   void hintChanged() override { repaint(); }
 
   Services& services_;
   CpuReadout cpu_;
+  TempoReadout tempo_;
   IconButton hide_{Icon::X, 20, 16};
 };
 

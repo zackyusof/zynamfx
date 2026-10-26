@@ -22,6 +22,7 @@
 #include "T3kConfig.h"
 #include "ToneLoadFlow.h"
 #include "ToneSession.h"
+#include "TempoStore.h"
 #include "UiClock.h"
 #include "UiPrefs.h"
 #include "UpdateCheck.h"
@@ -53,6 +54,7 @@ public:
         hints(prefs),
         chain(b, clock),
         meters(b, clock),
+        tempo(b, clock),
         presets(b, chain),
         audioDevice(b),
         banners(audioDevice, prefs),
@@ -73,6 +75,7 @@ public:
   HintBus hints;
   ChainStore chain;
   MeterStore meters;
+  TempoStore tempo;
   PresetStore presets;
   AudioDeviceStore audioDevice;
   BannerStore banners;

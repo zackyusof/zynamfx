@@ -132,6 +132,7 @@ public:
   virtual void cancelMidiLearn() = 0;
   virtual bool removeMidiMapping(const juce::String& targetId) = 0;
   virtual bool setMidiCcMapping(const juce::String& targetId, int cc) = 0;
+  virtual juce::var getMidiClockState() { return {}; }
 
   // Meters / tuner / auto-measure
   virtual juce::var getMeterLevels() = 0;

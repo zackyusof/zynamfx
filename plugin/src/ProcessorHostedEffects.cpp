@@ -230,10 +230,11 @@ std::string TONE3000Processor::addHostedEffect(const juce::String& xml,
   block->effectName = description.name;
   block->effectInstance = std::move(instance);
   block->loaded = true;
-  block->effectScratch.setSize(juce::jmax(block->effectInstance->getTotalNumInputChannels(),
-                                         block->effectInstance->getTotalNumOutputChannels()),
-                               chainDomainBlockSize());
   prepareBlockForChainRate(*block);
+  // Install the playhead and rediscover tempo parameters for the slot that was
+  // just created. prepareChain only runs on rate/oversampling changes and at
+  // startup, so without this a newly loaded effect never saw the transport.
+  prepareHostedEffectBlock(*block);
 
   Lane* target = nullptr;
   Lane::iterator slot;
@@ -291,9 +292,7 @@ void TONE3000Processor::restoreHostedEffect(ChainBlock& block) {
                                             chainSampleRate(), chainDomainBlockSize());
   block.loaded = block.effectInstance != nullptr;
   if (block.loaded)
-    block.effectScratch.setSize(juce::jmax(block.effectInstance->getTotalNumInputChannels(),
-                                          block.effectInstance->getTotalNumOutputChannels()),
-                                chainDomainBlockSize());
+    prepareHostedEffectBlock(block);
   block.loadFailed = !block.loaded;
   block.modelLoading = false;
 }

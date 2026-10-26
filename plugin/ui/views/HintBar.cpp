@@ -15,12 +15,35 @@ constexpr int kGap = 16;
 // changes never shift the row.
 constexpr int kCpuMinWidth = 72;
 constexpr int kCpuGap = 6;
+constexpr int kTempoWidth = 142;
 }  // namespace
 
 // CPU readout
 HintBar::CpuReadout::CpuReadout(MeterStore& meters) : meters_(meters) {
   setHelpText(help::text(help::Key::cpuLoad));
   meters_.addListener(this);
+}
+
+HintBar::TempoReadout::TempoReadout(TempoStore& tempo) : tempo_(tempo) {
+  tempo_.addListener(this);
+}
+
+HintBar::TempoReadout::~TempoReadout() { tempo_.removeListener(this); }
+
+void HintBar::TempoReadout::paint(juce::Graphics& g) {
+  const auto& state = tempo_.state();
+  const auto text = state.lock == 2 ? "EXT " + juce::String(state.bpm, 1) + " LOCKED"
+                   : state.lock == 1
+                       ? (state.bpm > 0.0f ? "EXT " + juce::String(state.bpm, 1) + " CLOCK"
+                                           : "EXT - CLOCK")
+                       : "EXT - NO SIGNAL";
+  const auto font = Fonts::mono(10);
+  const auto row = getLocalBounds();
+  const auto textWidth = Fonts::width(font, text);
+  const auto x = juce::jmax(0, juce::roundToInt((getWidth() - textWidth - 10.0f) * 0.5f));
+  paint::text(g, text, row.withX(x).withWidth(getWidth() - x), font, theme::kMuted);
+  g.setColour(state.activity ? theme::kAccent : theme::kBorder);
+  g.fillEllipse(static_cast<float>(getWidth() - 7), getHeight() / 2.0f - 3.0f, 6.0f, 6.0f);
 }
 
 HintBar::CpuReadout::~CpuReadout() { meters_.removeListener(this); }
@@ -40,8 +63,9 @@ void HintBar::CpuReadout::paint(juce::Graphics& g) {
 }
 
 // Bar
-HintBar::HintBar(Services& services) : services_(services), cpu_(services.meters) {
+HintBar::HintBar(Services& services) : services_(services), cpu_(services.meters), tempo_(services.tempo) {
   addAndMakeVisible(cpu_);
+  addAndMakeVisible(tempo_);
   hide_.setHelpText(help::text(help::Key::hideHints));
   hide_.onClick = [this] { services_.hints.setEnabled(false); };
   addAndMakeVisible(hide_);
@@ -55,13 +79,15 @@ void HintBar::paint(juce::Graphics& g) {
   g.fillAll(theme::kBlack);
   paint::hairlineH(g, 0, static_cast<float>(getWidth()), 0, theme::kBorder);
   auto area = getLocalBounds().reduced(kPadX, 0);
-  area.setRight(cpu_.getX() - kGap);
+  area.setRight(tempo_.getX() - kGap);
   paint::text(g, services_.hints.current(), area, Fonts::sans(13), theme::kMuted);
 }
 
 void HintBar::resized() {
   auto area = getLocalBounds().reduced(kPadX, 0);
   hide_.setBounds(area.removeFromRight(hide_.getWidth()).withSizeKeepingCentre(hide_.getWidth(), hide_.getHeight()));
+  area.removeFromRight(kGap);
+  tempo_.setBounds(area.removeFromRight(kTempoWidth));
   area.removeFromRight(kGap);
   cpu_.setBounds(area.removeFromRight(kCpuMinWidth));
 }

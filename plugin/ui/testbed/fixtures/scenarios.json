@@ -1,10 +1,10 @@
 {
  "version": "1.4.2",
- "imgHost": "https://t3k-fixtures.local",
+ "imgHost": "https://t3k-fixtures.example",
  "user": {
   "id": "user-1",
   "username": "tonehound",
-  "avatar_url": "https://t3k-fixtures.local/img/avatar"
+  "avatar_url": "https://t3k-fixtures.example/img/avatar"
  },
  "apiTones": [
   {
@@ -16,7 +16,7 @@
    "updated_at": "2026-06-01T12:00:00Z",
    "gear": "amp",
    "images": [
-    "https://t3k-fixtures.local/img/amp-vox"
+    "https://t3k-fixtures.example/img/amp-vox"
    ],
    "is_public": true,
    "links": [],
@@ -36,13 +36,13 @@
     "username": "signaltheoryaudio",
     "display_name": "Signal Theory Audio",
     "is_verified": true,
-    "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+    "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
    },
    "models": [
     {
      "id": 1101,
      "name": "AC30-6 TB Brl 3",
-     "model_url": "https://t3k-fixtures.local/models/1101.nam",
+     "model_url": "https://t3k-fixtures.example/models/1101.nam",
      "created_at": "2026-05-01T12:00:00Z",
      "size": "standard",
      "user_id": "user-x",
@@ -94,7 +94,7 @@
    "updated_at": "2026-06-01T12:00:00Z",
    "gear": "amp",
    "images": [
-    "https://t3k-fixtures.local/img/amp-jc40"
+    "https://t3k-fixtures.example/img/amp-jc40"
    ],
    "is_public": true,
    "links": [],
@@ -112,13 +112,13 @@
    "user": {
     "id": "user-x",
     "username": "saprumi",
-    "avatar_url": "https://t3k-fixtures.local/img/avatar-saprumi"
+    "avatar_url": "https://t3k-fixtures.example/img/avatar-saprumi"
    },
    "models": [
     {
      "id": 1102,
      "name": "JC40_414_CLEAN",
-     "model_url": "https://t3k-fixtures.local/models/1102.nam",
+     "model_url": "https://t3k-fixtures.example/models/1102.nam",
      "created_at": "2026-05-01T12:00:00Z",
      "size": "standard",
      "user_id": "user-x",
@@ -160,7 +160,7 @@
    "updated_at": "2026-06-01T12:00:00Z",
    "gear": "cab",
    "images": [
-    "https://t3k-fixtures.local/img/cab-412"
+    "https://t3k-fixtures.example/img/cab-412"
    ],
    "is_public": true,
    "links": [],
@@ -178,13 +178,13 @@
    "user": {
     "id": "user-x",
     "username": "outmodedelectronics",
-    "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+    "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
    },
    "models": [
     {
      "id": 1103,
      "name": "M201 Cap Edge",
-     "model_url": "https://t3k-fixtures.local/models/1103.nam",
+     "model_url": "https://t3k-fixtures.example/models/1103.nam",
      "created_at": "2026-05-01T12:00:00Z",
      "size": "standard",
      "user_id": "user-x",
@@ -222,7 +222,7 @@
    "updated_at": "2026-06-01T12:00:00Z",
    "gear": "pedal",
    "images": [
-    "https://t3k-fixtures.local/img/pedal-muff"
+    "https://t3k-fixtures.example/img/pedal-muff"
    ],
    "is_public": true,
    "links": [],
@@ -240,13 +240,13 @@
    "user": {
     "id": "user-x",
     "username": "kosmicaudio",
-    "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+    "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
    },
    "models": [
     {
      "id": 1104,
      "name": "D-12_00 T-12_00 + BD-2 Boost",
-     "model_url": "https://t3k-fixtures.local/models/1104.nam",
+     "model_url": "https://t3k-fixtures.example/models/1104.nam",
      "created_at": "2026-05-01T12:00:00Z",
      "size": "standard",
      "user_id": "user-x",
@@ -284,7 +284,7 @@
    "updated_at": "2026-06-01T12:00:00Z",
    "gear": "amp",
    "images": [
-    "https://t3k-fixtures.local/img/amp-recto"
+    "https://t3k-fixtures.example/img/amp-recto"
    ],
    "is_public": true,
    "links": [],
@@ -303,13 +303,13 @@
     "id": "user-x",
     "username": "kenjitonejp",
     "is_verified": true,
-    "avatar_url": "https://t3k-fixtures.local/img/avatar-kenji"
+    "avatar_url": "https://t3k-fixtures.example/img/avatar-kenji"
    },
    "models": [
     {
      "id": 1105,
      "name": "Orange Ch - Tight",
-     "model_url": "https://t3k-fixtures.local/models/1105.nam",
+     "model_url": "https://t3k-fixtures.example/models/1105.nam",
      "created_at": "2026-05-01T12:00:00Z",
      "size": "standard",
      "user_id": "user-x",
@@ -347,7 +347,7 @@
    "updated_at": "2026-06-01T12:00:00Z",
    "gear": "outboard",
    "images": [
-    "https://t3k-fixtures.local/img/outboard-neve"
+    "https://t3k-fixtures.example/img/outboard-neve"
    ],
    "is_public": true,
    "links": [],
@@ -365,13 +365,13 @@
    "user": {
     "id": "user-x",
     "username": "rickwolf",
-    "avatar_url": "https://t3k-fixtures.local/img/avatar-rickwolf"
+    "avatar_url": "https://t3k-fixtures.example/img/avatar-rickwolf"
    },
    "models": [
     {
      "id": 1106,
      "name": "Line - Drive 3",
-     "model_url": "https://t3k-fixtures.local/models/1106.nam",
+     "model_url": "https://t3k-fixtures.example/models/1106.nam",
      "created_at": "2026-05-01T12:00:00Z",
      "size": "standard",
      "user_id": "user-x",
@@ -413,7 +413,7 @@
     "updated_at": "2026-06-01T12:00:00Z",
     "gear": "amp",
     "images": [
-     "https://t3k-fixtures.local/img/amp-vox"
+     "https://t3k-fixtures.example/img/amp-vox"
     ],
     "is_public": true,
     "links": [],
@@ -433,13 +433,13 @@
      "username": "signaltheoryaudio",
      "display_name": "Signal Theory Audio",
      "is_verified": true,
-     "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+     "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
     },
     "models": [
      {
       "id": 1101,
       "name": "AC30-6 TB Brl 3",
-      "model_url": "https://t3k-fixtures.local/models/1101.nam",
+      "model_url": "https://t3k-fixtures.example/models/1101.nam",
       "created_at": "2026-05-01T12:00:00Z",
       "size": "standard",
       "user_id": "user-x",
@@ -491,7 +491,7 @@
     "updated_at": "2026-06-01T12:00:00Z",
     "gear": "amp",
     "images": [
-     "https://t3k-fixtures.local/img/amp-jc40"
+     "https://t3k-fixtures.example/img/amp-jc40"
     ],
     "is_public": true,
     "links": [],
@@ -509,13 +509,13 @@
     "user": {
      "id": "user-x",
      "username": "saprumi",
-     "avatar_url": "https://t3k-fixtures.local/img/avatar-saprumi"
+     "avatar_url": "https://t3k-fixtures.example/img/avatar-saprumi"
     },
     "models": [
      {
       "id": 1102,
       "name": "JC40_414_CLEAN",
-      "model_url": "https://t3k-fixtures.local/models/1102.nam",
+      "model_url": "https://t3k-fixtures.example/models/1102.nam",
       "created_at": "2026-05-01T12:00:00Z",
       "size": "standard",
       "user_id": "user-x",
@@ -557,7 +557,7 @@
     "updated_at": "2026-06-01T12:00:00Z",
     "gear": "cab",
     "images": [
-     "https://t3k-fixtures.local/img/cab-412"
+     "https://t3k-fixtures.example/img/cab-412"
     ],
     "is_public": true,
     "links": [],
@@ -575,13 +575,13 @@
     "user": {
      "id": "user-x",
      "username": "outmodedelectronics",
-     "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+     "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
     },
     "models": [
      {
       "id": 1103,
       "name": "M201 Cap Edge",
-      "model_url": "https://t3k-fixtures.local/models/1103.nam",
+      "model_url": "https://t3k-fixtures.example/models/1103.nam",
       "created_at": "2026-05-01T12:00:00Z",
       "size": "standard",
       "user_id": "user-x",
@@ -619,7 +619,7 @@
     "updated_at": "2026-06-01T12:00:00Z",
     "gear": "pedal",
     "images": [
-     "https://t3k-fixtures.local/img/pedal-muff"
+     "https://t3k-fixtures.example/img/pedal-muff"
     ],
     "is_public": true,
     "links": [],
@@ -637,13 +637,13 @@
     "user": {
      "id": "user-x",
      "username": "kosmicaudio",
-     "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+     "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
     },
     "models": [
      {
       "id": 1104,
       "name": "D-12_00 T-12_00 + BD-2 Boost",
-      "model_url": "https://t3k-fixtures.local/models/1104.nam",
+      "model_url": "https://t3k-fixtures.example/models/1104.nam",
       "created_at": "2026-05-01T12:00:00Z",
       "size": "standard",
       "user_id": "user-x",
@@ -681,7 +681,7 @@
     "updated_at": "2026-06-01T12:00:00Z",
     "gear": "amp",
     "images": [
-     "https://t3k-fixtures.local/img/amp-recto"
+     "https://t3k-fixtures.example/img/amp-recto"
     ],
     "is_public": true,
     "links": [],
@@ -700,13 +700,13 @@
      "id": "user-x",
      "username": "kenjitonejp",
      "is_verified": true,
-     "avatar_url": "https://t3k-fixtures.local/img/avatar-kenji"
+     "avatar_url": "https://t3k-fixtures.example/img/avatar-kenji"
     },
     "models": [
      {
       "id": 1105,
       "name": "Orange Ch - Tight",
-      "model_url": "https://t3k-fixtures.local/models/1105.nam",
+      "model_url": "https://t3k-fixtures.example/models/1105.nam",
       "created_at": "2026-05-01T12:00:00Z",
       "size": "standard",
       "user_id": "user-x",
@@ -744,7 +744,7 @@
     "updated_at": "2026-06-01T12:00:00Z",
     "gear": "outboard",
     "images": [
-     "https://t3k-fixtures.local/img/outboard-neve"
+     "https://t3k-fixtures.example/img/outboard-neve"
     ],
     "is_public": true,
     "links": [],
@@ -762,13 +762,13 @@
     "user": {
      "id": "user-x",
      "username": "rickwolf",
-     "avatar_url": "https://t3k-fixtures.local/img/avatar-rickwolf"
+     "avatar_url": "https://t3k-fixtures.example/img/avatar-rickwolf"
     },
     "models": [
      {
       "id": 1106,
       "name": "Line - Drive 3",
-      "model_url": "https://t3k-fixtures.local/models/1106.nam",
+      "model_url": "https://t3k-fixtures.example/models/1106.nam",
       "created_at": "2026-05-01T12:00:00Z",
       "size": "standard",
       "user_id": "user-x",
@@ -827,11 +827,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -908,13 +908,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -991,11 +991,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -1136,11 +1136,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -1217,13 +1217,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -1300,11 +1300,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -1484,11 +1484,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -1565,13 +1565,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -1650,11 +1650,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -1767,11 +1767,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -1848,13 +1848,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -1933,11 +1933,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -2050,11 +2050,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -2131,13 +2131,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -2216,11 +2216,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -2333,11 +2333,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -2414,13 +2414,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -2497,11 +2497,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -2614,11 +2614,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -2695,13 +2695,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -2778,11 +2778,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -2895,11 +2895,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -2976,13 +2976,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -3061,11 +3061,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -3178,13 +3178,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -3261,11 +3261,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -3348,11 +3348,11 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-jc40"
+        "https://t3k-fixtures.example/img/amp-jc40"
        ],
        "user": {
         "username": "saprumi",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-saprumi"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-saprumi"
        },
        "models": [
         {
@@ -3429,11 +3429,11 @@
        "format": "ir",
        "gear": "outboard",
        "images": [
-        "https://t3k-fixtures.local/img/outboard-neve"
+        "https://t3k-fixtures.example/img/outboard-neve"
        ],
        "user": {
         "username": "rickwolf",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-rickwolf"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-rickwolf"
        },
        "models": [
         {
@@ -3539,13 +3539,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -3622,11 +3622,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -3713,11 +3713,11 @@
        "format": "ir",
        "gear": "outboard",
        "images": [
-        "https://t3k-fixtures.local/img/outboard-neve"
+        "https://t3k-fixtures.example/img/outboard-neve"
        ],
        "user": {
         "username": "rickwolf",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-rickwolf"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-rickwolf"
        },
        "models": [
         {
@@ -3827,11 +3827,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -3908,13 +3908,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -3991,11 +3991,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -4114,11 +4114,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -4195,13 +4195,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -4278,11 +4278,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -4401,11 +4401,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -4482,13 +4482,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -4565,11 +4565,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -4688,11 +4688,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -4769,13 +4769,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -4852,11 +4852,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -4975,11 +4975,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -5056,13 +5056,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -5139,11 +5139,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -5262,13 +5262,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -5345,12 +5345,12 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-recto"
+        "https://t3k-fixtures.example/img/amp-recto"
        ],
        "user": {
         "username": "kenjitonejp",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kenji"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kenji"
        },
        "models": [
         {
@@ -5427,11 +5427,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -5541,11 +5541,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -5622,13 +5622,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -5705,11 +5705,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -5822,11 +5822,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -5903,13 +5903,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -5986,11 +5986,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -6103,11 +6103,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -6184,13 +6184,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -6267,11 +6267,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -6386,11 +6386,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -6467,13 +6467,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -6550,11 +6550,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -6669,11 +6669,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -6750,13 +6750,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -6833,11 +6833,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -6954,11 +6954,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -7035,13 +7035,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -7118,11 +7118,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -7239,11 +7239,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -7320,13 +7320,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -7403,11 +7403,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -7524,11 +7524,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -7605,13 +7605,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -7688,11 +7688,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -7810,11 +7810,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -7891,13 +7891,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -7974,11 +7974,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -8095,11 +8095,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -8176,13 +8176,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -8259,11 +8259,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -8381,11 +8381,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -8462,13 +8462,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -8545,11 +8545,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -8672,11 +8672,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -8753,13 +8753,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -8836,11 +8836,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -8956,11 +8956,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -9037,13 +9037,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -9120,11 +9120,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -9245,11 +9245,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -9326,13 +9326,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -9409,11 +9409,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -9594,11 +9594,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -9675,13 +9675,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -9758,11 +9758,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -9932,11 +9932,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -10013,13 +10013,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -10096,11 +10096,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -10281,11 +10281,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -10362,13 +10362,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -10445,11 +10445,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -10630,11 +10630,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -10711,13 +10711,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -10794,11 +10794,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -10979,11 +10979,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -11060,13 +11060,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -11143,11 +11143,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -11328,11 +11328,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -11409,13 +11409,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -11492,11 +11492,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -11677,11 +11677,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -11758,13 +11758,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -11841,11 +11841,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -12026,11 +12026,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -12107,13 +12107,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -12190,11 +12190,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -12375,11 +12375,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -12456,13 +12456,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -12539,11 +12539,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -12724,11 +12724,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -12805,13 +12805,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -12888,11 +12888,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -13012,11 +13012,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -13093,13 +13093,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -13176,11 +13176,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -13300,11 +13300,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -13381,13 +13381,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -13464,11 +13464,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -13589,11 +13589,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -13670,13 +13670,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -13753,11 +13753,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -13878,11 +13878,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -13959,13 +13959,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -14042,11 +14042,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -14167,11 +14167,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -14248,13 +14248,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -14331,11 +14331,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -14455,11 +14455,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -14536,13 +14536,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -14619,11 +14619,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -14743,11 +14743,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -14824,13 +14824,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -14907,11 +14907,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -15031,11 +15031,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -15112,13 +15112,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -15195,11 +15195,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -15319,11 +15319,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -15400,13 +15400,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -15483,11 +15483,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -15607,11 +15607,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -15688,13 +15688,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -15771,11 +15771,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -15898,11 +15898,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -15979,13 +15979,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -16062,11 +16062,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -16186,11 +16186,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -16267,13 +16267,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -16350,11 +16350,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -16477,11 +16477,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -16558,13 +16558,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -16641,11 +16641,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -16768,11 +16768,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -16849,13 +16849,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -16932,11 +16932,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -17059,11 +17059,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -17140,13 +17140,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -17223,11 +17223,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -17356,11 +17356,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -17437,13 +17437,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -17520,11 +17520,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -17647,11 +17647,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -17728,13 +17728,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -17811,11 +17811,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -17938,11 +17938,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -18019,13 +18019,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -18102,11 +18102,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -18226,11 +18226,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -18307,13 +18307,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -18390,11 +18390,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -18514,11 +18514,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -18595,13 +18595,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -18678,11 +18678,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -18802,11 +18802,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -18883,13 +18883,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -18966,11 +18966,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -19090,11 +19090,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -19171,13 +19171,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -19254,11 +19254,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -19378,11 +19378,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -19459,13 +19459,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -19542,11 +19542,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -19666,11 +19666,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -19747,13 +19747,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -19830,11 +19830,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -19954,11 +19954,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -20035,13 +20035,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -20118,11 +20118,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -20251,11 +20251,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -20332,13 +20332,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -20415,11 +20415,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -20539,11 +20539,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -20620,13 +20620,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -20703,11 +20703,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -20827,11 +20827,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -20908,13 +20908,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -20991,11 +20991,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -21115,11 +21115,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -21196,13 +21196,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -21279,11 +21279,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -21403,11 +21403,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -21484,13 +21484,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -21567,11 +21567,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -21691,11 +21691,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -21772,13 +21772,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -21855,11 +21855,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -21979,11 +21979,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -22060,13 +22060,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -22143,11 +22143,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -22267,11 +22267,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -22348,13 +22348,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -22431,11 +22431,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -22555,11 +22555,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -22636,13 +22636,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -22719,11 +22719,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -22843,11 +22843,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -22924,13 +22924,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -23007,11 +23007,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -23131,11 +23131,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -23212,13 +23212,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -23295,11 +23295,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -23419,11 +23419,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -23500,13 +23500,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -23583,11 +23583,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -23711,11 +23711,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -23792,13 +23792,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -23875,11 +23875,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -23997,11 +23997,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -24078,13 +24078,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -24161,11 +24161,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -24284,11 +24284,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -24365,13 +24365,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -24448,11 +24448,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -24587,11 +24587,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -24668,13 +24668,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -24751,11 +24751,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -24874,11 +24874,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -24955,13 +24955,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -25038,11 +25038,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -25161,11 +25161,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -25242,13 +25242,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -25325,11 +25325,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -25510,11 +25510,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -25591,13 +25591,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -25674,11 +25674,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -25859,11 +25859,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -25940,13 +25940,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -26023,11 +26023,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -26208,11 +26208,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -26289,13 +26289,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -26372,11 +26372,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -26557,11 +26557,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -26638,13 +26638,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -26721,11 +26721,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -26906,11 +26906,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -26987,13 +26987,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -27070,11 +27070,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -27188,11 +27188,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -27269,13 +27269,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -27352,11 +27352,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -27470,11 +27470,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -27551,13 +27551,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -27634,11 +27634,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -27779,11 +27779,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -27860,13 +27860,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -27943,11 +27943,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -28088,11 +28088,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -28169,13 +28169,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -28252,11 +28252,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -28398,11 +28398,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -28479,13 +28479,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -28562,11 +28562,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -28709,11 +28709,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -28790,13 +28790,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -28873,11 +28873,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -29005,11 +29005,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -29086,13 +29086,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -29169,11 +29169,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -29301,11 +29301,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -29382,13 +29382,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -29465,11 +29465,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -29599,13 +29599,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -29682,11 +29682,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -29769,11 +29769,11 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-jc40"
+        "https://t3k-fixtures.example/img/amp-jc40"
        ],
        "user": {
         "username": "saprumi",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-saprumi"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-saprumi"
        },
        "models": [
         {
@@ -29850,11 +29850,11 @@
        "format": "ir",
        "gear": "outboard",
        "images": [
-        "https://t3k-fixtures.local/img/outboard-neve"
+        "https://t3k-fixtures.example/img/outboard-neve"
        ],
        "user": {
         "username": "rickwolf",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-rickwolf"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-rickwolf"
        },
        "models": [
         {
@@ -29960,13 +29960,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -30043,11 +30043,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -30130,11 +30130,11 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-jc40"
+        "https://t3k-fixtures.example/img/amp-jc40"
        ],
        "user": {
         "username": "saprumi",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-saprumi"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-saprumi"
        },
        "models": [
         {
@@ -30211,11 +30211,11 @@
        "format": "ir",
        "gear": "outboard",
        "images": [
-        "https://t3k-fixtures.local/img/outboard-neve"
+        "https://t3k-fixtures.example/img/outboard-neve"
        ],
        "user": {
         "username": "rickwolf",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-rickwolf"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-rickwolf"
        },
        "models": [
         {
@@ -30321,11 +30321,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -30402,13 +30402,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -30485,11 +30485,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -30601,11 +30601,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -30682,13 +30682,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -30765,11 +30765,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -30879,11 +30879,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -30960,13 +30960,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -31043,11 +31043,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -31161,11 +31161,11 @@
        "format": "nam",
        "gear": "pedal",
        "images": [
-        "https://t3k-fixtures.local/img/pedal-muff"
+        "https://t3k-fixtures.example/img/pedal-muff"
        ],
        "user": {
         "username": "kosmicaudio",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
        },
        "models": [
         {
@@ -31242,13 +31242,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -31325,11 +31325,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -31497,11 +31497,11 @@
           "format": "nam",
           "gear": "pedal",
           "images": [
-            "https://t3k-fixtures.local/img/pedal-muff"
+            "https://t3k-fixtures.example/img/pedal-muff"
           ],
           "user": {
             "username": "kosmicaudio",
-            "avatar_url": "https://t3k-fixtures.local/img/avatar-kosmic"
+            "avatar_url": "https://t3k-fixtures.example/img/avatar-kosmic"
           },
           "models": [
             {
@@ -31578,13 +31578,13 @@
           "format": "nam",
           "gear": "amp",
           "images": [
-            "https://t3k-fixtures.local/img/amp-vox"
+            "https://t3k-fixtures.example/img/amp-vox"
           ],
           "user": {
             "username": "signaltheoryaudio",
             "display_name": "Signal Theory Audio",
             "is_verified": true,
-            "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+            "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
           },
           "models": [
             {
@@ -31661,11 +31661,11 @@
           "format": "ir",
           "gear": "cab",
           "images": [
-            "https://t3k-fixtures.local/img/cab-412"
+            "https://t3k-fixtures.example/img/cab-412"
           ],
           "user": {
             "username": "outmodedelectronics",
-            "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+            "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
           },
           "models": [
             {
@@ -31790,13 +31790,13 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-vox"
+        "https://t3k-fixtures.example/img/amp-vox"
        ],
        "user": {
         "username": "signaltheoryaudio",
         "display_name": "Signal Theory Audio",
         "is_verified": true,
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-signaltheory"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-signaltheory"
        },
        "models": [
         {
@@ -31874,11 +31874,11 @@
        "format": "ir",
        "gear": "cab",
        "images": [
-        "https://t3k-fixtures.local/img/cab-412"
+        "https://t3k-fixtures.example/img/cab-412"
        ],
        "user": {
         "username": "outmodedelectronics",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-outmoded"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-outmoded"
        },
        "models": [
         {
@@ -31962,11 +31962,11 @@
        "format": "nam",
        "gear": "amp",
        "images": [
-        "https://t3k-fixtures.local/img/amp-jc40"
+        "https://t3k-fixtures.example/img/amp-jc40"
        ],
        "user": {
         "username": "saprumi",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-saprumi"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-saprumi"
        },
        "models": [
         {
@@ -32043,11 +32043,11 @@
        "format": "ir",
        "gear": "outboard",
        "images": [
-        "https://t3k-fixtures.local/img/outboard-neve"
+        "https://t3k-fixtures.example/img/outboard-neve"
        ],
        "user": {
         "username": "rickwolf",
-        "avatar_url": "https://t3k-fixtures.local/img/avatar-rickwolf"
+        "avatar_url": "https://t3k-fixtures.example/img/avatar-rickwolf"
        },
        "models": [
         {

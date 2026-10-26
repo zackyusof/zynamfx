@@ -145,6 +145,16 @@ struct ChainBlock {
   std::shared_ptr<juce::AudioPluginInstance> effectInstance;
   juce::AudioBuffer<float> effectScratch;
 
+  // Per-slot MIDI copy: a hosted effect sees the same stream the chain saw
+  // (including external MIDI clock bytes) without sharing a mutable buffer
+  // with another slot. Prepared in prepareChain, never resized on the RT path.
+  juce::MidiBuffer effectMidi;
+  // Hosted tempo-synced effects expose their DAW-sync tempo as a parameter.
+  // Discovered by name and range in prepareChain; lastHostedTempoBpm keeps the
+  // audio thread from writing the parameter on every block.
+  std::vector<int> tempoParameterIndices;
+  float lastHostedTempoBpm{-1.0f};
+
   // True when the last download/prepare of the active model failed (network
   // down, tone3000.com unreachable, bad model data). The UI swaps its loading
   // dots for a retry affordance targeting retryModelLoad. Runtime-only,

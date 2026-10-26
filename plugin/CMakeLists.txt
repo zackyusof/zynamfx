@@ -384,6 +384,8 @@ target_sources(${PROJECT_NAME}
         src/Processor.cpp
         include/MidiMapper.h
         src/MidiMapper.cpp
+        include/MidiClockTempo.h
+        src/MidiClockTempo.cpp
         src/ProcessorChain.cpp
         src/ProcessorHostedEffects.cpp
         src/ProcessorHistory.cpp
