@@ -4,78 +4,24 @@ All notable changes to zynamfx are recorded here. Dates are ISO (yyyy-mm-dd).
 
 ## [2.2.2] - 2026-10-26
 
-### Fixed
-- **A hosted effect loaded while the app is running now gets the transport and its tempo parameters.** Only
-  `prepareChain` installed the playhead and ran the tempo-parameter discovery, and it runs at startup and on
-  rate/oversampling changes — never when a slot is filled at runtime. A newly loaded effect therefore had no
-  `AudioPlayHead` at all (and several effects cache it in `prepareToPlay`), so it stayed unsynced until the app
-  was restarted. `prepareHostedEffectBlock()` now owns playhead → `prepareToPlay` → MIDI scratch → tempo-parameter
-  discovery, and is called from `prepareChain`, `addHostedEffect` and `restoreHostedEffect` (which covers
-  duplicate, paste, undo and preset restores).
-- **Hosted effect slots get a real transport in the standalone.** `HostedClockPlayHead` treated "the source publishes a
-  position" as "the source has a transport". The standalone's `AudioProcessorPlayer` publishes time only
-  (`juce_AudioProcessorPlayer.cpp`: its `PlayHead` sets hostTime/timeInSamples/timeInSeconds and nothing else), so
-  `isPlaying` stayed `false` and PPQ never advanced whenever the clock came from a MIDI device — a hosted
-  tempo-synced delay (Archetype Nolly X Delay-2, for one) saw BPM but no running transport and never locked to
-  the beat. The playhead now synthesises the full contract when the source has no BPM, and passes a real host
-  through unchanged. Regression: `HostedClockPlayHeadTest.SynthesisesTransportFromATimeOnlyStandaloneSource`.
-- **The MIDI clock follower no longer mis-reads tempo, and no longer locks out after a tempo step.**
-  Four estimator defects, all reproducible in `test/src/midi_clock_tempo_tests.cpp`:
-  - *Half-tempo acquisition.* The first window was blended with α 0.5 starting from 0, so the first
-    published BPM was half the real tempo and `expectedTickSamples_` was left at 2×. With ≥0.1 ms of
-    edge jitter the ratio gate then rejected every slightly-short tick and the follower latched at
-    59.9–60.3 BPM on a 120.0 source (measured: 3 of 6 seeds). The first measurement is now taken
-    whole.
-  - *Reset loop after a tempo step.* The old `ratio < 0.5 || ratio > 4.0` branch cleared the window
-    but kept the stale expectation, so it re-triggered on every tick: 120 → 300 stayed at 120.04
-    forever, 120 → 240 settled at 120.61. A deviation that persists for 3 intervals is now treated
-    as a real tempo step: the window is re-anchored and `bpm_` is kept, so neither the badge nor the
-    hosted-slot playhead flashes `NO SIGNAL` while the new window fills.
-  - *Tempo halving read as dropped ticks.* `ratio ≈ 2` was unconditionally counted as two ticks, so
-    120 → 60 reported 120.01. Lost ticks are now confirmed one interval later (a real gap is
-    followed by normal spacing, a jitter spike by the compensating short interval); 120 → 60 and
-    120 → 30 now read 60.00 / 30.0, and a genuine 1-in-50 drop still reads 120.00.
-  - *Flat 500 ms stale timeout.* `300000 / bpm` was 30× a tick period, so the 120–500 ms clamp
-    always won. The timeout is now four tick periods: ~120 ms at 120 BPM, 500 ms at 20 BPM.
-  Measured across 44.1/48/96 kHz with 0–1 ms edge jitter: within 0.06 BPM; drop-1-in-50 and one
-  dropped tick: within 0.11 BPM. Known limit, recorded rather than hidden: at 8.4 ms white edge
-  jitter (the planning number for a DAW master, far above a USB/DIN link) the span window reads
-  ~+7 % high, and the lock state stays `CLOCK` rather than `LOCKED`.
-  Transport propagation (FC/FA to hosted slots) and a user-facing clock-source switch remain open —
-  they change the hosted-slot contract and the preferences surface, not the estimator.
-
 ### Added
-- **MIDI clock tempo is received and reported.** `MidiClockTempo`
-  (`plugin/include/MidiClockTempo.h`, `plugin/src/MidiClockTempo.cpp`) parses `F8` / `FA` / `FB` /
-  `FC` / `F2` / `FE` / `FF` at the top of `processBlock`, before any consumer that may discard MIDI,
-  and derives tempo from a 48-interval span with an EMA (α 0.5 on a >1 BPM jump, else 0.12) rather
-  than from single intervals — a single interval is 5.76 BPM per millisecond of error at 120 BPM.
-  The first measurement of an acquisition is taken whole (α 1); afterwards α is 0.12, rising to 0.5
-  only when a >1 BPM residual persists in the same direction for two windows.
-  Lock is declared when the smoothed update magnitude falls below 0.2 BPM, which is what actually
-  converged under measured IAC jitter. State is published as one packed atomic
-  (`[bpm×100:32][state:2][transport:1][stale:1][activity:1][SPP:14]`), polled by `TempoStore` and
-  drawn by `HintBar::TempoReadout` beside the CPU readout. The report is `EXT <bpm> LOCKED` /
-  `EXT <bpm> CLOCK` / `EXT - CLOCK` / `EXT - NO SIGNAL`, with transport, a stale flag after a clock
-  timeout, and MIDI activity that holds rather than flashing per message. `HostedClockPlayHead`
-  (`plugin/include/Processor.h:59`) additionally presents the external clock to hosted AU/VST3 slots
-  as a host playhead — full contract when the clock is live, nothing without a clock or a host
-  playhead, and the outer host's position passes through with BPM overridden — so a hosted delay can
-  follow the rig's clock. Tests: `test/src/midi_clock_tempo_tests.cpp` (13 gtest cases:
-  `MidiClockTempoTest` ×6, `HostedClockPlayHeadTest` ×3; 268/268 DSP suite). Spec:
-  `docs/specs/midi-clock-tempo.md`; clock into hosted slots: `docs/specs/iac-clock-to-slots.md`.
-  **Not yet verified against real hardware, and whether a host routes clock to an effect insert is
-  host behaviour.** No binary release, tag or install was authorized (spec Deploy phase `n/a`).
+- **External MIDI clock.** zynamfx can follow a 24 PPQN MIDI clock from hardware or a DAW. The hint
+  bar shows the incoming tempo beside the CPU readout — `EXT 120.0 LOCKED` when the tempo is stable,
+  `EXT 120.0 CLOCK` while it settles, and `EXT - NO SIGNAL` when nothing arrives — with an activity
+  lamp that holds for about 125 ms. Hosted effect slots receive the clock as their host tempo, so
+  tempo-synced delays and modulators follow the rig.
+- **How to use it.** Standalone: `Settings → Audio → MIDI inputs`, tick the device that sends clock,
+  then start the clock (zynamfx only opens the inputs you enable). In Logic Pro:
+  `Project Settings → Synchronization → MIDI`, transmit MIDI clock to the virtual port you enabled
+  (IAC Driver, for example), and run the transport — Logic sends clock only while it is playing.
 
-### Documentation
-- **The MIDI clock tempo research and its verification procedure are recorded.** The research
-  document is the pre-implementation study (current state at `582dffd`, MIDI 1.0 semantics, jitter
-  arithmetic, the Kushview Element 1.2.0 reference and its seven failure modes, the proposed design,
-  acceptance thresholds) plus a §0a status update listing the four commits that implemented it and
-  where the implementation differs from the proposal. `docs/midi-clock-tempo-howto.md` is the
-  verification procedure: virtual-port smoke test, deterministic jitter harness, GUI checklist,
-  symptom-to-cause table and per-host routing checks. Backlog item 18 is closed against the
-  implementation.
+### Fixed
+- Tempo no longer reads half speed on the first lock, no longer ignores a tempo change, and no
+  longer mis-reads a halving as dropped ticks. A tempo step is followed within a second or two.
+- A hosted effect slot now receives a running transport, so tempo-synced plug-ins follow the clock
+  instead of sitting on their internal 120 BPM.
+- A hosted effect loaded while the app is running is prepared exactly like one loaded at startup, so
+  it syncs without restarting zynamfx.
 
 ## [2.2.2-beta.1] - 2026-10-24
 

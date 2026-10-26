@@ -922,13 +922,4 @@ CPMAddPackage(
 )
 endif()
 
-enable_testing() # Allow running build tests
-
 add_subdirectory(plugin) # Add plugin project
-# The DSP suite is a host-run console binary (it reads test assets off the
-# build machine's disk and is driven by script/test-dsp.sh). Cross-compiling it
-# for iOS produces something that cannot be run, so keep it out of that build.
-if (NOT T3K_IOS)
-    add_subdirectory(test)   # DSP test suite (DspTests, see script/test-dsp.sh)
-    add_subdirectory(tools)  # maintainer utilities (PresetTool), EXCLUDE_FROM_ALL
-endif()

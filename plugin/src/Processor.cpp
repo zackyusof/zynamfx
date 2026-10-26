@@ -1985,7 +1985,7 @@ void TONE3000Processor::processChainStage(float** inputs, float** outputs, int n
                   sizeof(float) * static_cast<size_t>(numFrames));
 
       if (rtBranchMergeIndex > rtBranchTapIndex) {
-        // Rejoin, per-channel (the Element model): the branch lane is NOT
+        // Rejoin, per-channel: the branch lane is NOT
         // summed into the trunk. After the parallel section each lane keeps
         // its own channel, and the trunk's remaining blocks process BOTH —
         // a shared tail that still lets each lane keep its own pan at the

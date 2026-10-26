@@ -111,6 +111,21 @@ These commands target the specific user-installed bundle; do not use a wildcard 
 3. To browse the TONE3000 catalog, open **Settings → Plugin**, paste your own free TONE3000 **publishable key (client ID)**, then sign in. Never enter a secret key.
 4. Pick a tone, shape it with the per-block controls, and save the rig as a preset. Open the AU or VST3 inside a DAW to use the same chain in a project.
 
+## External MIDI clock
+
+zynamfx can follow a 24 PPQN MIDI clock from a pedal, an interface or a DAW, and shows it beside the
+CPU readout: `EXT 120.0 LOCKED` when the tempo is locked, `EXT 120.0 CLOCK` while it settles, and
+`EXT - NO SIGNAL` when no clock arrives. Hosted effect slots receive it as their host tempo, so
+tempo-synced delays and modulators lock to the same clock as the rest of the rig.
+
+1. **Standalone:** `Settings → Audio → MIDI inputs`, tick the device that sends clock. zynamfx opens
+   only the inputs you enable, so a port that appears later (a DAW's virtual port, for example) has
+   to be ticked once.
+2. **In Logic Pro:** `Project Settings → Synchronization → MIDI`, transmit MIDI clock to the virtual
+   port you enabled (IAC Driver, for example), then press play — Logic sends clock only while the
+   transport runs.
+3. **Read the hint bar:** `EXT` with a tempo and `LOCKED` means the rig is following the clock.
+
 ## What hosting third-party effects unlocks
 
 Adding third-party AU and VST support completely changes what you can do with a neural amp player. It transforms a basic player into a fully professional, self-contained guitar rig. In practice, hosting gives you:
@@ -133,7 +148,7 @@ This is the public **Version 2** line. Version 1 was the earlier tone3000-plugin
 
 TONE3000 owns and operates its account, catalog, and hosted tone-selection service. zynamfx supplies its own signal-chain app and interface while preserving TONE3000 attribution wherever its integration is used. Full catalog browsing and tone selection use TONE3000's hosted OAuth Select experience under your own key; zynamfx does not mirror the catalog, bundle catalog models, or present TONE3000 services as its own. The tone browser is a client of those documented list endpoints — it does not download a model until you choose one.
 
-Public builds contain no API key, account token, or downloaded catalog model. Configure your own TONE3000 **publishable key (client ID)** in Settings → Plugin → TONE3000 API key, then sign in with your account. Never enter a secret key. The product and its builds are free, open source, and have no paid product or upsell. The integration is designed for the current non-commercial Free tier and its documented OAuth flows and list endpoints; API access and terms remain controlled by TONE3000. See the [API Terms](https://www.tone3000.com/api/terms), [API guidance](https://www.tone3000.com/api), and [integration review](docs/tone3000-integration-2026-10-12.md).
+Public builds contain no API key, account token, or downloaded catalog model. Configure your own TONE3000 **publishable key (client ID)** in Settings → Plugin → TONE3000 API key, then sign in with your account. Never enter a secret key. The product and its builds are free, open source, and have no paid product or upsell. The integration is designed for the current non-commercial Free tier and its documented OAuth flows and list endpoints; API access and terms remain controlled by TONE3000. See the [API Terms](https://www.tone3000.com/api/terms) and [API guidance](https://www.tone3000.com/api).
 
 The interface identifies the integration as **Powered by TONE3000** and links to [tone3000.com](https://www.tone3000.com). zynamfx uses its own wordmark and graphics. It does not use TONE3000's logo or claim affiliation, approval, or endorsement. Any creator content remains subject to its creator-selected license and attribution requirements.
 
@@ -175,7 +190,7 @@ image slot holds one feature, keyed to one parameter.
 No. A Windows build is **not planned by the maintainer**; others are welcome to build or port one, and
 the matching source is published for that reason. There is no ETA, because no work is scheduled. If you
 need the workflow on Windows today, run the official free TONE3000 plug-in inside a VST3 host and put
-your effects beside it — Reaper, Kushview Element, Cantabile, Gig Performer and Blue Cat PatchWork can
+your effects beside it — Reaper, Cantabile, Gig Performer and Blue Cat PatchWork can
 all do that. No Windows NAM player hosts third-party VST3s itself, which is the gap zynamfx fills on macOS.
 
 **Why a separate fork instead of changes upstream?**
@@ -207,8 +222,9 @@ The diagnostic log is `~/Library/Logs/zynamfx/zynamfx.log`. AU and VST3 chain st
 | Goal | Start here |
 | --- | --- |
 | See what changed in each release | [CHANGELOG.md](CHANGELOG.md) · [Latest release](https://github.com/zackyusof/zynamfx/releases/latest) |
-| Understand the TONE3000 integration | [Integration review](docs/tone3000-integration-2026-10-12.md) · [Hosted effects](docs/hosted-effects.md) |
-| See planned hardware effects send/return | [External effects research](docs/hardware-insert-research-2026-10-12.md) |
+| Host third-party effects in the chain | [Hosted effects](docs/hosted-effects.md) |
+| Use zynamfx on an iPad | [iOS](docs/ios.md) |
+| Build channel and repo identity | [Build channels](docs/build-channels.md) |
 | Check licensing and corresponding source | [LICENSE-SCOPE.md](LICENSE-SCOPE.md) · [SOURCE.md](SOURCE.md) · [UPSTREAM.md](UPSTREAM.md) |
 | Build the app yourself | [Build from source](#build-from-source) |
 | Report a bug or request a feature | [Issue chooser](https://github.com/zackyusof/zynamfx/issues/new/choose) |
@@ -225,7 +241,7 @@ python3 script/build-stadium-prototype.py
 
 The build produces `zynamfx.app`, `zynamfx.component` (AU), and `zynamfx.vst3`. Add `--install` to place the app in `/Applications` (or `~/Applications` without admin rights) and the plug-ins in the standard user plug-in folders. The build is keyless by default; enter your own publishable key in the app if you want to use the TONE3000 integration.
 
-Future hardware send/return support is documented in the [external effects research note](docs/hardware-insert-research-2026-10-12.md). It is a proposed feature, not part of the current release.
+Hardware send/return is a proposed feature, not part of the current release.
 
 GitHub Actions checks the latest stable release of [tone-3000/tone3000-plugin](https://github.com/tone-3000/tone3000-plugin) daily. When it finds a newer release, it merges that upstream tag, updates the recorded upstream commit, increments the zynamfx patch version, builds all three macOS formats, validates the AU, packages corresponding source, and publishes a zynamfx release. Each release title and notes identify the exact TONE3000 release and commit used as its base, and the downloads include an `UPSTREAM.txt` provenance file. If upstream changes conflict with zynamfx-specific files, the workflow stops without publishing so the changes can be reviewed and resolved.
 

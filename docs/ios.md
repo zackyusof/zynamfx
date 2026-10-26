@@ -123,7 +123,7 @@ the touch-ups a finger needs. Three gates, from narrowest reach to widest:
 - `design::kIos`: the app shell only. The fixed window, the Bluetooth
   sample-rate tip (`Banners.cpp`), and the multi-select file picker that
   stands in for Load Folder (`LocalFiles::pick`).
-- `design::kCoarsePointer` (iOS and Android; the testbed sets it per scenario
+- `design::kCoarsePointer` (iOS and Android; the pointer model follows the device
   through `T3K_UI_COARSE_POINTER` so touch layouts can be captured on a
   desktop): static ergonomics for a touch-first device. Tile chrome that is
   always visible instead of hover-revealed (`ToneTile`, `GalleryLane`), and
