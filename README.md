@@ -17,7 +17,18 @@
 
 **zynamfx** is a free, open-source macOS signal-chain app for guitar, bass, synths — anything you plug in. It loads **Neural Amp Modeler (NAM)** captures and impulse responses, hosts **any AU or VST3 effect you already own** in the same chain, and runs the whole rig as a **Standalone app** or as an **AU/VST3 plug-in** inside your DAW. Amp capture → boutique chorus → cabinet IR → studio reverb → console saturation, all in one low-latency chain.
 
-**New in 2.2.0**
+**New in 2.2.2**
+
+- **External MIDI clock.** Follow a 24 PPQN clock from a hardware interface or DAW. The hint bar shows the incoming tempo beside the CPU readout: `EXT 120.0 LOCKED` when stable, `EXT 120.0 CLOCK` while settling, and `EXT - NO SIGNAL` when no clock is present. A short activity lamp confirms incoming MIDI.
+- **Tempo-synced hosted effects.** AU/VST3 slots receive the external clock as a real running transport, so tempo-synced delays and modulators follow the rig in the Standalone as well as in a DAW.
+- **Live effect insertion stays in sync.** An AU/VST3 effect added, restored, duplicated, pasted or undone while zynamfx is running is prepared with the same transport and tempo information as an effect loaded at startup — no restart required.
+- **Mono track → stereo plug-in inserts.** A mono source can now use zynamfx as a mono-in/stereo-out insert; the input is mirrored into both lanes before processing. Stereo-in/mono-out remains intentionally unavailable.
+- **More reliable clock following.** First-lock tempo, tempo changes, tempo halving and dropped-tick handling are corrected, so the displayed tempo and hosted effects recover quickly instead of staying at a stale value.
+- **Smoother installation and sign-in recovery.** Plug-in backups are kept outside macOS's scanned plug-in folders, and the sign-in screen offers a device-code escape when the browser does not return.
+
+The 2.2.2 release also includes everything introduced in 2.2.0 and 2.2.1: the in-editor TONE3000 browser, full catalog filters, per-lane placement, parallel rejoin, hosted-effect artwork glow and the shared-tail pan fix.
+
+**Included from 2.2.0**
 
 - **The TONE3000 browser is inside the app.** Sign-in and the hosted **Select** flow run in an in-editor browser panel in the Standalone, AU and VST3 — no system-browser window, no bundled web engine (macOS uses the system WKWebView). Open in Browser, a copyable link and a device code remain as fallbacks.
 - **Search the full catalog in the tone browser.** Search, sort, format, tags, makes, creators, verified/calibrated filters, your downloaded/favorited/created lists, and favourite writes — the same TONE3000 API calls the upstream plug-in makes, under your own key.
@@ -33,6 +44,7 @@
 - **Shape the sound:** per-block level, mix and six-band EQ, plus global input/output, gate, pitch shift, bass/middle/treble and stereo spread. Presets and session state keep the rig ready.
 - **Host installed effects:** drop any installed AU or VST3 into any slot; the plug-in's own editor opens. Side-chain buses are fed silence rather than disabled, so multi-bus effects load and render.
 - **Standalone or in your DAW:** the Standalone manages its own audio device; the AU and VST3 run inside Logic, Ableton, Reaper, Pro Tools and other macOS hosts.
+- **External MIDI clock:** follow a pedal, interface or DAW clock and pass its tempo to hosted effects.
 - **Resize freely:** the editor window and its contents resize together.
 
 ## Why there is nothing like it
@@ -111,7 +123,7 @@ These commands target the specific user-installed bundle; do not use a wildcard 
 3. To browse the TONE3000 catalog, open **Settings → Plugin**, paste your own free TONE3000 **publishable key (client ID)**, then sign in. Never enter a secret key.
 4. Pick a tone, shape it with the per-block controls, and save the rig as a preset. Open the AU or VST3 inside a DAW to use the same chain in a project.
 
-## External MIDI clock
+## External MIDI clock (2.2.2)
 
 zynamfx can follow a 24 PPQN MIDI clock from a pedal, an interface or a DAW, and shows it beside the
 CPU readout: `EXT 120.0 LOCKED` when the tempo is locked, `EXT 120.0 CLOCK` while it settles, and
@@ -120,7 +132,7 @@ tempo-synced delays and modulators lock to the same clock as the rest of the rig
 
 1. **Standalone:** `Settings → Audio → MIDI inputs`, tick the device that sends clock. zynamfx opens
    only the inputs you enable, so a port that appears later (a DAW's virtual port, for example) has
-   to be ticked once.
+   to be ticked once. The activity lamp holds briefly so a steady clock is easy to spot.
 2. **In Logic Pro:** `Project Settings → Synchronization → MIDI`, transmit MIDI clock to the virtual
    port you enabled (IAC Driver, for example), then press play — Logic sends clock only while the
    transport runs.
@@ -155,7 +167,7 @@ The interface identifies the integration as **Powered by TONE3000** and links to
 ## Common questions
 
 Short, factual answers to the questions that come up most. Everything below describes the **current
-release** (v2.2.0); check the release notes for the build you are running.
+release** (v2.2.2); check the release notes for the build you are running.
 
 **How do I insert my own AU/VST3 effect into the chain?**
 **Right-click the effect list** (or right-click a chain slot) and choose **Add AU/VST3 Effect**. The
