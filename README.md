@@ -245,7 +245,7 @@ The diagnostic log is `~/Library/Logs/zynamfx/zynamfx.log`. AU and VST3 chain st
 
 ## Build from source
 
-Requires macOS, Xcode Command Line Tools, CMake, Ninja, and Git.
+Requires macOS, Xcode Command Line Tools, CMake, Ninja, and Git. Use CMake 4.4.5 for the 2.2.3 build.
 
 ```sh
 git clone --recurse-submodules https://github.com/zackyusof/zynamfx.git
