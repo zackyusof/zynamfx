@@ -11,6 +11,17 @@
 
 namespace t3k::ui {
 
+namespace {
+
+// Viewport owns its content component. JUCE components do not own their
+// children, so destroy the rows whenever we replace the list.
+class MenuContent final : public juce::Component {
+public:
+  ~MenuContent() override { deleteAllChildren(); }
+};
+
+}  // namespace
+
 void EffectMenu::Frost::setImage(juce::Image image) {
   image_ = std::move(image);
   repaint();
@@ -183,7 +194,7 @@ void EffectMenu::buildVendors() {
       vendors.add(e.vendor);
   vendors.sort(true);
 
-  auto* content = new juce::Component();
+  auto* content = new MenuContent();
   const int w = kLeftW - kScrollW;
   content->setSize(w, juce::jmax(kRowH, vendors.size() * kRowH));
   int y = 0;
@@ -208,7 +219,7 @@ void EffectMenu::buildPlugins(const juce::String& vendor) {
     return a->name.compareIgnoreCase(b->name) < 0;
   });
 
-  auto* content = new juce::Component();
+  auto* content = new MenuContent();
   const int w = kRightW - kScrollW;
   content->setSize(w, juce::jmax(kRowH, static_cast<int>(items.size()) * kRowH));
   int y = 0;
@@ -298,9 +309,10 @@ void EffectMenu::buildResults() {
   const auto matches = searchEffectEntries(entries_, query_);
   const int w = kLeftW + kRightW - kScrollW;
 
-  auto* content = new juce::Component();
+  auto* content = new MenuContent();
   content->setSize(w, juce::jmax(kRowH, static_cast<int>(matches.size()) * kRowH));
   resultRows_.clear();
+  resultRows_.reserve(matches.size());
 
   int y = 0;
   if (matches.empty()) {
@@ -365,9 +377,16 @@ void EffectMenu::focusNextControl() {
 bool EffectMenu::keyPressed(const juce::KeyPress& key, juce::Component* origin) {
   if (origin != &search_)
     return false;
-  if (key == juce::KeyPress::downKey || key == juce::KeyPress::returnKey) {
-    // Down (or Return) leaves the field for the first result; with no query it
-    // steps to the first visible row below the field.
+  if (key == juce::KeyPress::returnKey) {
+    // TextEditor posts change notifications asynchronously. Use the text at
+    // the time of the key press even if the last notification is still queued.
+    if (search_.getText() != query_)
+      applyQuery(search_.getText());
+    if (searchActive() && !resultRows_.empty())
+      resultRows_.front()->onClick();
+    return true;
+  }
+  if (key == juce::KeyPress::downKey) {
     if (searchActive())
       focusFirstResult();
     else

@@ -45,7 +45,8 @@ PluginRoot::PluginRoot(Services& services)
     if (signInShown()) return;
     juce::AlertWindow::showAsync(juce::MessageBoxOptions().withTitle("Powered by TONE3000")
       .withMessage("Browse NAM captures and IRs from TONE3000’s community of creators. Continue to TONE3000 to sign in and select a tone. Your account and the creators’ licenses apply.")
-      .withButton("Continue").withButton("Cancel"),
+      .withButton("Continue", 1).withButton(juce::MessageBoxButtonOptions("Cancel", 0)
+        .withRole(juce::MessageBoxButtonRole::cancel)),
       [self = juce::Component::SafePointer(this)](int result) {
         if (self != nullptr && result == 1)
           self->services_.connection.requireConnection([self] { if (self != nullptr) self->services_.session.login(ToneSession::LoginIntent::plain); });
@@ -413,7 +414,8 @@ void PluginRoot::setBrowserShown(bool shown) {
       } else {
         juce::AlertWindow::showAsync(juce::MessageBoxOptions().withTitle("Powered by TONE3000")
           .withMessage("zynamfx connects to TONE3000’s library of NAM captures and IRs, created by musicians. Continue to sign in with your TONE3000 account and choose a tone. Creator attribution and licenses are preserved.")
-          .withButton("Continue").withButton("Cancel"),
+          .withButton("Continue", 1).withButton(juce::MessageBoxButtonOptions("Cancel", 0)
+            .withRole(juce::MessageBoxButtonRole::cancel)),
           [self = juce::Component::SafePointer(this)](int result) {
             if (self != nullptr && result == 1)
               self->services_.connection.requireConnection([self] { if (self != nullptr) self->services_.session.login(ToneSession::LoginIntent::browse); });

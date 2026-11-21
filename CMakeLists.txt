@@ -151,8 +151,8 @@ if(EXISTS "${LIB_DIR}/juce/CMakeLists.txt" AND NOT EXISTS "${CMAKE_SOURCE_DIR}/.
 else()
 CPMAddPackage(
     NAME JUCE
-    GIT_TAG 9.0.3
-    VERSION 9.0.3
+    GIT_TAG 9.0.6
+    VERSION 9.0.6
     GITHUB_REPOSITORY juce-framework/JUCE
     SOURCE_DIR ${LIB_DIR}/juce
 )
@@ -162,50 +162,10 @@ endif()
 # gitignored libs/). Each one is anchored on a T3K_* marker so a re-run is a
 # no-op, and fails loudly when the JUCE layout moves under it.
 
-# macOS: when Thread::startRealtimeThread's time-constraint upgrade is
-# rejected by the kernel (thread_policy_set fails, e.g. for very long
-# per-buffer budgets), the new pthread exits BEFORE juce_threadEntryPoint,
-# so closeThreadHandle() never runs and the dead thread's handle stays set.
-# From then on isThreadRunning() reports true forever: a fallback
-# startThread() on the same object silently no-ops, and every stopThread()
-# burns its whole timeout before pthread_cancelling a dangling (detached,
-# already exited) pthread id. Clear the handle on the failure path so the
-# object can be restarted or destroyed cleanly. Idempotent configure-time
-# patch, same rationale as the patches above; applied on every platform
-# (the file only compiles on macOS, patching it elsewhere is harmless and
-# keeps the libs/juce tree identical everywhere).
-set(_juce_threads_mac "${LIB_DIR}/juce/modules/juce_core/native/juce_Threads_mac.mm")
-if (EXISTS "${_juce_threads_mac}")
-    file(READ "${_juce_threads_mac}" _juce_threads_mac_src)
-    if (NOT _juce_threads_mac_src MATCHES "T3K_RT_START_STALE_HANDLE")
-        string(REPLACE
-[=[    return threadId != nullptr
-        && threadData.started.get_future().get();]=]
-[=[    // T3K_RT_START_STALE_HANDLE: a failed realtime upgrade exits the
-    // pthread before juce_threadEntryPoint, so closeThreadHandle() never
-    // runs; clear the stale handle so this Thread can be restarted or
-    // destroyed without stopThread() stalling on a dead thread.
-    const auto started = threadId != nullptr
-        && threadData.started.get_future().get();
-
-    if (! started)
-    {
-        threadHandle = nullptr;
-        threadId = {};
-    }
-
-    return started;]=]
-            _juce_threads_mac_src "${_juce_threads_mac_src}")
-        if (NOT _juce_threads_mac_src MATCHES "T3K_RT_START_STALE_HANDLE")
-            message(FATAL_ERROR
-                "T3K_RT_START_STALE_HANDLE: failed to patch ${_juce_threads_mac}. "
-                "The JUCE source layout likely changed in this version. Update the patch "
-                "anchor in CMakeLists.txt.")
-        endif()
-        file(WRITE "${_juce_threads_mac}" "${_juce_threads_mac_src}")
-        message(STATUS "Patched JUCE Thread (macOS): stale handle cleared when realtime start fails")
-    endif()
-endif()
+# JUCE 9.0.5 includes the failed realtime-start handle fix upstream
+# (1ffaca0c60). The former T3K_RT_START_STALE_HANDLE patch is obsolete:
+# Thread::createNativeThread now assigns threadId/threadHandle only after
+# makeThreadHandle succeeds and the realtime startup promise returns true.
 
 # StandaloneFilterWindow patches (idempotent; JUCE lives in gitignored libs/).
 #
@@ -464,52 +424,9 @@ if (EXISTS "${_juce_adm_cpp}")
     endif()
 endif()
 
-# T3K_ALSA_CLOSE_STUCK_TIMEOUT: ALSAThread::close() waits a fixed 400ms for
-# the audio thread to exit before deciding it's stuck and force-closing the
-# ALSA handles from the message thread (closeNow(), i.e. snd_pcm_close while
-# the audio thread may still be inside snd_pcm_readi/writei). A single i/o
-# period longer than 400ms - a large buffer at a low sample rate - is then
-# indistinguishable from "stuck", and the forced close frees the pcm (and the
-# input/output buffers backing the callback's channel pointers) out from
-# under a thread that's still using them: reliably a use-after-free on any
-# device reconfiguration. Confirmed live with gdb: closeNow() fires on
-# ordinary channel-selection changes with numCallbacks == callbacksToStop
-# (no callback landed during the wait - the thread was mid-read, not
-# wedged), matching this fix exactly. Matches upstream JUCE PR
-# https://github.com/juce-framework/JUCE/pull/1707 (unmerged as of this
-# writing); drop this patch once it lands. Idempotent configure-time patch,
-# same rationale as the patches above.
-set(_juce_alsa_cpp "${LIB_DIR}/juce/modules/juce_audio_devices/native/juce_ALSA_linux.cpp")
-if (EXISTS "${_juce_alsa_cpp}")
-    file(READ "${_juce_alsa_cpp}" _juce_alsa_src)
-    if (NOT _juce_alsa_src MATCHES "T3K_ALSA_CLOSE_STUCK_TIMEOUT")
-        set(_juce_alsa_old
-[=[            const int callbacksToStop = numCallbacks;
-
-            if ((! waitForThreadToExit (400)) && audioIoInProgress && numCallbacks == callbacksToStop)]=])
-        set(_juce_alsa_new
-[=[            const int callbacksToStop = numCallbacks;
-
-            // T3K_ALSA_CLOSE_STUCK_TIMEOUT: a fixed 400ms wait can't tell a
-            // stuck thread from one that's simply mid-read on a large
-            // buffer/low sample rate combination (a 4096-sample buffer at
-            // 8kHz is a 512ms period), so scale the wait by one i/o period,
-            // capped so a genuinely wedged device still closes promptly.
-            const auto ioPeriodMs = sampleRate > 0.0 ? (int) (1000.0 * bufferSize / sampleRate) : 0;
-            const auto stuckTimeoutMs = 400 + jmin (2000, ioPeriodMs);
-
-            if ((! waitForThreadToExit (stuckTimeoutMs)) && audioIoInProgress && numCallbacks == callbacksToStop)]=])
-        string(REPLACE "${_juce_alsa_old}" "${_juce_alsa_new}" _juce_alsa_src "${_juce_alsa_src}")
-        if (NOT _juce_alsa_src MATCHES "T3K_ALSA_CLOSE_STUCK_TIMEOUT")
-            message(FATAL_ERROR
-                "T3K_ALSA_CLOSE_STUCK_TIMEOUT: failed to patch ${_juce_alsa_cpp}. "
-                "The JUCE source layout likely changed in this version. Update the patch "
-                "anchors in CMakeLists.txt.")
-        endif()
-        file(WRITE "${_juce_alsa_cpp}" "${_juce_alsa_src}")
-        message(STATUS "Patched JUCE ALSAThread: scale the stuck-thread close timeout by the i/o period")
-    endif()
-endif()
+# JUCE 9.0.5 includes the ALSA close-timeout fix upstream (ef5e15c9ff),
+# scaling the wait by one I/O period before closing a stuck device. The
+# former T3K_ALSA_CLOSE_STUCK_TIMEOUT patch is no longer needed.
 
 # T3K_CALLBACK_ENFORCER_NULL_SAFE: CallbackMaxSizeEnforcer sizes its stored
 # channel vectors from the device's active-channel bitsets in
@@ -540,12 +457,22 @@ if (EXISTS "${_juce_adm_cpp2}")
 [=[    void audioDeviceIOCallbackWithContext (const float* const* inputChannelData,
                                            [[maybe_unused]] int numInputChannels,
                                            float* const* outputChannelData,
-                                           [[maybe_unused]] int numOutputChannels,
+                                           int numOutputChannels,
                                            int numSamples,
                                            const AudioIODeviceCallbackContext& context) override
     {
         jassert ((int) storedInputChannels.size()  == numInputChannels);
         jassert ((int) storedOutputChannels.size() == numOutputChannels);
+
+        // During device reconfiguration JACK can transiently report a buffer size of 0.
+        if (maximumSize <= 0)
+        {
+            for (int i = 0; i < numOutputChannels; ++i)
+                if (auto* channel = outputChannelData[i])
+                    zeromem (channel, (size_t) numSamples * sizeof (*channel));
+
+            return;
+        }
 
         int position = 0;
 
@@ -578,6 +505,16 @@ if (EXISTS "${_juce_adm_cpp2}")
         jassert ((int) storedInputChannels.size()  == numInputChannels);
         jassert ((int) storedOutputChannels.size() == numOutputChannels);
 
+        // During device reconfiguration JACK can transiently report a buffer size of 0.
+        if (maximumSize <= 0)
+        {
+            for (int i = 0; i < numOutputChannels; ++i)
+                if (auto* channel = outputChannelData[i])
+                    zeromem (channel, (size_t) numSamples * sizeof (*channel));
+
+            return;
+        }
+
         // T3K_CALLBACK_ENFORCER_NULL_SAFE: a device whose active-channel
         // bitsets disagree with the channel arrays it passes here leaves the
         // tail of the stored vectors holding the null pointers resize()
@@ -607,6 +544,10 @@ if (EXISTS "${_juce_adm_cpp2}")
         }
     }]=])
         string(REPLACE "${_juce_adm_old2}" "${_juce_adm_new2}" _juce_adm_src2 "${_juce_adm_src2}")
+        string(FIND "${_juce_adm_src2}" "${_juce_adm_new2}" _juce_callback_patch_index)
+        if (_juce_callback_patch_index EQUAL -1)
+            message(FATAL_ERROR "T3K_CALLBACK_ENFORCER_NULL_SAFE: callback patch anchor changed")
+        endif()
 
         set(_juce_adm_old2b
 [=[            for (int i = 0; i < numChannels; ++i)
@@ -708,55 +649,28 @@ if (EXISTS "${_juce_peer_mm}")
     endif()
 endif()
 
-# T3K_X11_HINT_OVERFLOW: fix the Linux standalone opening as a bare title bar
-# over a full-width, 1px-high window on scaled X11 desktops (GitHub issue #43).
-# JUCE publishes WM_NORMAL_HINTS min/max from the peer's constrainer multiplied
-# by the display scale. The standalone window's DecoratorConstrainer reports
-# the unset ComponentBoundsConstrainer defaults (max 0x3FFFFFFF), and on any
-# desktop that advertises a window scale of 2 (real HiDPI, or Cinnamon/GNOME
-# fractional scaling at 125%/150%, which round up to 2 in XSettings
-# Gdk/WindowScalingFactor) the published PMaxSize lands within a title-bar's
-# height of INT_MAX. Mutter-family window managers (Muffin on Mint, Mutter on
-# GNOME) add the frame border back onto those hints, overflow int, and clamp
-# the window to the PMinSize floor instead: the window maps at full width but
-# 1px high, showing only its title bar, and the editor (still full-size,
-# but clipped inside the 1px parent) never becomes visible.
-# Clamp the published hints to a bound no real display can reach (1e7 px) so
-# WM-side arithmetic stays finite; genuine limits (this editor publishes
-# 1x..2x of its design box) pass through unchanged. Computing in doubles also
-# keeps the scaled default from overflowing the int cast itself (UB at a
-# scale factor of 3+ in stock JUCE). script/test-linux-window-scale.sh
-# reproduces the collapse against a stock build (hints reach the WM as max
-# 2147483646x2147483609, the window maps at 2048x1) and verifies this fix.
-# Idempotent configure-time patch, same rationale as the patches above;
-# applied on every platform (the file only compiles on Linux, patching it
-# elsewhere is harmless and keeps the libs/juce tree identical everywhere).
-# The file ships with CRLF line endings; file(READ) normalizes them to LF,
-# so the anchor matches as written and the patched file is written back
-# LF-only.
+# T3K_X11_HINT_OVERFLOW: retain the finite WM_NORMAL_HINTS bounds used
+# to prevent a scaled Linux window from collapsing to a one-pixel strip.
+# JUCE 9.0.5 now derives actual limits through checkBounds (3b848d1abf),
+# rather than reading the constrainer getters. Keep that upstream behavior
+# and apply the existing 1e7-pixel bound in its new scaledLimit helper.
 set(_juce_x11_cpp "${LIB_DIR}/juce/modules/juce_gui_basics/native/juce_XWindowSystem_linux.cpp")
 if (EXISTS "${_juce_x11_cpp}")
     file(READ "${_juce_x11_cpp}" _juce_x11_src)
     if (NOT _juce_x11_src MATCHES "T3K_X11_HINT_OVERFLOW")
         set(_juce_x11_hints_old
-[=[            hints->min_width  = jmax (1, (int) (factor * c->getMinimumWidth())  - leftAndRight);
-            hints->max_width  = jmax (1, (int) (factor * c->getMaximumWidth())  - leftAndRight);
-            hints->min_height = jmax (1, (int) (factor * c->getMinimumHeight()) - topAndBottom);
-            hints->max_height = jmax (1, (int) (factor * c->getMaximumHeight()) - topAndBottom);]=])
+[=[            const auto scaledLimit = [factor] (int limit, int border)
+            {
+                const auto scaled = jmin ((double) std::numeric_limits<int>::max(), factor * limit);
+                return jmax (1, (int) scaled - border);
+            };]=])
         set(_juce_x11_hints_new
-[=[            // T3K_X11_HINT_OVERFLOW (see the CMakeLists patch comment): the
-            // standalone's unset constrainer maximums (0x3FFFFFFF) times a 2x
-            // display scale put PMaxSize within a title-bar's height of
-            // INT_MAX; mutter-family WMs re-add the frame border, overflow
-            // int, and clamp the window to a full-width, 1px-high strip
-            // (GitHub issue #43). Bound the hints below any real display size
-            // so WM-side arithmetic stays finite; genuine limits pass through
-            // unchanged.
-            const auto boundedHint = [] (double v) { return (int) jlimit (1.0, 1.0e7, v); };
-            hints->min_width  = boundedHint (factor * c->getMinimumWidth()  - leftAndRight);
-            hints->max_width  = boundedHint (factor * c->getMaximumWidth()  - leftAndRight);
-            hints->min_height = boundedHint (factor * c->getMinimumHeight() - topAndBottom);
-            hints->max_height = boundedHint (factor * c->getMaximumHeight() - topAndBottom);]=])
+[=[            const auto scaledLimit = [factor] (int limit, int border)
+            {
+                // T3K_X11_HINT_OVERFLOW: keep window-manager frame arithmetic
+                // below integer overflow even with unset limits and scaling.
+                return (int) jlimit (1.0, 1.0e7, factor * limit - border);
+            };]=])
         string(REPLACE "${_juce_x11_hints_old}" "${_juce_x11_hints_new}" _juce_x11_src "${_juce_x11_src}")
         if (NOT _juce_x11_src MATCHES "T3K_X11_HINT_OVERFLOW")
             message(FATAL_ERROR

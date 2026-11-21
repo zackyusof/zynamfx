@@ -17,6 +17,12 @@
 
 **zynamfx** is a free, open-source macOS signal-chain app for guitar, bass, synths — anything you plug in. It loads **Neural Amp Modeler (NAM)** captures and impulse responses, hosts **any AU or VST3 effect you already own** in the same chain, and runs the whole rig as a **Standalone app** or as an **AU/VST3 plug-in** inside your DAW. Amp capture → boutique chorus → cabinet IR → studio reverb → console saturation, all in one low-latency chain.
 
+**New in 2.2.3**
+
+- Right-click a chain slot and start typing to search installed AU and VST3 effects by name, vendor, or format. Press Return to load the first match, or use the arrow keys to browse. Clear the search to browse by vendor.
+- Resize the editor from its corner to scale the interface while keeping its aspect ratio.
+- Built with JUCE 9.0.6, which includes fixes for macOS child-window and pop-up menu ordering.
+
 **New in 2.2.2**
 
 - **External MIDI clock.** Follow a 24 PPQN clock from a hardware interface or DAW. The hint bar shows the incoming tempo beside the CPU readout: `EXT 120.0 LOCKED` when stable, `EXT 120.0 CLOCK` while settling, and `EXT - NO SIGNAL` when no clock is present. A short activity lamp confirms incoming MIDI.
@@ -45,7 +51,7 @@ The 2.2.2 release also includes everything introduced in 2.2.0 and 2.2.1: the in
 - **Host installed effects:** drop any installed AU or VST3 into any slot; the plug-in's own editor opens. Side-chain buses are fed silence rather than disabled, so multi-bus effects load and render.
 - **Standalone or in your DAW:** the Standalone manages its own audio device; the AU and VST3 run inside Logic, Ableton, Reaper, Pro Tools and other macOS hosts.
 - **External MIDI clock:** follow a pedal, interface or DAW clock and pass its tempo to hosted effects.
-- **Resize freely:** the editor window and its contents resize together.
+- **Resize proportionally:** drag the editor corner to scale the interface.
 
 ## Why there is nothing like it
 
@@ -167,14 +173,10 @@ The interface identifies the integration as **Powered by TONE3000** and links to
 ## Common questions
 
 Short, factual answers to the questions that come up most. Everything below describes the **current
-release** (v2.2.2); check the release notes for the build you are running.
+release** (v2.2.3); check the release notes for the build you are running.
 
 **How do I insert my own AU/VST3 effect into the chain?**
-**Right-click the effect list** (or right-click a chain slot) and choose **Add AU/VST3 Effect**. The
-chooser lists the AudioUnits and VST3s already installed on the machine; the search field at the top
-of the chooser filters that list (empty query keeps the vendor → effect browsing). Searching only
-filters what is already listed — it does not scan or instantiate anything. Effects that declare extra
-buses (side-chains) load and render: the chain feeds extra buses silence instead of disabling them.
+Right-click a chain slot to open the installed AU/VST3 chooser. Type to filter by name, vendor, or format, then press Return to load the first match. An empty or unmatched query leaves the chain untouched. You can also browse by vendor with the search field empty.
 
 **How does TONE3000 sign-in work, and should it stay signed in?**
 Set your own **publishable key** (client_id) in **Settings → Plugin → TONE3000 API key**, then sign in.

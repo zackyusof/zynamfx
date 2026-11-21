@@ -2,6 +2,13 @@
 
 All notable changes to zynamfx are recorded here. Dates are ISO (yyyy-mm-dd).
 
+## [2.2.3] - 2026-11-21
+
+- The hosted-effect chooser focuses search on right-click. Return loads the first matching AU or VST3 effect.
+- The editor keeps its aspect ratio while resizing and restores older saved window sizes proportionally.
+- Hosted-effect searches release the previous result rows when the query changes.
+- Updated to JUCE 9.0.6.
+
 ## [2.2.2] - 2026-10-26
 
 ### Added

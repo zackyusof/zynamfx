@@ -20,7 +20,7 @@ if [ ! -f "$F" ]; then
   exit 1
 fi
 
-if grep -q "windowIsTemporary) != 0" "$F"; then
+if grep -q "T3K_POPUPMENU_TEMPORARY_LEVEL" "$F"; then
   echo "already patched: $F"
   exit 0
 fi
@@ -41,7 +41,7 @@ fix = (
     "            if (isSharedWindow)\n"
     "                return {};\n"
     "\n"
-    "            // Local fix for a JUCE 9.0.2+ regression: PopupMenu sub-menus are\n"
+    "            // T3K_POPUPMENU_TEMPORARY_LEVEL: PopupMenu sub-menus are\n"
     "            // windowIsTemporary and must not be re-levelled here or they render\n"
     "            // below the parent menu on macOS. See JUCE forum 69655.\n"
     "            if ((getStyleFlags() & ComponentPeer::windowIsTemporary) != 0)\n"

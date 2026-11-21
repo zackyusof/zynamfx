@@ -70,7 +70,7 @@ private:
   void focusFirstResult();
   void focusNextControl();
 
-  // KeyListener on the search field: Down/Return leave the field, Escape and
+  // KeyListener on the search field: Return chooses, Down navigates, Escape and
   // everything else fall through to the editor and then the Popover.
   bool keyPressed(const juce::KeyPress& key, juce::Component* origin) override;
 

@@ -103,20 +103,13 @@ NativeEditor::NativeEditor(TONE3000Processor& owner)
   setResizable(false, false);
 #else
   setResizable(true, true);
-  // Older sessions only stored a scale. Newer sessions also store both
-  // dimensions so a freely resized, non-proportional window reopens intact.
-  const int savedWidth = processor_.editorWidth.load();
-  const int savedHeight = processor_.editorHeight.load();
+  // The saved scale also exists in sessions created before pixel dimensions
+  // were persisted. Restoring from it normalizes older free-form windows.
   const double savedScale = juce::jlimit(1.0, maxStartScale(), processor_.editorScale.load());
   updateResizeConstraints();
-  if (savedWidth > 0 && savedHeight > 0) {
-    restoringSize_ = true;
-    setSize(juce::jlimit(design::kWidth, design::kWidth * static_cast<int>(design::kMaxScale), savedWidth),
-            juce::jlimit(designHeight(), designHeight() * static_cast<int>(design::kMaxScale), savedHeight));
-    restoringSize_ = false;
-  } else {
-    applyScaledSize(savedScale);
-  }
+  restoringSize_ = true;
+  applyScaledSize(savedScale);
+  restoringSize_ = false;
 #endif
   // Separates a crash inside PluginRoot's construction (log stops at "Fonts
   // ready") from one in the host's window attach (stops here).
@@ -148,6 +141,7 @@ void NativeEditor::applyScaledSize(double scale) {
 void NativeEditor::updateResizeConstraints() {
   setResizeLimits(design::kWidth, designHeight(), juce::roundToInt(design::kWidth * design::kMaxScale),
                   juce::roundToInt(designHeight() * design::kMaxScale));
+  getConstrainer()->setFixedAspectRatio(design::kWidth / static_cast<double>(designHeight()));
 }
 
 void NativeEditor::setExtraContentHeight(int total, int persistent) {
@@ -157,9 +151,9 @@ void NativeEditor::setExtraContentHeight(int total, int persistent) {
   // editor opens pre-sized for the chrome the UI will render on first paint.
   processor_.editorExtraHeight.store(juce::jlimit(0, kMaxExtraHeight, persistent));
   if (clamped == extraContentHeight_) return;
-  const int oldHeight = designHeight();
-  const double scale = getWidth() > 0 ? currentScale() : 1.0;
-  const int oldWindowHeight = getHeight();
+#if !JUCE_IOS
+  const double scale = juce::jlimit(1.0, design::kMaxScale, currentScale());
+#endif
   extraContentHeight_ = clamped;
   // Before the constructor has sized us there is nothing to resize yet.
   if (getWidth() == 0) return;
@@ -168,29 +162,21 @@ void NativeEditor::setExtraContentHeight(int total, int persistent) {
   // The window is the screen; it cannot grow. Shrink the box to fit.
   fitRoot();
 #else
-  // Grow or shrink only the vertical window extent needed by the chrome.
-  // The host may decline the resize; fitRoot then keeps the interface legible.
+  // Recompute the proportional size for the new chrome at the same zoom.
   updateResizeConstraints();
-  const int delta = juce::roundToInt((designHeight() - oldHeight) * scale);
-  setSize(getWidth(), juce::jlimit(designHeight(),
-                                   juce::roundToInt(designHeight() * design::kMaxScale),
-                                   oldWindowHeight + delta));
+  applyScaledSize(scale);
   fitRoot();
 #endif
 }
 
 void NativeEditor::fitRoot() {
-  // Map the full design surface onto the actual editor bounds on both axes.
-  // A single min(widthScale, heightScale) left empty bands whenever the user
-  // changed the aspect ratio, making the window resizable while the UI seemed
-  // stuck at its original proportions.
-  const double scaleX = juce::jmax(0.05, getWidth() / static_cast<double>(design::kWidth));
-  const double scaleY = juce::jmax(0.05, getHeight() / static_cast<double>(designHeight()));
-  root_.setTransform(juce::AffineTransform::scale(static_cast<float>(scaleX), static_cast<float>(scaleY)));
-  // Zoom consumers use a single value for their internal grid density. The
-  // actual editor transform above independently fills width and height.
-  services_.zoom.set(juce::jmin(scaleX, scaleY));
-  root_.setTopLeftPosition(0, 0);
+  // The host or iOS screen can supply bounds outside our constrainer.
+  // Fit uniformly, with any extra space shared between opposite edges.
+  const double scale = juce::jmax(0.05, currentScale());
+  root_.setTransform(juce::AffineTransform::scale(static_cast<float>(scale)));
+  services_.zoom.set(scale);
+  root_.setTopLeftPosition(juce::jmax(0, juce::roundToInt((getWidth() - design::kWidth * scale) * 0.5)),
+                           juce::jmax(0, juce::roundToInt((getHeight() - designHeight() * scale) * 0.5)));
 }
 
 void NativeEditor::paint(juce::Graphics& g) { g.fillAll(theme::kBlack); }

@@ -117,7 +117,13 @@ void GalleryTile::openHostedEffectMenu() {
   };
   effectMenu_->open(*this, Popover::Align::left, 8);
   effectMenu_->centreOn(*this);  // centre over the tile and keep inside the window
-  effectMenu_->focusSearch();    // the search field takes the keyboard on open
+  // The root's global mouse listener clears focus after this mouseDown.
+  // Focus the field after that press has finished dispatching.
+  juce::Component::SafePointer<EffectMenu> menu(effectMenu_.get());
+  juce::MessageManager::callAsync([menu] {
+    if (menu != nullptr && menu->isOpen())
+      menu->focusSearch();
+  });
 }
 
 void GalleryTile::showSlotPan(const std::string& blockId, ChainSide side, float value, bool set,
