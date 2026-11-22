@@ -608,9 +608,9 @@ double TONE3000Processor::getTailLengthSeconds() const {
 // #############################
 // HOSTED SLOT PLAYHEAD
 // #############################
-void HostedClockPlayHead::update(juce::AudioPlayHead* source, float midiBpm,
-                                 bool midiClockActive, double sampleRate,
-                                 int numSamples) noexcept {
+void HostedClockPlayHead::update(juce::AudioPlayHead* source,
+                                 const MidiClockTempo::Snapshot& clock,
+                                 double sampleRate, int numSamples) noexcept {
   const double sr = sampleRate > 0.0 ? sampleRate : 48000.0;
   sampleRate_.store(sr, std::memory_order_relaxed);
 
@@ -624,15 +624,16 @@ void HostedClockPlayHead::update(juce::AudioPlayHead* source, float midiBpm,
   // whenever the clock came from a MIDI device in the standalone, which is
   // exactly the case a tempo-synced delay gates on.
   const bool sourceHasTempo = haveSource && sourcePosition->getBpm().hasValue();
-  const bool synthesiseTransport =
-      midiClockActive && midiBpm > 0.0f && !sourceHasTempo;
+  const bool midiClockActive = clock.bpm > 0.0f && !clock.stale &&
+                               clock.state != MidiClockTempo::LockState::noSignal;
+  const bool synthesiseTransport = midiClockActive && !sourceHasTempo;
 
   PositionInfo position = haveSource ? *sourcePosition : PositionInfo{};
   bool valid = haveSource;
   bool playing = haveSource ? position.getIsPlaying() : false;
 
-  if (midiClockActive && midiBpm > 0.0f) {
-    position.setBpm(static_cast<double>(midiBpm));
+  if (midiClockActive) {
+    position.setBpm(static_cast<double>(clock.bpm));
     valid = true;
     if (synthesiseTransport) {
       // The standalone holder publishes time only (no BPM, PPQ or time
@@ -641,15 +642,19 @@ void HostedClockPlayHead::update(juce::AudioPlayHead* source, float midiBpm,
       const auto samples = timeSamples_.load(std::memory_order_relaxed);
       position.setTimeInSamples(samples);
       position.setTimeInSeconds(static_cast<double>(samples) / sr);
-      position.setPpqPosition(ppq_.load(std::memory_order_relaxed));
-      position.setPpqPositionOfLastBarStart(
-          ppqBarStart_.load(std::memory_order_relaxed));
+      double ppq = ppq_.load(std::memory_order_relaxed);
+      if (positionRevision_ != clock.positionRevision) {
+        positionRevision_ = clock.positionRevision;
+        ppq = clock.songPosition / 4.0;  // MIDI SPP is measured in sixteenth notes.
+      }
+      position.setPpqPosition(ppq);
+      position.setPpqPositionOfLastBarStart(std::floor(ppq / 4.0) * 4.0);
       position.setTimeSignature(
           TimeSignature{signatureNumerator_.load(std::memory_order_relaxed),
                         signatureDenominator_.load(std::memory_order_relaxed)});
-      // A running external clock is the only transport truth the standalone
-      // has; delay sync and generators both key off "playing".
-      playing = true;
+      // Some masters only send timing pulses. Once a transport message has
+      // arrived, its state takes precedence over the presence of pulses.
+      playing = !clock.transportKnown || clock.transport == MidiClockTempo::Transport::running;
     } else if (!position.getPpqPosition().hasValue()) {
       position.setPpqPosition(ppq_.load(std::memory_order_relaxed));
     }
@@ -668,7 +673,7 @@ void HostedClockPlayHead::update(juce::AudioPlayHead* source, float midiBpm,
       timeSamples.hasValue() ? *timeSamples : timeSamples_.load(std::memory_order_relaxed);
   const double currentBpm = bpm.hasValue() ? *bpm : 0.0;
 
-  if (synthesiseTransport && midiClockActive && currentBpm > 0.0) {
+  if (synthesiseTransport && playing) {
     // The standalone has no other clock: advance the published position so a
     // hosted modulation/delay keeps a coherent PPQ.
     const double nextPpq =
@@ -2168,13 +2173,8 @@ void TONE3000Processor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
   // before the mapper can consume anything and publish the tempo the slots'
   // playhead will report for this block.
   rtMidiBuffer = &midi;
-  {
-    const auto clock = midiClockTempo.snapshot();
-    const bool clockActive = clock.bpm > 0.0f && !clock.stale &&
-                             clock.state != MidiClockTempo::LockState::noSignal;
-    hostedClockPlayHead.update(getPlayHead(), clock.bpm, clockActive, getSampleRate(),
-                               buffer.getNumSamples());
-  }
+  hostedClockPlayHead.update(getPlayHead(), midiClockTempo.snapshot(), getSampleRate(),
+                             buffer.getNumSamples());
 
   // Mapped MIDI first, so parameter moves (bypass stomps, expression sweeps)
   // land before this block's cached-parameter refresh below.

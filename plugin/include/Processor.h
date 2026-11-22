@@ -58,11 +58,12 @@ class TONE3000Processor;
 // worker thread (multi-core lanes), so every field is published atomically.
 class HostedClockPlayHead final : public juce::AudioPlayHead {
 public:
-  void update(juce::AudioPlayHead* source, float midiBpm, bool midiClockActive,
+  void update(juce::AudioPlayHead* source, const MidiClockTempo::Snapshot& clock,
               double sampleRate, int numSamples) noexcept;
   juce::Optional<PositionInfo> getPosition() const override;
 
 private:
+  std::uint8_t positionRevision_ = 0;  // audio thread only
   std::atomic<bool> valid_{false};
   std::atomic<double> bpm_{0.0};
   std::atomic<double> ppq_{0.0};
@@ -132,10 +133,14 @@ public:
   // Desktop plug-in hosting. Descriptions are JUCE PluginDescription XML;
   // installed AU and VST3 effects are discovered on demand by the editor.
   juce::var listHostedEffects() const;
-  // Fast, non-instantiating listing of installed effect bundles (just the two
-  // standard system dirs). Use this to build the add-effect menu on the message
-  // thread; listHostedEffects() scans/loads plugins and must not run on it.
+  // Fast, non-instantiating listing of installed effect bundles (the two
+  // standard system dirs, walking vendor subdirectories). Use this to build
+  // the add-effect menu on the message thread; listHostedEffects() scans/
+  // loads plugins and must not run on it.
   juce::var listHostedEffectBundles() const;
+  // listHostedEffectBundles with explicit roots. Production passes the
+  // standard /Library dirs; tests inject fixture trees.
+  juce::var listHostedEffectBundlesFrom(const juce::StringArray& roots) const;
   // Vendor label for a plugin bundle (from its reverse-DNS id), e.g. FabFilter.
   // Public so the chain state can tag effect blocks with their vendor.
   static juce::String vendorForBundle(const juce::String& bundlePath);

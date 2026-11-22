@@ -150,13 +150,23 @@ juce::String TONE3000Processor::vendorForBundle(const juce::String& bundlePath) 
 }
 
 juce::var TONE3000Processor::listHostedEffectBundles() const {
+  // Vendors group their effects in their own subdirectories under the
+  // standard roots, so the walk is recursive; the wildcards only match
+  // bundle-shaped directories, so bundle contents are never descended into
+  // as results.
+  return listHostedEffectBundlesFrom(
+      {"/Library/Audio/Plug-Ins/Components", "/Library/Audio/Plug-Ins/VST3"});
+}
+
+juce::var TONE3000Processor::listHostedEffectBundlesFrom(
+    const juce::StringArray& roots) const {
   juce::Array<juce::var> result;
   auto addDir = [&result](const juce::String& dir, const juce::String& wildcard, const juce::String& format) {
     const juce::File folder(dir);
     if (!folder.isDirectory())
       return;
     for (const auto& entry : juce::RangedDirectoryIterator(
-             folder, /*recursive*/ false, wildcard, juce::File::findDirectories)) {
+             folder, /*recursive*/ true, wildcard, juce::File::findDirectories)) {
       auto* item = new juce::DynamicObject();
       item->setProperty("name", entry.getFile().getFileNameWithoutExtension());
       item->setProperty("format", format);
@@ -169,8 +179,10 @@ juce::var TONE3000Processor::listHostedEffectBundles() const {
       result.add(juce::var(item));
     }
   };
-  addDir("/Library/Audio/Plug-Ins/Components", "*.component", "AudioUnit");
-  addDir("/Library/Audio/Plug-Ins/VST3", "*.vst3", "VST3");
+  for (const auto& root : roots) {
+    addDir(root, "*.component", "AudioUnit");
+    addDir(root, "*.vst3", "VST3");
+  }
   return result;
 }
 
@@ -181,14 +193,15 @@ juce::var TONE3000Processor::listHostedEffects() const {
     auto* format = formats->getFormat(i);
     if (format == nullptr || (format->getName() != "AudioUnit" && format->getName() != "VST3"))
       continue;
-    // Hardcoded standard macOS locations, one per format, instead of every default
-    // location JUCE would otherwise walk. Predictable and fast.
+    // Standard macOS locations, one per format, instead of every default
+    // location JUCE would otherwise walk — still predictable, and the walk
+    // follows vendor subdirectories (VST3's own per-vendor grouping included).
     juce::FileSearchPath searchPaths;
     if (format->getName() == "AudioUnit")
       searchPaths.add(juce::File("/Library/Audio/Plug-Ins/Components"));
     else if (format->getName() == "VST3")
       searchPaths.add(juce::File("/Library/Audio/Plug-Ins/VST3"));
-    auto identifiers = format->searchPathsForPlugins(searchPaths, false, false);
+    auto identifiers = format->searchPathsForPlugins(searchPaths, /*recursive*/ true, false);
     for (const auto& identifier : identifiers) {
       juce::OwnedArray<juce::PluginDescription> descriptions;
       format->findAllTypesForFile(descriptions, identifier);

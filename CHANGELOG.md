@@ -2,6 +2,11 @@
 
 All notable changes to zynamfx are recorded here. Dates are ISO (yyyy-mm-dd).
 
+## [2.2.4] - 2026-11-23
+
+- Hosted effects now follow an external MIDI clock master's transport: Start and Continue set them playing, Stop sets them stopped, and Song Position Pointer re-anchors their beat position. While the master is stopped, their beat position holds instead of advancing. Masters that only send timing pulses (no transport messages) keep the previous always-playing behavior.
+- The hosted-effect chooser now also finds effects installed in vendor subdirectories of the standard folders (`/Library/Audio/Plug-Ins/Components` and `/Library/Audio/Plug-Ins/VST3`), at any depth, instead of only top-level bundles.
+
 ## [2.2.3] - 2026-11-21
 
 - The hosted-effect chooser focuses search on right-click. Return loads the first matching AU or VST3 effect.

@@ -17,6 +17,11 @@
 
 **zynamfx** is a free, open-source macOS signal-chain app for guitar, bass, synths — anything you plug in. It loads **Neural Amp Modeler (NAM)** captures and impulse responses, hosts **any AU or VST3 effect you already own** in the same chain, and runs the whole rig as a **Standalone app** or as an **AU/VST3 plug-in** inside your DAW. Amp capture → boutique chorus → cabinet IR → studio reverb → console saturation, all in one low-latency chain.
 
+**New in 2.2.4**
+
+- External MIDI clock masters are now followed as a transport: Start, Continue, Stop and Song Position are honored. Hosted tempo-synced effects re-anchor their beat position when the master starts or relocates, and they hold their position while the master is stopped. Masters that only send timing pulses still count as playing, exactly as before.
+- The hosted-effect chooser also finds effects installed in vendor subdirectories of the standard folders (`/Library/Audio/Plug-Ins/Components`, `/Library/Audio/Plug-Ins/VST3`) — vendors who group all their plug-ins in one folder of their own are listed and loadable.
+
 **New in 2.2.3**
 
 - Right-click a chain slot and start typing to search installed AU and VST3 effects by name, vendor, or format. Press Return to load the first match, or use the arrow keys to browse. Clear the search to browse by vendor.
@@ -173,7 +178,7 @@ The interface identifies the integration as **Powered by TONE3000** and links to
 ## Common questions
 
 Short, factual answers to the questions that come up most. Everything below describes the **current
-release** (v2.2.3); check the release notes for the build you are running.
+release** (v2.2.4); check the release notes for the build you are running.
 
 **How do I insert my own AU/VST3 effect into the chain?**
 Right-click a chain slot to open the installed AU/VST3 chooser. Type to filter by name, vendor, or format, then press Return to load the first match. An empty or unmatched query leaves the chain untouched. You can also browse by vendor with the search field empty.
@@ -245,7 +250,7 @@ The diagnostic log is `~/Library/Logs/zynamfx/zynamfx.log`. AU and VST3 chain st
 
 ## Build from source
 
-Requires macOS, Xcode Command Line Tools, CMake, Ninja, and Git. Use CMake 4.4.5 for the 2.2.3 build.
+Requires macOS, Xcode Command Line Tools, CMake, Ninja, and Git. Use CMake 4.4.5 for the 2.2.4 build.
 
 ```sh
 git clone --recurse-submodules https://github.com/zackyusof/zynamfx.git

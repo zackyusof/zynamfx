@@ -21,6 +21,8 @@ public:
     bool stale = false;
     bool activity = false;
     std::uint16_t songPosition = 0;
+    bool transportKnown = false;
+    std::uint8_t positionRevision = 0;
   };
 
   MidiClockTempo() = default;
@@ -90,6 +92,8 @@ private:
   Transport transport_ = Transport::stopped;
   bool stale_ = false;
   std::uint16_t songPosition_ = 0;
+  bool transportKnown_ = false;
+  std::uint8_t positionRevision_ = 0;
   std::uint32_t acceptedTicks_ = 0;
 
   std::array<std::int64_t, kHistorySize> clockSamples_{};
@@ -97,6 +101,6 @@ private:
   int historyCount_ = 0;
   int historyHead_ = 0;
 
-  // [bpm*100: 32][state:2][transport:1][stale:1][activity:1][SPP:14]
+  // [bpm×100:32][state:2][transport:1][stale:1][activity:1][SPP:14][transportKnown:1][revision:8]
   std::atomic<std::uint64_t> packed_{0};
 };

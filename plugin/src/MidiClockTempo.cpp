@@ -32,6 +32,8 @@ void MidiClockTempo::reset() noexcept {
   transport_ = Transport::stopped;
   stale_ = false;
   songPosition_ = 0;
+  transportKnown_ = false;
+  ++positionRevision_;
   acceptedTicks_ = 0;
   historyCount_ = 0;
   historyHead_ = 0;
@@ -81,16 +83,33 @@ void MidiClockTempo::consume(const juce::MidiMessage& message, std::int64_t samp
   switch (status) {
     case 0xf8: consumeClock(sample); break;
     case 0xfa:
+      transportKnown_ = true;
       transport_ = Transport::running;
       songPosition_ = 0;
+      ++positionRevision_;
       break;
-    case 0xfb: transport_ = Transport::running; break;
-    case 0xfc: transport_ = Transport::stopped; break;
+    case 0xfb:
+      transportKnown_ = true;
+      transport_ = Transport::running;
+      break;
+    case 0xfc:
+      transportKnown_ = true;
+      transport_ = Transport::stopped;
+      break;
     case 0xf2:
-      if (size >= 3 && transport_ == Transport::stopped)
+      if (size >= 3 && transport_ == Transport::stopped) {
+        transportKnown_ = true;
         songPosition_ = static_cast<std::uint16_t>(raw[1] | (raw[2] << 7));
+        ++positionRevision_;
+      }
       break;
-    case 0xff: clearEstimator(); transport_ = Transport::stopped; break;
+    case 0xff:
+      clearEstimator();
+      transportKnown_ = false;
+      transport_ = Transport::stopped;
+      songPosition_ = 0;
+      ++positionRevision_;
+      break;
     default: break;  // FE active sensing and all channel/system messages are harmless.
   }
 }
@@ -263,6 +282,8 @@ void MidiClockTempo::publish(bool activity) noexcept {
   value |= static_cast<std::uint64_t>(stale_) << 35;
   value |= static_cast<std::uint64_t>(activity) << 36;
   value |= static_cast<std::uint64_t>(songPosition_ & 0x3fff) << 37;
+  value |= static_cast<std::uint64_t>(transportKnown_) << 51;
+  value |= static_cast<std::uint64_t>(positionRevision_) << 52;
   packed_.store(value, std::memory_order_release);
 }
 
@@ -275,5 +296,7 @@ MidiClockTempo::Snapshot MidiClockTempo::snapshot() const noexcept {
   result.stale = ((value >> 35) & 0x1u) != 0;
   result.activity = ((value >> 36) & 0x1u) != 0;
   result.songPosition = static_cast<std::uint16_t>((value >> 37) & 0x3fffu);
+  result.transportKnown = ((value >> 51) & 0x1u) != 0;
+  result.positionRevision = static_cast<std::uint8_t>((value >> 52) & 0xffu);
   return result;
 }
